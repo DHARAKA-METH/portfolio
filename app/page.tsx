@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
+import Script from "next/script";
 import {
   ArrowUp,
   ArrowUpRight,
@@ -11,7 +12,6 @@ import {
   Home,
   Moon,
   Sun,
-  UserRound,
 } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa6";
 import { CtaButton } from "@/components/ui/cta-button";
@@ -26,55 +26,84 @@ import {
 const skills = [
   {
     title: "Backend",
-    items: ["Java", "Spring Boot", "REST APIs", "Spring Security"],
+    items: ["Java", "Spring Boot", "Node.js", "Express.js", "REST APIs"],
   },
   {
     title: "Database",
-    items: ["MySQL", "PostgreSQL", "MongoDB"],
+    items: ["MySQL", "Cloud Firestore", "MongoDB"],
   },
   {
     title: "DevOps & Cloud",
-    items: ["Docker", "GitHub Actions", "Linux", "AWS (Basics)"],
+    items: ["Docker", "NGINX", "GitHub Actions", "Firebase", "Linux"],
   },
   {
     title: "Frontend",
-    items: ["HTML", "CSS", "JavaScript", "Bootstrap"],
+    items: ["Next.js", "React Native", "TypeScript", "Flutter", "Tailwind CSS"],
   },
 ];
 
 const projects = [
   {
-    title: "MindSpace",
-    period: ["Apr 2026", "Aug 2026"],
-    role: "Backend Developer",
+    title: "MindSpace - Mental Wellness Support Platform",
+    period: ["Jul 2026", "Aug 2026"],
+    role: "Mobile Application Developer",
     description:
-      "A mental-wellness platform that helps university students track mood and stress, access practical resources, and connect with support.",
+      "A mobile application supporting university student well-being through mood and stress tracking, AI-assisted guidance, personalized wellness resources, anonymous counselor chat, and appointment booking.",
     mark: "MS",
     accent: "from-[#595783] to-[#7773A3]",
-    technologies: ["React Native", "Firebase", "REST APIs", "AI APIs"],
-    github: "https://github.com",
+    technologies: ["React Native", "Expo", "TypeScript", "Tailwind CSS", "Firebase Auth", "Cloud Firestore", "Cloud Functions", "Hugging Face"],
+    url: "https://github.com/DHARAKA-METH/Mind-Space",
+    linkLabel: "View on GitHub",
   },
   {
-    title: "Smart Tourist Platform",
-    period: ["Jun 2026", "Jul 2026"],
-    role: "Backend Developer",
-    description:
-      "A microservices-based tourism platform for discovering destinations, managing users, and supporting secure guide-booking workflows.",
-    mark: "ST",
-    accent: "from-[#185E5B] to-[#2C8580]",
-    technologies: ["Spring Boot", "MongoDB", "JWT", "NGINX"],
-    github: "https://github.com",
-  },
-  {
-    title: "JESA 2026 Registration Portal",
+    title: "J'pura Employability Skills Awards: JESA 2026",
     period: ["Jun 2026", "Jul 2026"],
     role: "Web Developer",
     description:
-      "A secure award-registration portal with structured validation, duplicate prevention, role-aware workflows, and reliable data handling.",
+      "Revamped the award registration application with a redesigned workflow, robust Zod validation, Firebase storage, improved data accuracy, and a streamlined application experience.",
     mark: "J6",
     accent: "from-[#C2410C] to-[#F97316]",
-    technologies: ["Next.js", "TypeScript", "Firebase", "Zod"],
-    github: "https://github.com",
+    technologies: ["Next.js", "TypeScript", "Firebase", "Zod", "Teamwork"],
+    url: "https://jesa.lk",
+    linkLabel: "Visit jesa.lk",
+  },
+  {
+    title: "RescuePaws - Stray Dog Management System",
+    period: ["Mar 2026", "Apr 2026"],
+    role: "Full-Stack Developer",
+    description:
+      "A microservices-based platform for reporting, tracking, and managing stray dog rescue cases in real time, with secure authentication, image uploads, and containerized deployment.",
+    mark: "RP",
+    accent: "from-[#185E5B] to-[#2C8580]",
+    technologies: ["Spring Boot", "Next.js", "Spring Cloud Gateway", "JWT", "MySQL", "Docker", "NGINX", "Cloudinary"],
+    url: "https://github.com/DHARAKA-METH/RescuePaws",
+    linkLabel: "View on GitHub",
+  },
+  {
+    title: "Job Zone",
+    period: ["Dec 2025", "Jan 2026"],
+    role: "Backend Developer",
+    description:
+      "Contributed backend APIs for registration, authentication, job postings, and applications while maintaining data integrity, secure server-side logic, and reliable application performance.",
+    mark: "JZ",
+    accent: "from-[#4B5563] to-[#6B7280]",
+    technologies: ["Node.js", "Express.js", "REST APIs", "Authentication", "Database Design"],
+    url: "https://github.com/CHATHURAsangeeth/job-zone",
+    linkLabel: "View on GitHub",
+  },
+  {
+    title: "KaZU",
+    period: ["Oct 2025", "Dec 2025"],
+    role: "Mobile Application Developer",
+    description:
+      "An IoT device and mobile application that gives pet owners live GPS location updates, safety alerts, and simple real-time monitoring.",
+    mark: "KZ",
+    accent: "from-[#315B7D] to-[#5188A9]",
+    image:
+      "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&q=80",
+    technologies: ["Flutter", "Dart", "IoT", "GPS", "Mobile Development"],
+    url: "https://github.com/DHARAKA-METH/kazu",
+    linkLabel: "View on GitHub",
   },
 ];
 
@@ -93,6 +122,20 @@ const bodyFont =
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF7] dark:focus-visible:ring-[#FF8A65] dark:focus-visible:ring-offset-[#10110F]";
+
+const introduction =
+  "I am an IT undergraduate focused on building reliable backend systems and growing practical skills in DevOps and cloud technologies. I enjoy turning clear ideas into useful, maintainable products.";
+
+type GsapWindow = Window & {
+  gsap?: {
+    registerPlugin: (plugin: unknown) => void;
+    to: (
+      target: Element,
+      variables: Record<string, unknown>,
+    ) => { kill: () => void };
+  };
+  ScrambleTextPlugin?: unknown;
+};
 
 function TechChips({ items }: { items: string[] }) {
   return (
@@ -128,24 +171,55 @@ function ThemeButton({ dark, onClick }: { dark: boolean; onClick: () => void }) 
 }
 
 export default function HomePage() {
-  const [dark, setDark] = useState(() => {
-    if (typeof window === "undefined") return false;
-    const savedTheme = window.localStorage.getItem("portfolio-theme");
-    return savedTheme
-      ? savedTheme === "dark"
-      : window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  const [dark, setDark] = useState(false);
   const [profileFlipped, setProfileFlipped] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
+  const [gsapLoaded, setGsapLoaded] = useState(false);
+  const [scrambleReady, setScrambleReady] = useState(false);
+  const introductionRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", dark);
-  }, [dark]);
+    const savedTheme = window.localStorage.getItem("portfolio-theme");
+    const shouldUseDark = savedTheme
+      ? savedTheme === "dark"
+      : window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    document.documentElement.classList.toggle("dark", shouldUseDark);
+    const frame = window.requestAnimationFrame(() => setDark(shouldUseDark));
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
+  useEffect(() => {
+    if (
+      !scrambleReady ||
+      !introductionRef.current ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    const gsapWindow = window as GsapWindow;
+    if (!gsapWindow.gsap || !gsapWindow.ScrambleTextPlugin) return;
+
+    gsapWindow.gsap.registerPlugin(gsapWindow.ScrambleTextPlugin);
+    const tween = gsapWindow.gsap.to(introductionRef.current, {
+      duration: 1.8,
+      ease: "none",
+      scrambleText: {
+        text: introduction,
+        chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        delimiter: " ",
+        revealDelay: 0.2,
+        speed: 0.3,
+      },
+    });
+
+    return () => tween.kill();
+  }, [scrambleReady]);
 
   useEffect(() => {
     const sectionIds = [
       "hero",
-      "about",
       "skills",
       "experience",
       "projects",
@@ -183,6 +257,20 @@ export default function HomePage() {
     <main
       className={`${bodyFont} min-h-screen overflow-x-clip bg-[#FAFAF7] text-[#20221F] antialiased transition-colors duration-300 selection:bg-[#F97316]/20 selection:text-[#20221F] dark:bg-[#10110F] dark:text-[#F2F3EE] dark:selection:bg-[#FF7043]/25 dark:selection:text-[#F2F3EE]`}
     >
+      <Script
+        id="gsap-core"
+        src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"
+        strategy="afterInteractive"
+        onReady={() => setGsapLoaded(true)}
+      />
+      {gsapLoaded && (
+        <Script
+          id="gsap-scramble-text"
+          src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrambleTextPlugin.min.js"
+          strategy="afterInteractive"
+          onReady={() => setScrambleReady(true)}
+        />
+      )}
       <div className="mx-auto w-full max-w-[760px] px-6 pt-8 pb-32 sm:px-8 sm:pt-10 lg:px-6 lg:pt-16">
         <header className="flex items-center justify-between" aria-label="Site header">
           <a
@@ -230,11 +318,12 @@ export default function HomePage() {
             </div>
           </div>
 
-          <p className="mt-10 max-w-[650px] text-[18px] leading-7 text-[#555A52] sm:mt-12 sm:text-[19px] sm:leading-8 dark:text-[#B1B6AC]">
-            I am an IT undergraduate focused on building reliable backend
-            systems and growing practical skills in DevOps and cloud
-            technologies. I enjoy turning clear ideas into useful,
-            maintainable products.
+          <p
+            ref={introductionRef}
+            className="mt-10 max-w-[650px] whitespace-normal text-[18px] leading-7 tracking-normal text-[#555A52] [word-spacing:normal] sm:mt-12 sm:text-[19px] sm:leading-8 dark:text-[#B1B6AC]"
+            aria-label={introduction}
+          >
+            {introduction}
           </p>
 
           <div className="mt-7 flex flex-wrap items-center gap-3">
@@ -271,39 +360,6 @@ export default function HomePage() {
             </span>
           </div>
         </section>
-
-        <Section id="about">
-          <SectionTitle>About me</SectionTitle>
-          <div>
-            <div className="space-y-4 text-[18px] leading-7 text-[#555A52] dark:text-[#B1B6AC]">
-              <p>
-                I am a BICT (Hons) undergraduate at the University of Sri
-                Jayewardenepura.
-              </p>
-              <p>
-                My main interest is backend development—designing APIs,
-                structuring data, and building secure services. I am also
-                developing my knowledge of Linux, containers, CI/CD, and AWS.
-              </p>
-            </div>
-          </div>
-        </Section>
-
-        <Section id="skills">
-          <SectionTitle>Skills</SectionTitle>
-          <div className="flex flex-col gap-9">
-            {skills.map((skill) => (
-              <div key={skill.title}>
-                <h3
-                  className={`${displayFont} mb-3 text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#292C28] dark:text-[#E8EAE5]`}
-                >
-                  {skill.title}
-                </h3>
-                <TechChips items={skill.items} />
-              </div>
-            ))}
-          </div>
-        </Section>
 
         <Section id="experience">
           <SectionTitle>Experience / My work</SectionTitle>
@@ -346,18 +402,30 @@ export default function HomePage() {
                 <article className="group grid gap-5 sm:grid-cols-[136px_1fr] sm:gap-6">
                   <div
                     className={`relative grid h-28 w-full place-items-center overflow-hidden rounded-xl bg-gradient-to-br ${project.accent} text-white shadow-[0_14px_35px_rgba(32,34,31,0.12)] sm:h-[108px] sm:w-[136px] dark:shadow-[0_14px_35px_rgba(0,0,0,0.3)]`}
-                    aria-hidden="true"
+                    aria-hidden={!project.image}
                   >
-                    <span className="absolute top-3 left-3 text-[11px] font-medium tracking-[0.16em] text-white/70 uppercase">
-                      Selected work
-                    </span>
-                    <span
-                      className={`${displayFont} mt-4 text-[29px] font-bold tracking-[-0.08em] transition-transform duration-300 group-hover:-translate-y-0.5`}
-                    >
-                      {project.mark}
-                    </span>
-                    <span className="absolute -right-7 -bottom-10 size-24 rounded-full border border-white/25" />
-                    <span className="absolute -right-2 -bottom-6 size-16 rounded-full border border-white/20" />
+                    {project.image ? (
+                      <Image
+                        className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                        src={project.image}
+                        alt={`${project.title} project preview`}
+                        fill
+                        sizes="(min-width: 640px) 136px, calc(100vw - 48px)"
+                      />
+                    ) : (
+                      <>
+                        <span className="absolute top-3 left-3 text-[11px] font-medium tracking-[0.16em] text-white/70 uppercase">
+                          Selected work
+                        </span>
+                        <span
+                          className={`${displayFont} mt-4 text-[29px] font-bold tracking-[-0.08em] transition-transform duration-300 group-hover:-translate-y-0.5`}
+                        >
+                          {project.mark}
+                        </span>
+                        <span className="absolute -right-7 -bottom-10 size-24 rounded-full border border-white/25" />
+                        <span className="absolute -right-2 -bottom-6 size-16 rounded-full border border-white/20" />
+                      </>
+                    )}
                   </div>
                   <div className="min-w-0">
                     <h3
@@ -376,12 +444,14 @@ export default function HomePage() {
                     <TechChips items={project.technologies} />
                     <a
                       className={`${displayFont} ${focusRing} mt-4 inline-flex items-center gap-1.5 rounded-sm text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                      href="https://github.com"
+                      href={project.url}
                       target="_blank"
                       rel="noreferrer"
                     >
-                      <SiGithub className="size-3.5" />
-                      View on GitHub
+                      {project.linkLabel.includes("GitHub") && (
+                        <SiGithub className="size-3.5" />
+                      )}
+                      {project.linkLabel}
                       <ArrowUpRight className="size-3.5 stroke-[1.75]" />
                     </a>
                   </div>
@@ -394,21 +464,37 @@ export default function HomePage() {
         <Section id="volunteer">
           <SectionTitle>Volunteer experience</SectionTitle>
           <Timeline>
-            <TimelineItem period={["Oct 2024", "Nov 2024"]}>
+            <TimelineItem period={["Dec 2025", "Apr 2026"]}>
               <Volunteer
-                name="IEEE Student Branch — USJ"
-                role="Web Volunteer"
-                description="Assisted with web development and digital solutions for student activities."
+                name="Hackathon Crew Member — Organizing Committee"
+                role="ICTS — Information and Communication Technology Society"
+                description="Supported the organizing committee with the planning and delivery of hackathon activities."
               />
             </TimelineItem>
-            <TimelineItem period={["Sep 2024", "Nov 2024"]}>
+            <TimelineItem period={[]}>
               <Volunteer
-                name="Code For Tomorrow — USJ"
-                role="Volunteer Developer"
-                description="Supported development and testing sessions created for school students."
+                name="Programming Committee Member — Beauty of Cloud 2.0"
+                role="IEEE CS Student Branch Chapter — University of Sri Jayewardenepura"
+                description="Contributed to the programming committee for Beauty of Cloud 2.0."
               />
             </TimelineItem>
           </Timeline>
+        </Section>
+
+        <Section id="skills">
+          <SectionTitle>Skills</SectionTitle>
+          <div className="flex flex-col gap-9">
+            {skills.map((skill) => (
+              <div key={skill.title}>
+                <h3
+                  className={`${displayFont} mb-3 text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#292C28] dark:text-[#E8EAE5]`}
+                >
+                  {skill.title}
+                </h3>
+                <TechChips items={skill.items} />
+              </div>
+            ))}
+          </div>
         </Section>
 
         <footer
@@ -493,9 +579,6 @@ export default function HomePage() {
         >
           <Briefcase />
         </NavLink>
-        <NavLink href="#about" label="About" active={activeSection === "about"}>
-          <UserRound />
-        </NavLink>
         <NavLink href="/blog" label="Blog">
           <BookOpen />
         </NavLink>
@@ -551,9 +634,13 @@ function TimelineItem({
         className={`${displayFont} pt-px text-[14px] leading-5 text-[#898E86] dark:text-[#7D8279]`}
       >
         {period[0]}
-        <span className="mx-1.5 text-[#B5B8B0] dark:text-[#55594F]">→</span>
-        <br className="hidden sm:block" />
-        {period[1]}
+        {period[1] && (
+          <>
+            <span className="mx-1.5 text-[#B5B8B0] dark:text-[#55594F]">→</span>
+            <br className="hidden sm:block" />
+            {period[1]}
+          </>
+        )}
       </p>
       <div>{children}</div>
     </div>
