@@ -128,13 +128,17 @@ const introduction =
 
 type GsapWindow = Window & {
   gsap?: {
-    registerPlugin: (plugin: unknown) => void;
+    registerPlugin: (...plugins: unknown[]) => void;
     to: (
       target: Element,
       variables: Record<string, unknown>,
     ) => { kill: () => void };
   };
   ScrambleTextPlugin?: unknown;
+  ScrollTrigger?: unknown;
+  ScrollSmoother?: {
+    create: (options: Record<string, unknown>) => { kill: () => void };
+  };
 };
 
 function TechChips({ items }: { items: string[] }) {
@@ -176,6 +180,8 @@ export default function HomePage() {
   const [activeSection, setActiveSection] = useState("hero");
   const [gsapLoaded, setGsapLoaded] = useState(false);
   const [scrambleReady, setScrambleReady] = useState(false);
+  const [scrollTriggerLoaded, setScrollTriggerLoaded] = useState(false);
+  const [scrollSmootherReady, setScrollSmootherReady] = useState(false);
   const introductionRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -216,6 +222,37 @@ export default function HomePage() {
 
     return () => tween.kill();
   }, [scrambleReady]);
+
+  useEffect(() => {
+    if (
+      !scrollSmootherReady ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    const gsapWindow = window as GsapWindow;
+    if (
+      !gsapWindow.gsap ||
+      !gsapWindow.ScrollTrigger ||
+      !gsapWindow.ScrollSmoother
+    ) {
+      return;
+    }
+
+    gsapWindow.gsap.registerPlugin(
+      gsapWindow.ScrollTrigger,
+      gsapWindow.ScrollSmoother,
+    );
+    const smoother = gsapWindow.ScrollSmoother.create({
+      wrapper: "#smooth-wrapper",
+      content: "#smooth-content",
+      smooth: 2,
+      effects: true,
+    });
+
+    return () => smoother.kill();
+  }, [scrollSmootherReady]);
 
   useEffect(() => {
     const sectionIds = [
@@ -264,14 +301,32 @@ export default function HomePage() {
         onReady={() => setGsapLoaded(true)}
       />
       {gsapLoaded && (
+        <>
+          <Script
+            id="gsap-scramble-text"
+            src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrambleTextPlugin.min.js"
+            strategy="afterInteractive"
+            onReady={() => setScrambleReady(true)}
+          />
+          <Script
+            id="gsap-scroll-trigger"
+            src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"
+            strategy="afterInteractive"
+            onReady={() => setScrollTriggerLoaded(true)}
+          />
+        </>
+      )}
+      {scrollTriggerLoaded && (
         <Script
-          id="gsap-scramble-text"
-          src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrambleTextPlugin.min.js"
+          id="gsap-scroll-smoother"
+          src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollSmoother.min.js"
           strategy="afterInteractive"
-          onReady={() => setScrambleReady(true)}
+          onReady={() => setScrollSmootherReady(true)}
         />
       )}
-      <div className="mx-auto w-full max-w-[760px] px-6 pt-8 pb-32 sm:px-8 sm:pt-10 lg:px-6 lg:pt-16">
+      <div id="smooth-wrapper" className="bg-[#FAFAF7] dark:bg-[#10110F]">
+        <div id="smooth-content" className="bg-[#FAFAF7] dark:bg-[#10110F]">
+          <div className="mx-auto w-full max-w-[760px] px-6 pt-8 pb-32 sm:px-8 sm:pt-10 lg:px-6 lg:pt-16">
         <header className="flex items-center justify-between" aria-label="Site header">
           <a
             className={`${displayFont} ${focusRing} inline-flex items-center gap-2 rounded-md text-[15px] tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
@@ -361,7 +416,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <Section id="experience">
+        <Section id="experience" smoothEffect>
           <SectionTitle>Experience / My work</SectionTitle>
           <Timeline>
             <TimelineItem period={["Jun 2026", "Jul 2026"]}>
@@ -394,7 +449,7 @@ export default function HomePage() {
           </Timeline>
         </Section>
 
-        <Section id="projects">
+        <Section id="projects" smoothEffect>
           <SectionTitle>Featured projects</SectionTitle>
           <Timeline>
             {projects.map((project) => (
@@ -561,6 +616,8 @@ export default function HomePage() {
             </a>
           </div>
         </footer>
+          </div>
+        </div>
       </div>
 
       <nav
@@ -590,12 +647,19 @@ export default function HomePage() {
 function Section({
   id,
   children,
+  smoothEffect = false,
 }: {
   id: string;
   children: ReactNode;
+  smoothEffect?: boolean;
 }) {
   return (
-    <section className="scroll-mt-16 py-14 sm:py-20" id={id}>
+    <section
+      className="scroll-mt-16 py-14 sm:py-20"
+      id={id}
+      data-speed={smoothEffect ? "0.94" : undefined}
+      data-lag={smoothEffect ? "0.08" : undefined}
+    >
       {children}
     </section>
   );

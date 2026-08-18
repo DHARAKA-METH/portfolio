@@ -21,7 +21,7 @@ export function CtaButton({
   const isDefault = variant === "default";
   const buttonClassName = `relative z-10 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full px-5 font-semibold transition-all ${
     isDefault
-      ? "bg-white text-slate-950 hover:bg-slate-200"
+      ? "bg-[#FAFAF7] text-[#20221F] hover:bg-[#F2F2EC] dark:bg-[#10110F] dark:text-[#F2F3EE] dark:hover:bg-[#232520]"
       : "bg-transparent text-white hover:bg-white/10"
   } ${className}`;
 
@@ -49,7 +49,7 @@ export function CtaButton({
         }
       >
         <div className="absolute -inset-px rounded-full bg-linear-to-b from-slate-500 to-slate-900" />
-        <div className="absolute inset-0 rounded-full bg-linear-to-r from-slate-300/10 via-white/5 to-slate-300/10" />
+        <div className="absolute inset-0 rounded-full bg-linear-to-r from-slate-300/10 via-transparent to-slate-300/10" />
 
         {shimmer && (
           <div className="absolute inset-0 z-0 overflow-hidden rounded-full blur-[1px]">
