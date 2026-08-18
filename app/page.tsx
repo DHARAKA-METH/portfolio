@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ArrowUp, BookOpen, Download, ExternalLink, Home, Menu, Moon, Sun, Volume2, VolumeX, X } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa6";
 import { SiGithub, SiInstagram, SiTiktok, SiX, SiYoutube } from "react-icons/si";
@@ -33,6 +34,7 @@ export default function HomePage() {
   const [dark, setDark] = useState(false);
   const [soundOn, setSoundOn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [profileFlipped, setProfileFlipped] = useState(false);
 
   useEffect(() => { document.documentElement.classList.toggle("dark", dark); }, [dark]);
 
@@ -44,20 +46,32 @@ export default function HomePage() {
       </div>
       {menuOpen && <nav className="mx-auto flex w-[calc(100%_-_40px)] max-w-[900px] gap-5 border-b border-[#E5E6E1] py-3 font-mono text-xs dark:border-[#282B26] md:hidden" aria-label="Mobile navigation"><a href="#hero">Home</a><a href="#projects">Projects</a><a href="#contact">Contact</a></nav>}
 
-      <div className="mx-auto w-[calc(100%_-_40px)] max-w-[900px] pb-[152px] pt-10 md:w-[calc(100%_-_48px)] md:pb-[180px] md:pt-16">
-        <section className="mb-14 flex scroll-mt-7 items-start gap-[18px] md:mb-20 md:min-h-[260px] md:items-center md:gap-8" id="hero">
-          <div className="relative grid h-[94px] w-[78px] shrink-0 place-items-center overflow-hidden rounded-md bg-linear-to-br from-[#D8DBD5] to-[#9CA19A] font-mono text-[22px] leading-none font-bold tracking-[-.14em] text-[#272A27] md:h-[156px] md:w-[132px] md:text-[34px]">
-            <div className="absolute inset-[7px] border border-white/50 md:inset-3" /><div className="absolute top-[18px] h-3 w-[165px] rotate-[-35deg] bg-white/45 md:top-7" /><div className="absolute -right-4 bottom-[7px] h-[18px] w-[90px] rotate-[-35deg] bg-white/45 md:bottom-[13px] md:h-7" /><span className="z-10">DM</span>
+      <div className="mx-auto w-[calc(100%_-_40px)] max-w-[900px] pb-[100px] pt-10 md:w-[calc(100%_-_48px)] md:pb-[100px] md:pt-16">
+        <section className="mb-14 flex scroll-mt-7 items-start gap-3 md:mb-20 md:min-h-0 md:gap-3" id="hero">
+          <button
+            className="group shrink-0 cursor-pointer rounded-md [perspective:1000px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F97316] dark:focus-visible:outline-[#FF8A65]"
+            onMouseEnter={() => setProfileFlipped(true)}
+            onMouseLeave={() => setProfileFlipped(false)}
+            onClick={() => setProfileFlipped(!profileFlipped)}
+            aria-label="Show Dharaka Meth logo"
+            aria-pressed={profileFlipped}
+          >
+            <span className={`relative block size-[60px] transform-3d transition-transform duration-[220ms] ${profileFlipped ? "rotate-y-180" : ""}`}>
+              <Image className="absolute inset-0 size-full rounded-md object-cover backface-hidden" src="/profile.png" alt="Dharaka Meth" width={60} height={60} priority />
+              <Image className="absolute inset-0 size-full rotate-y-180 rounded-md object-cover backface-hidden" src="/logo.png" alt="Dharaka Meth logo" width={60} height={60} />
+            </span>
+          </button>
+          <div className="ml-3 gap-2">
+            <h1 className="mt-2.5 font-mono text-lg leading-[1.2] font-bold tracking-[-.04em]">Dharaka Meth</h1>
+            <p className="mt-0 font-mono text-base leading-6 font-medium text-[#62675F] dark:text-[#A6ABA1]">Aspiring Backend &amp; DevOps Engineer</p>
           </div>
-          <div>
-            <p className="m-0 font-mono text-xs font-medium tracking-[.08em] text-[#C2410C] uppercase dark:text-[#FF7043]">Hello, I&apos;m</p>
-            <h1 className="mt-0.5 font-mono text-[32px] leading-[1.15] font-bold tracking-[-.06em] md:text-[40px]">Dharaka Meth</h1>
-            <p className="mt-[7px] mb-[18px] font-mono text-sm leading-6 font-medium md:text-lg">Aspiring Backend &amp; DevOps Engineer</p>
-            <p className="max-w-[510px] text-sm text-[#62675F] dark:text-[#A6ABA1] md:text-[15px]">I build reliable backend systems and practical digital products.</p>
-            <div className="mt-[18px] flex flex-wrap gap-3 md:mt-6"><a className="rounded-md border border-[#C2410C] bg-[#C2410C] px-[18px] py-3 font-mono text-[13px] leading-none font-medium text-white transition duration-150 hover:-translate-y-px hover:border-[#9A3412] hover:bg-[#9A3412] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#F97316] dark:border-[#FF7043] dark:bg-[#FF7043] dark:text-[#17100C] dark:hover:border-[#FF8A65] dark:hover:bg-[#FF8A65]" href="#projects">View Projects</a><a className="inline-flex items-center gap-2 rounded-md border border-[#D8DAD4] px-[18px] py-3 font-mono text-[13px] leading-none font-medium transition duration-150 hover:-translate-y-px hover:bg-[#F2F2EC] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#F97316] dark:border-[#363932] dark:hover:bg-[#232520]" href="/documents/dharaka-meth-cv.pdf" download><Download className="size-[14px] stroke-[1.75]" />Download CV</a></div>
-            <div className="mt-[18px] flex gap-[26px] font-mono text-xs md:mt-6"><a className="inline-flex items-center gap-1.5 hover:text-[#C2410C] dark:hover:text-[#FF7043]" href="https://github.com" target="_blank" rel="noreferrer">GitHub <ExternalLink className="size-3 stroke-[1.75]" /></a><a className="inline-flex items-center gap-1.5 hover:text-[#C2410C] dark:hover:text-[#FF7043]" href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn <ExternalLink className="size-3 stroke-[1.75]" /></a></div>
-          </div>
+
         </section>
+        <div className="mt-[-50px]">
+            <p className="max-w-[510px] text-sm font-bold text-[#62675F] [font-family:var(--font-courier-prime)] dark:text-[#A6ABA1] md:text-[15px]">I build reliable backend systems and practical digital products.</p>
+          <div className="mt-[18px] flex flex-wrap gap-3 md:mt-6"><a className="rounded-md border border-[#C2410C] bg-[#C2410C] px-[18px] py-3 font-mono text-[13px] leading-none font-medium text-white transition duration-150 hover:-translate-y-px hover:border-[#9A3412] hover:bg-[#9A3412] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#F97316] dark:border-[#FF7043] dark:bg-[#FF7043] dark:text-[#17100C] dark:hover:border-[#FF8A65] dark:hover:bg-[#FF8A65]" href="#projects">View Projects</a><a className="inline-flex items-center gap-2 rounded-md border border-[#D8DAD4] px-[18px] py-3 font-mono text-[13px] leading-none font-medium transition duration-150 hover:-translate-y-px hover:bg-[#F2F2EC] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#F97316] dark:border-[#363932] dark:hover:bg-[#232520]" href="/documents/dharaka-meth-cv.pdf" download><Download className="size-[14px] stroke-[1.75]" />Download CV</a></div>
+          <div className="mt-[18px] flex gap-[26px] font-mono text-xs md:mt-6"><a className="inline-flex items-center gap-1.5 hover:text-[#C2410C] dark:hover:text-[#FF7043]" href="https://github.com" target="_blank" rel="noreferrer">GitHub <ExternalLink className="size-3 stroke-[1.75]" /></a><a className="inline-flex items-center gap-1.5 hover:text-[#C2410C] dark:hover:text-[#FF7043]" href="https://linkedin.com" target="_blank" rel="noreferrer">LinkedIn <ExternalLink className="size-3 stroke-[1.75]" /></a></div>
+        </div>
 
         <section className="mt-14 scroll-mt-7 md:mt-20" id="about"><SectionTitle>About Me</SectionTitle><p className="mb-3 max-w-[700px] text-[#62675F] dark:text-[#A6ABA1]">BICT (Hons) undergraduate at the University of Sri Jayewardenepura.</p><p className="max-w-[700px] text-[#62675F] dark:text-[#A6ABA1]">Aspiring backend developer, passionate about building reliable systems and exploring DevOps and cloud technologies.</p></section>
         <section className="mt-14 scroll-mt-7 md:mt-20" id="skills"><SectionTitle>Skills</SectionTitle><div className="grid gap-[26px] py-1 md:grid-cols-2 md:gap-x-16 md:gap-y-8 md:px-3">{skills.map((skill) => <div key={skill.title}><h3 className="mb-2.5 font-mono text-[13px] leading-[1.4] font-semibold">{skill.title}</h3><TechChips items={skill.items} /></div>)}</div></section>
