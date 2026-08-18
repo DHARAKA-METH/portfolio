@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Script from "next/script";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUp,
   ArrowUpRight,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa6";
 import { CtaButton } from "@/components/ui/cta-button";
+import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import {
   SiGithub,
   SiInstagram,
@@ -182,6 +184,7 @@ export default function HomePage() {
   const [scrambleReady, setScrambleReady] = useState(false);
   const [scrollTriggerLoaded, setScrollTriggerLoaded] = useState(false);
   const [scrollSmootherReady, setScrollSmootherReady] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
   const introductionRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -196,7 +199,19 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const timer = window.setTimeout(
+      () => setShowLoader(false),
+      reduceMotion ? 0 : 1750,
+    );
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
     if (
+      showLoader ||
       !scrambleReady ||
       !introductionRef.current ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -221,10 +236,11 @@ export default function HomePage() {
     });
 
     return () => tween.kill();
-  }, [scrambleReady]);
+  }, [scrambleReady, showLoader]);
 
   useEffect(() => {
     if (
+      showLoader ||
       !scrollSmootherReady ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
@@ -252,7 +268,7 @@ export default function HomePage() {
     });
 
     return () => smoother.kill();
-  }, [scrollSmootherReady]);
+  }, [scrollSmootherReady, showLoader]);
 
   useEffect(() => {
     const sectionIds = [
@@ -291,8 +307,13 @@ export default function HomePage() {
   };
 
   return (
-    <main
+    <>
+      <AnimatePresence>{showLoader && <PortfolioLoader />}</AnimatePresence>
+      <motion.main
       className={`${bodyFont} min-h-screen overflow-x-clip bg-[#FAFAF7] text-[#20221F] antialiased transition-colors duration-300 selection:bg-[#F97316]/20 selection:text-[#20221F] dark:bg-[#10110F] dark:text-[#F2F3EE] dark:selection:bg-[#FF7043]/25 dark:selection:text-[#F2F3EE]`}
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: showLoader ? 0 : 1, y: showLoader ? 16 : 0 }}
+      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
     >
       <Script
         id="gsap-core"
@@ -640,7 +661,8 @@ export default function HomePage() {
           <BookOpen />
         </NavLink>
       </nav>
-    </main>
+      </motion.main>
+    </>
   );
 }
 
