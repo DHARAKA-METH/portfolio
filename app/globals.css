@@ -1,3 +1,20 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --animate-shimmer-slide: shimmer-slide 3s ease-in-out infinite alternate;
+  --animate-spin-around: spin-around 3s linear infinite;
+
+  @keyframes shimmer-slide {
+    to {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes spin-around {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
