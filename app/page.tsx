@@ -5,6 +5,7 @@ import Image from "next/image";
 import Script from "next/script";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
+  ArrowDown,
   ArrowUp,
   ArrowUpRight,
   BookOpen,
@@ -129,6 +130,23 @@ const experiences = [
     url: "https://jesa.lk",
     linkLabel: "Visit jesa.lk",
     technologies: ["Next.js", "TypeScript", "Firebase", "Zod"],
+  },
+];
+
+const volunteerExperiences = [
+  {
+    period: ["Dec 2025", "Apr 2026"],
+    name: "Hackathon Crew Member — Organizing Committee",
+    role: "ICTS — Information and Communication Technology Society",
+    description:
+      "Supported the organizing committee with the planning and delivery of hackathon activities.",
+  },
+  {
+    period: ["Dec 2025", "Apr 2026"],
+    name: "Programming Committee Member — Beauty of Cloud 2.0",
+    role: "IEEE CS Student Branch Chapter — University of Sri Jayewardenepura",
+    description:
+      "Contributed to the programming committee for Beauty of Cloud 2.0.",
   },
 ];
 
@@ -389,9 +407,9 @@ export default function HomePage() {
         "-=0.35",
       );
       openingTimeline.fromTo(
-        '[data-opening="nav"]',
-        { autoAlpha: 0, y: 24, scale: 0.97 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.6 },
+        '[data-opening="scroll-cue"]',
+        { autoAlpha: 0, y: 16 },
+        { autoAlpha: 1, y: 0, duration: 0.6 },
         "-=0.42",
       );
       openingTimeline.eventCallback("onComplete", () => {
@@ -568,392 +586,415 @@ export default function HomePage() {
     <>
       <AnimatePresence>{showLoader && <PortfolioLoader />}</AnimatePresence>
       <motion.main
-      ref={pageRef}
-      className={`${bodyFont} min-h-screen overflow-x-clip bg-[#FAFAF7] text-[#20221F] antialiased transition-colors duration-300 selection:bg-[#F97316]/20 selection:text-[#20221F] dark:bg-[#10110F] dark:text-[#F2F3EE] dark:selection:bg-[#FF7043]/25 dark:selection:text-[#F2F3EE]`}
-      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
-      animate={{
-        opacity: showLoader ? 0 : 1,
-        y: showLoader && !prefersReducedMotion ? 16 : 0,
-      }}
-      transition={{
-        duration: prefersReducedMotion ? 0 : 0.25,
-        ease: [0.22, 1, 0.36, 1],
-      }}
-    >
-      <Script
-        id="gsap-core"
-        src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"
-        strategy="afterInteractive"
-        onReady={() => setGsapLoaded(true)}
-      />
-      {gsapLoaded && (
-        <>
-          <Script
-            id="gsap-scramble-text"
-            src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrambleTextPlugin.min.js"
-            strategy="afterInteractive"
-            onReady={() => setScrambleReady(true)}
-          />
-          <Script
-            id="gsap-scroll-trigger"
-            src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"
-            strategy="afterInteractive"
-            onReady={() => setScrollTriggerLoaded(true)}
-          />
-        </>
-      )}
-      {scrollTriggerLoaded && (
+        ref={pageRef}
+        className={`${bodyFont} min-h-screen overflow-x-clip bg-[#FAFAF7] text-[#20221F] antialiased transition-colors duration-300 selection:bg-[#F97316]/20 selection:text-[#20221F] dark:bg-[#10110F] dark:text-[#F2F3EE] dark:selection:bg-[#FF7043]/25 dark:selection:text-[#F2F3EE]`}
+        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
+        animate={{
+          opacity: showLoader ? 0 : 1,
+          y: showLoader && !prefersReducedMotion ? 16 : 0,
+        }}
+        transition={{
+          duration: prefersReducedMotion ? 0 : 0.25,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+      >
         <Script
-          id="gsap-scroll-smoother"
-          src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollSmoother.min.js"
+          id="gsap-core"
+          src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"
           strategy="afterInteractive"
-          onReady={() => setScrollSmootherReady(true)}
+          onReady={() => setGsapLoaded(true)}
         />
-      )}
-      <div
-        className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-[#C2410C] motion-reduce:hidden dark:bg-[#FF7043]"
-        data-scroll-progress
-        aria-hidden="true"
-        style={{ transform: "scaleX(0)" }}
-      />
-      <div id="smooth-wrapper" className="bg-[#FAFAF7] dark:bg-[#10110F]">
-        <div id="smooth-content" className="bg-[#FAFAF7] dark:bg-[#10110F]">
-          <div className="mx-auto w-full max-w-[760px] px-6 pt-8 pb-32 sm:px-8 sm:pt-10 lg:px-6 lg:pt-16">
-        <header
-          className="flex items-center justify-between"
-          aria-label="Site header"
-          data-opening="header"
-        >
-          <a
-            className={`${displayFont} ${focusRing} inline-flex items-center gap-2 rounded-md text-[15px] tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-            href="#hero"
-          >
-            <span className="size-1.5 rounded-full bg-[#C2410C] dark:bg-[#FF7043]" />
-            DHARAKA / 2026
-          </a>
-          <ThemeButton dark={dark} onClick={toggleTheme} />
-        </header>
-
-        <section
-          className="scroll-mt-12 pt-16 pb-14 sm:pt-24 sm:pb-20"
-          id="hero"
-        >
-          <div className="flex items-center gap-3">
-            <button
-              className={`${focusRing} group shrink-0 cursor-pointer rounded-xl [perspective:1000px]`}
-              type="button"
-              onMouseEnter={() => setProfileFlipped(true)}
-              onMouseLeave={() => setProfileFlipped(false)}
-              onFocus={() => setProfileFlipped(true)}
-              onBlur={() => setProfileFlipped(false)}
-              onClick={() => setProfileFlipped((current) => !current)}
-              aria-label="Switch between portrait and Dharaka Meth logo"
-              aria-pressed={profileFlipped}
-              data-opening="profile"
-            >
-              <span className={`relative block size-[60px] transform-3d transition-transform duration-500 ease-out ${profileFlipped ? "rotate-y-180" : ""}`}>
-                <Image className="absolute inset-0 size-full rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 backface-hidden dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/profile.png" alt="Portrait of Dharaka Meth" width={60} height={60} priority />
-                <Image className="absolute inset-0 size-full rotate-y-180 rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 backface-hidden dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/logo.png" alt="Dharaka Meth logo" width={60} height={60} />
-              </span>
-            </button>
-            <div className="min-w-0" data-opening="identity">
-              <h1
-                className={`${displayFont} text-[18px] leading-[1.2] font-bold tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE]`}
-              >
-                Dharaka Meth
-              </h1>
-              <p
-                className={`${displayFont} mt-1 text-[18px] leading-6 tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]`}
-              >
-                Aspiring Backend &amp; DevOps Engineer
-              </p>
-            </div>
-          </div>
-
-          <p
-            ref={introductionRef}
-            className="mt-10 max-w-[650px] whitespace-normal text-[18px] leading-7 tracking-normal text-[#555A52] [word-spacing:normal] sm:mt-12 sm:text-[19px] sm:leading-8 dark:text-[#B1B6AC]"
-            aria-label={introduction}
-            data-opening="intro"
-          >
-            {introduction}
-          </p>
-
-          <div
-            className="mt-7 flex flex-wrap items-center gap-3"
-            data-opening="actions"
-          >
-            <CtaButton
-              className={`${displayFont} ${focusRing} text-[16px]`}
-              href="#projects"
-              shimmer
-            >
-              View projects
-              <ArrowUpRight className="size-4 stroke-[1.75]" />
-            </CtaButton>
-            <a
-              className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8DAD4] px-5 text-[16px] font-bold text-[#343832] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]`}
-              href="/documents/dharaka-meth-cv.pdf"
-              download
-            >
-              <Download className="size-4 stroke-[1.75]" />
-              Download CV
-            </a>
-          </div>
-
-          <div
-            className={`${displayFont} mt-7 flex flex-wrap gap-x-6 gap-y-3 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
-            data-opening="meta"
-          >
-            <TextLink href="https://github.com" external>
-              GitHub
-            </TextLink>
-            <TextLink href="https://linkedin.com" external>
-              LinkedIn
-            </TextLink>
-            <span className="inline-flex items-center gap-2">
-              <span className="size-1.5 rounded-full bg-[#4E8A63] dark:bg-[#78BE8F]" />
-              Open to internship opportunities
-            </span>
-          </div>
-        </section>
-
-        <Section id="experience" smoothEffect>
-          <SectionTitle>Experience / My work</SectionTitle>
-          <Timeline>
-            {experiences.map(
-              ({
-                period,
-                title,
-                role,
-                description,
-                url,
-                linkLabel,
-                technologies,
-              }) => (
-                <TimelineItem period={period} key={title}>
-                  <h3
-                    className={`${displayFont} text-[21px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
-                  >
-                    {title}
-                  </h3>
-                  <p
-                    className={`${displayFont} mt-1.5 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
-                  >
-                    {role}
-                  </p>
-                  <p className="mt-3 mb-4 text-[17px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
-                    {description}
-                  </p>
+        {gsapLoaded && (
+          <>
+            <Script
+              id="gsap-scramble-text"
+              src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrambleTextPlugin.min.js"
+              strategy="afterInteractive"
+              onReady={() => setScrambleReady(true)}
+            />
+            <Script
+              id="gsap-scroll-trigger"
+              src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"
+              strategy="afterInteractive"
+              onReady={() => setScrollTriggerLoaded(true)}
+            />
+          </>
+        )}
+        {scrollTriggerLoaded && (
+          <Script
+            id="gsap-scroll-smoother"
+            src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollSmoother.min.js"
+            strategy="afterInteractive"
+            onReady={() => setScrollSmootherReady(true)}
+          />
+        )}
+        <div
+          className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-[#C2410C] motion-reduce:hidden dark:bg-[#FF7043]"
+          data-scroll-progress
+          aria-hidden="true"
+          style={{ transform: "scaleX(0)" }}
+        />
+        <div id="smooth-wrapper" className="bg-[#FAFAF7] dark:bg-[#10110F] ">
+          <div id="smooth-content" className="bg-[#FAFAF7] dark:bg-[#10110F]">
+            <div className="mx-auto w-full max-w-[1120px] px-5 pb-32 sm:px-8 lg:px-10">
+              <div className="relative flex min-h-[100svh] flex-col">
+                <header
+                  className="flex items-center justify-between pt-7 sm:pt-9 lg:pt-11"
+                  aria-label="Site header"
+                  data-opening="header"
+                >
                   <a
-                    className={`${displayFont} ${focusRing} mb-4 inline-flex items-center gap-1.5 rounded-sm text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                    href={url}
-                    target="_blank"
-                    rel="noreferrer"
+                    className={`${displayFont} ${focusRing} inline-flex items-center gap-2 rounded-md text-[15px] tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    href="#hero"
                   >
-                    {linkLabel}
-                    <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                    <span className="size-1.5 rounded-full bg-[#C2410C] dark:bg-[#FF7043]" />
+                    DHARAKA / 2026
                   </a>
-                  <TechChips items={technologies} />
-                </TimelineItem>
-              ),
-            )}
-          </Timeline>
-        </Section>
+                  <ThemeButton dark={dark} onClick={toggleTheme} />
+                </header>
 
-        <Section id="projects" smoothEffect>
-          <SectionTitle>Featured projects</SectionTitle>
-          <Timeline>
-            {projects.map((project) => (
-              <TimelineItem period={project.period} key={project.title}>
-                <article className="group grid gap-5 sm:grid-cols-[136px_1fr] sm:gap-6">
-                  <div
-                    className={`relative grid h-28 w-full place-items-center overflow-hidden rounded-xl bg-gradient-to-br ${project.accent} text-white shadow-[0_14px_35px_rgba(32,34,31,0.12)] sm:h-[108px] sm:w-[136px] dark:shadow-[0_14px_35px_rgba(0,0,0,0.3)]`}
-                    aria-hidden={!project.image}
-                  >
-                    {project.image ? (
-                      <Image
-                        className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
-                        src={project.image}
-                        alt={`${project.title} project preview`}
-                        fill
-                        sizes="(min-width: 640px) 136px, calc(100vw - 48px)"
-                      />
-                    ) : (
-                      <>
-                        <span className="absolute top-3 left-3 text-[11px] font-medium tracking-[0.16em] text-white/70 uppercase">
-                          Selected work
+                <section
+                  className="relative flex min-h-0 flex-1 scroll-mt-0 items-center justify-center py-16 pb-28 sm:py-20 sm:pb-32"
+                  id="#hero"
+                >
+                  <div className="w-full max-w-[780px] text-center">
+                    <div className="flex items-center justify-center gap-3">
+                      <button
+                        className={`${focusRing} group shrink-0 cursor-pointer rounded-xl [perspective:1000px]`}
+                        type="button"
+                        onMouseEnter={() => setProfileFlipped(true)}
+                        onMouseLeave={() => setProfileFlipped(false)}
+                        onFocus={() => setProfileFlipped(true)}
+                        onBlur={() => setProfileFlipped(false)}
+                        onClick={() => setProfileFlipped((current) => !current)}
+                        aria-label="Switch between portrait and Dharaka Meth logo"
+                        aria-pressed={profileFlipped}
+                        data-opening="profile"
+                      >
+                        <span className={`relative block size-[60px] transform-3d transition-transform duration-500 ease-out ${profileFlipped ? "rotate-y-180" : ""}`}>
+                          <Image className="absolute inset-0 size-full rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 backface-hidden dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/profile.png" alt="Portrait of Dharaka Meth" width={60} height={60} priority />
+                          <Image className="absolute inset-0 size-full rotate-y-180 rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 backface-hidden dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/logo.png" alt="Dharaka Meth logo" width={60} height={60} />
                         </span>
-                        <span
-                          className={`${displayFont} mt-4 text-[29px] font-bold tracking-[-0.08em] transition-transform duration-300 group-hover:-translate-y-0.5`}
+                      </button>
+                      <div className="min-w-0 text-left" data-opening="identity">
+                        <h1
+                          className={`${displayFont} text-[18px] leading-[1.2] font-bold tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE]`}
                         >
-                          {project.mark}
-                        </span>
-                        <span className="absolute -right-7 -bottom-10 size-24 rounded-full border border-white/25" />
-                        <span className="absolute -right-2 -bottom-6 size-16 rounded-full border border-white/20" />
-                      </>
-                    )}
-                  </div>
-                  <div className="min-w-0">
-                    <h3
-                      className={`${displayFont} text-[21px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
-                    >
-                      {project.title}
-                    </h3>
+                          Dharaka Meth
+                        </h1>
+                        <p
+                          className={`${displayFont} mt-1 text-[18px] leading-6 tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]`}
+                        >
+                          Aspiring Backend &amp; DevOps Engineer
+                        </p>
+                      </div>
+                    </div>
+
                     <p
-                      className={`${displayFont} mt-1.5 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
+                      ref={introductionRef}
+                      className="mx-auto mt-9 max-w-[62ch] whitespace-normal text-pretty text-[17px] leading-7 tracking-normal text-[#555A52] [word-spacing:normal] sm:mt-11 sm:text-[19px] sm:leading-8 dark:text-[#B1B6AC]"
+                      aria-label={introduction}
+                      data-opening="intro"
                     >
-                      {project.role}
+                      {introduction}
                     </p>
-                    <p className="mt-3 mb-4 text-[17px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
-                      {project.description}
-                    </p>
-                    <TechChips items={project.technologies} />
+
+                    <div
+                      className="mt-7 flex flex-wrap items-center justify-center gap-3"
+                      data-opening="actions"
+                    >
+                      <CtaButton
+                        className={`${displayFont} ${focusRing} text-[16px]`}
+                        href="#projects"
+                        shimmer
+                      >
+                        View projects
+                        <ArrowUpRight className="size-4 stroke-[1.75]" />
+                      </CtaButton>
+                      <a
+                        className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8DAD4] px-5 text-[16px] font-bold text-[#343832] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]`}
+                        href="/documents/dharaka-meth-cv.pdf"
+                        download
+                      >
+                        <Download className="size-4 stroke-[1.75]" />
+                        Download CV
+                      </a>
+                    </div>
+
+                    <div
+                      className={`${displayFont} mt-7 flex flex-wrap justify-center gap-x-6 gap-y-3 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
+                      data-opening="meta"
+                    >
+                      <TextLink href="https://github.com" external>
+                        GitHub
+                      </TextLink>
+                      <TextLink href="https://linkedin.com" external>
+                        LinkedIn
+                      </TextLink>
+                      <span className="inline-flex items-center gap-2">
+                        <span className="size-1.5 rounded-full bg-[#4E8A63] dark:bg-[#78BE8F]" />
+                        Open to internship opportunities
+                      </span>
+                    </div>
+                  </div>
+
+                  <div
+                    className={`${displayFont} ${focusRing} group absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+
+                    aria-label="Scroll to experience"
+                    data-opening="scroll-cue"
+                  >
+                    <span>Let&apos;s Talk</span>
+                    <span className="grid size-10 place-items-center rounded-full border border-[#D8DAD4] bg-[#FFFFFF]/70 transition duration-200 group-hover:translate-y-1 group-hover:border-[#BFC2BA] group-hover:bg-[#F2F2EC] dark:border-[#363932] dark:bg-[#181A17]/70 dark:group-hover:border-[#50544A] dark:group-hover:bg-[#232520]">
+                      <ArrowDown className="size-4 stroke-[1.75] motion-safe:animate-bounce" />
+                    </span>
+                  </div>
+                </section>
+              </div>
+
+              <div className="mx-auto w-full max-w-[880px]">
+
+                <Section id="experience" smoothEffect>
+                  <SectionTitle>Experience / My work</SectionTitle>
+                  <Timeline>
+                    {experiences.map(
+                      ({
+                        period,
+                        title,
+                        role,
+                        description,
+                        url,
+                        linkLabel,
+                        technologies,
+                      }) => (
+                        <TimelineItem period={period} key={title}>
+                          <h3
+                            className={`${displayFont} text-[21px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
+                          >
+                            {title}
+                          </h3>
+                          <p
+                            className={`${displayFont} mt-1.5 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
+                          >
+                            {role}
+                          </p>
+                          <p className="mt-3 mb-4 max-w-[64ch] text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
+                            {description}
+                          </p>
+                          <a
+                            className={`${displayFont} ${focusRing} mb-4 inline-flex items-center gap-1.5 rounded-sm text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                            href={url}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {linkLabel}
+                            <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                          </a>
+                          <TechChips items={technologies} />
+                        </TimelineItem>
+                      ),
+                    )}
+                  </Timeline>
+                </Section>
+
+                <Section id="projects" smoothEffect>
+                  <SectionTitle>Featured projects</SectionTitle>
+                  <Timeline>
+                    {projects.map((project) => (
+                      <TimelineItem period={project.period} key={project.title}>
+                        <article className="group grid gap-5 sm:grid-cols-[136px_1fr] sm:gap-6">
+                          <div
+                            className={`relative grid h-28 w-full place-items-center overflow-hidden rounded-xl bg-gradient-to-br ${project.accent} text-white shadow-[0_14px_35px_rgba(32,34,31,0.12)] sm:h-[108px] sm:w-[136px] dark:shadow-[0_14px_35px_rgba(0,0,0,0.3)]`}
+                            aria-hidden={!project.image}
+                          >
+                            {project.image ? (
+                              <Image
+                                className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+                                src={project.image}
+                                alt={`${project.title} project preview`}
+                                fill
+                                sizes="(min-width: 640px) 136px, calc(100vw - 48px)"
+                              />
+                            ) : (
+                              <>
+                                <span className="absolute top-3 left-3 text-[11px] font-medium tracking-[0.16em] text-white/70 uppercase">
+                                  Selected work
+                                </span>
+                                <span
+                                  className={`${displayFont} mt-4 text-[29px] font-bold tracking-[-0.08em] transition-transform duration-300 group-hover:-translate-y-0.5`}
+                                >
+                                  {project.mark}
+                                </span>
+                                <span className="absolute -right-7 -bottom-10 size-24 rounded-full border border-white/25" />
+                                <span className="absolute -right-2 -bottom-6 size-16 rounded-full border border-white/20" />
+                              </>
+                            )}
+                          </div>
+                          <div className="min-w-0">
+                            <h3
+                              className={`${displayFont} text-[21px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
+                            >
+                              {project.title}
+                            </h3>
+                            <p
+                              className={`${displayFont} mt-1.5 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
+                            >
+                              {project.role}
+                            </p>
+                            <p className="mt-3 mb-4 max-w-[64ch] text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
+                              {project.description}
+                            </p>
+                            <TechChips items={project.technologies} />
+                            <a
+                              className={`${displayFont} ${focusRing} mt-4 inline-flex items-center gap-1.5 rounded-sm text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                              href={project.url}
+                              target="_blank"
+                              rel="noreferrer"
+                            >
+                              {project.linkLabel.includes("GitHub") && (
+                                <SiGithub className="size-3.5" />
+                              )}
+                              {project.linkLabel}
+                              <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                            </a>
+                          </div>
+                        </article>
+                      </TimelineItem>
+                    ))}
+                  </Timeline>
+                </Section>
+
+                <Section id="volunteer">
+                  <SectionTitle>Volunteer experience</SectionTitle>
+                  <Timeline>
+                    {volunteerExperiences.map(
+                      ({ period, name, role, description }) => (
+                        <TimelineItem period={period} key={name}>
+                          <Volunteer
+                            name={name}
+                            role={role}
+                            description={description}
+                          />
+                        </TimelineItem>
+                      ),
+                    )}
+                  </Timeline>
+                </Section>
+
+                <Section id="skills">
+                  <SectionTitle>Skills</SectionTitle>
+                  <div className="flex flex-col gap-9">
+                    {skills.map((skill) => (
+                      <div key={skill.title} data-reveal-item>
+                        <h3
+                          className={`${displayFont} mb-3 text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#292C28] dark:text-[#E8EAE5]`}
+                        >
+                          {skill.title}
+                        </h3>
+                        <TechChips items={skill.items} />
+                      </div>
+                    ))}
+                  </div>
+                </Section>
+
+                <footer
+                  className="mt-6 border-t border-[#E5E6E1] pt-8 dark:border-[#282B26]"
+                  id="contact"
+                  data-reveal-footer
+                >
+                  <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-start">
+                    <div>
+                      <p
+                        className={`${displayFont} text-[20px] font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
+                      >
+                        Let&apos;s build something useful.
+                      </p>
+                      <p className="mt-2 max-w-[58ch] text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
+                        I am open to internship opportunities, collaborations, and
+                        conversations about backend engineering and DevOps.
+                      </p>
+                    </div>
                     <a
-                      className={`${displayFont} ${focusRing} mt-4 inline-flex items-center gap-1.5 rounded-sm text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                      href={project.url}
+                      className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                      href="https://linkedin.com"
                       target="_blank"
                       rel="noreferrer"
                     >
-                      {project.linkLabel.includes("GitHub") && (
-                        <SiGithub className="size-3.5" />
-                      )}
-                      {project.linkLabel}
-                      <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                      Connect on LinkedIn
+                      <ArrowUpRight className="size-4 stroke-[1.75]" />
                     </a>
                   </div>
-                </article>
-              </TimelineItem>
-            ))}
-          </Timeline>
-        </Section>
 
-        <Section id="volunteer">
-          <SectionTitle>Volunteer experience</SectionTitle>
-          <Timeline>
-            <TimelineItem period={["Dec 2025", "Apr 2026"]}>
-              <Volunteer
-                name="Hackathon Crew Member — Organizing Committee"
-                role="ICTS — Information and Communication Technology Society"
-                description="Supported the organizing committee with the planning and delivery of hackathon activities."
-              />
-            </TimelineItem>
-            <TimelineItem period={[]}>
-              <Volunteer
-                name="Programming Committee Member — Beauty of Cloud 2.0"
-                role="IEEE CS Student Branch Chapter — University of Sri Jayewardenepura"
-                description="Contributed to the programming committee for Beauty of Cloud 2.0."
-              />
-            </TimelineItem>
-          </Timeline>
-        </Section>
+                  <div className="mt-8 flex items-center justify-between gap-5">
+                    <div className="flex flex-wrap gap-4 text-[#62675F] dark:text-[#A6ABA1]">
+                      <Social href="https://github.com" label="GitHub">
+                        <SiGithub />
+                      </Social>
+                      <Social href="https://x.com" label="X">
+                        <SiX />
+                      </Social>
+                      <Social href="https://linkedin.com" label="LinkedIn">
+                        <FaLinkedin />
+                      </Social>
+                      <Social href="https://youtube.com" label="YouTube">
+                        <SiYoutube />
+                      </Social>
+                      <Social href="https://tiktok.com" label="TikTok">
+                        <SiTiktok />
+                      </Social>
+                      <Social href="https://instagram.com" label="Instagram">
+                        <SiInstagram />
+                      </Social>
+                    </div>
+                    <ThemeButton dark={dark} onClick={toggleTheme} />
+                  </div>
 
-        <Section id="skills">
-          <SectionTitle>Skills</SectionTitle>
-          <div className="flex flex-col gap-9">
-            {skills.map((skill) => (
-              <div key={skill.title} data-reveal-item>
-                <h3
-                  className={`${displayFont} mb-3 text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#292C28] dark:text-[#E8EAE5]`}
-                >
-                  {skill.title}
-                </h3>
-                <TechChips items={skill.items} />
+                  <div
+                    className={`${displayFont} mt-7 flex flex-col justify-between gap-3 text-[14px] text-[#898E86] sm:flex-row dark:text-[#7D8279]`}
+                  >
+                    <p>© 2026 Dharaka Meth. All rights reserved.</p>
+                    <a
+                      className={`${focusRing} inline-flex w-fit items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
+                      href="#hero"
+                    >
+                      Back to top
+                      <ArrowUp className="size-3.5 stroke-[1.75]" />
+                    </a>
+                  </div>
+                </footer>
               </div>
-            ))}
-          </div>
-        </Section>
-
-        <footer
-          className="mt-6 border-t border-[#E5E6E1] pt-8 dark:border-[#282B26]"
-          id="contact"
-          data-reveal-footer
-        >
-          <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-start">
-            <div>
-              <p
-                className={`${displayFont} text-[20px] font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
-              >
-                Let&apos;s build something useful.
-              </p>
-              <p className="mt-2 max-w-[470px] text-[16px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">
-                I am open to internship opportunities, collaborations, and
-                conversations about backend engineering and DevOps.
-              </p>
             </div>
-            <a
-              className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Connect on LinkedIn
-              <ArrowUpRight className="size-4 stroke-[1.75]" />
-            </a>
-          </div>
-
-          <div className="mt-8 flex items-center justify-between gap-5">
-            <div className="flex flex-wrap gap-4 text-[#62675F] dark:text-[#A6ABA1]">
-              <Social href="https://github.com" label="GitHub">
-                <SiGithub />
-              </Social>
-              <Social href="https://x.com" label="X">
-                <SiX />
-              </Social>
-              <Social href="https://linkedin.com" label="LinkedIn">
-                <FaLinkedin />
-              </Social>
-              <Social href="https://youtube.com" label="YouTube">
-                <SiYoutube />
-              </Social>
-              <Social href="https://tiktok.com" label="TikTok">
-                <SiTiktok />
-              </Social>
-              <Social href="https://instagram.com" label="Instagram">
-                <SiInstagram />
-              </Social>
-            </div>
-            <ThemeButton dark={dark} onClick={toggleTheme} />
-          </div>
-
-          <div
-            className={`${displayFont} mt-7 flex flex-col justify-between gap-3 text-[14px] text-[#898E86] sm:flex-row dark:text-[#7D8279]`}
-          >
-            <p>© 2026 Dharaka Meth. All rights reserved.</p>
-            <a
-              className={`${focusRing} inline-flex w-fit items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
-              href="#hero"
-            >
-              Back to top
-              <ArrowUp className="size-3.5 stroke-[1.75]" />
-            </a>
-          </div>
-        </footer>
           </div>
         </div>
-      </div>
 
-      <nav
-        className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 flex w-[calc(100%_-_1.5rem)] max-w-[430px] -translate-x-1/2 rounded-2xl border border-[#D8DAD4]/90 bg-[#FFFFFF]/88 p-1.5 shadow-[0_16px_50px_rgba(32,34,31,0.16)] backdrop-blur-xl dark:border-[#363932]/90 dark:bg-[#181A17]/88 dark:shadow-[0_16px_50px_rgba(0,0,0,0.38)]"
-        aria-label="Primary navigation"
-        data-opening="nav"
-      >
-        <NavLink href="#hero" label="Home" active={activeSection === "hero"}>
-          <Home />
-        </NavLink>
-        <NavLink
-          href="#projects"
-          label="Work"
-          active={["skills", "experience", "projects", "volunteer"].includes(
-            activeSection,
+        <AnimatePresence>
+          {activeSection !== "hero" && (
+            <motion.nav
+              className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 flex w-[calc(100%_-_1.5rem)] max-w-[430px] -translate-x-1/2 rounded-2xl border border-[#D8DAD4]/90 bg-[#FFFFFF]/88 p-1.5 shadow-[0_16px_50px_rgba(32,34,31,0.16)] backdrop-blur-xl dark:border-[#363932]/90 dark:bg-[#181A17]/88 dark:shadow-[0_16px_50px_rgba(0,0,0,0.38)]"
+              aria-label="Primary navigation"
+              initial={{ opacity: 0, y: 20, scale: 0.97 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 16, scale: 0.98 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <NavLink href="#hero" label="Home" active={false}>
+                <Home />
+              </NavLink>
+              <NavLink
+                href="#projects"
+                label="Work"
+                active={["skills", "experience", "projects", "volunteer"].includes(
+                  activeSection,
+                )}
+              >
+                <Briefcase />
+              </NavLink>
+              <NavLink href="/blog" label="Blog">
+                <BookOpen />
+              </NavLink>
+            </motion.nav>
           )}
-        >
-          <Briefcase />
-        </NavLink>
-        <NavLink href="/blog" label="Blog">
-          <BookOpen />
-        </NavLink>
-      </nav>
+        </AnimatePresence>
       </motion.main>
     </>
   );
@@ -1052,7 +1093,7 @@ function Volunteer({
         >
           {role}
         </p>
-        <p className="mt-3 text-[17px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
+        <p className="mt-3 max-w-[64ch] text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
           {description}
         </p>
       </div>
@@ -1124,11 +1165,10 @@ function NavLink({
 }) {
   return (
     <a
-      className={`${displayFont} ${focusRing} flex h-11 flex-1 items-center justify-center gap-2 rounded-xl px-2 text-[14px] font-bold transition duration-200 [&_svg]:size-[16px] [&_svg]:stroke-[1.75] ${
-        active
-          ? "bg-[#20221F] text-[#FAFAF7] shadow-sm dark:bg-[#F2F3EE] dark:text-[#10110F]"
-          : "text-[#62675F] hover:bg-[#F2F2EC] hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE]"
-      }`}
+      className={`${displayFont} ${focusRing} flex h-11 flex-1 items-center justify-center gap-2 rounded-xl px-2 text-[14px] font-bold transition duration-200 [&_svg]:size-[16px] [&_svg]:stroke-[1.75] ${active
+        ? "bg-[#20221F] text-[#FAFAF7] shadow-sm dark:bg-[#F2F3EE] dark:text-[#10110F]"
+        : "text-[#62675F] hover:bg-[#F2F2EC] hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE]"
+        }`}
       href={href}
       aria-current={active ? "page" : undefined}
     >
