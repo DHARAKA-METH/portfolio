@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Script from "next/script";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUp,
   ArrowUpRight,
@@ -109,11 +109,27 @@ const projects = [
   },
 ];
 
-const experienceTechnologies = [
-  "Next.js",
-  "TypeScript",
-  "Firebase",
-  "Zod",
+const experiences = [
+  {
+    period: ["Jun 2026", "Jul 2026"],
+    title: "JESA 2026 Registration Portal56",
+    role: "Web Developer",
+    description:
+      "Revamped and developed the JESA 2026 award-registration application with structured validation, Firebase integration, and duplicate prevention.",
+    url: "https://jesa.lk",
+    linkLabel: "Visit jesa.lk",
+    technologies: ["Next.js", "TypeScript", "Firebase", "Zod"],
+  },
+  {
+    period: ["Jun 2026", "Jul 2026"],
+    title: "JESA 2026 Registration Portal",
+    role: "Web Developer",
+    description:
+      "Revamped and developed the JESA 2026 award-registration application with structured validation, Firebase integration, and duplicate prevention.",
+    url: "https://jesa.lk",
+    linkLabel: "Visit jesa.lk",
+    technologies: ["Next.js", "TypeScript", "Firebase", "Zod"],
+  },
 ];
 
 const displayFont =
@@ -131,13 +147,37 @@ const introduction =
 type GsapWindow = Window & {
   gsap?: {
     registerPlugin: (...plugins: unknown[]) => void;
+    context: (
+      callback: () => void,
+      scope?: Element | null,
+    ) => { revert: () => void };
+    fromTo: (
+      target: unknown,
+      fromVariables: Record<string, unknown>,
+      toVariables: Record<string, unknown>,
+    ) => { kill: () => void };
+    set: (
+      target: unknown,
+      variables: Record<string, unknown>,
+    ) => { kill: () => void };
+    timeline: (options?: Record<string, unknown>) => {
+      fromTo: (
+        target: unknown,
+        fromVariables: Record<string, unknown>,
+        toVariables: Record<string, unknown>,
+        position?: string | number,
+      ) => unknown;
+      eventCallback: (type: string, callback: () => void) => unknown;
+    };
     to: (
-      target: Element,
+      target: unknown,
       variables: Record<string, unknown>,
     ) => { kill: () => void };
   };
   ScrambleTextPlugin?: unknown;
-  ScrollTrigger?: unknown;
+  ScrollTrigger?: {
+    refresh: () => void;
+  };
   ScrollSmoother?: {
     create: (options: Record<string, unknown>) => { kill: () => void };
   };
@@ -177,6 +217,7 @@ function ThemeButton({ dark, onClick }: { dark: boolean; onClick: () => void }) 
 }
 
 export default function HomePage() {
+  const prefersReducedMotion = useReducedMotion();
   const [dark, setDark] = useState(false);
   const [profileFlipped, setProfileFlipped] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
@@ -185,6 +226,8 @@ export default function HomePage() {
   const [scrollTriggerLoaded, setScrollTriggerLoaded] = useState(false);
   const [scrollSmootherReady, setScrollSmootherReady] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
+  const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
+  const pageRef = useRef<HTMLElement>(null);
   const introductionRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
@@ -199,22 +242,19 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
     const timer = window.setTimeout(
       () => setShowLoader(false),
-      reduceMotion ? 0 : 1750,
+      prefersReducedMotion ? 0 : 1750,
     );
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     if (
       showLoader ||
       !scrambleReady ||
       !introductionRef.current ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      prefersReducedMotion
     ) {
       return;
     }
@@ -224,25 +264,26 @@ export default function HomePage() {
 
     gsapWindow.gsap.registerPlugin(gsapWindow.ScrambleTextPlugin);
     const tween = gsapWindow.gsap.to(introductionRef.current, {
-      duration: 1.8,
+      delay: 0.35,
+      duration: 1.15,
       ease: "none",
       scrambleText: {
         text: introduction,
-        chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+        chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/{}",
         delimiter: " ",
-        revealDelay: 0.2,
-        speed: 0.3,
+        revealDelay: 0.1,
+        speed: 0.45,
       },
     });
 
     return () => tween.kill();
-  }, [scrambleReady, showLoader]);
+  }, [prefersReducedMotion, scrambleReady, showLoader]);
 
   useEffect(() => {
     if (
       showLoader ||
       !scrollSmootherReady ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      prefersReducedMotion
     ) {
       return;
     }
@@ -263,12 +304,229 @@ export default function HomePage() {
     const smoother = gsapWindow.ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
-      smooth: 2,
+      smooth: 0.85,
+      smoothTouch: false,
       effects: true,
     });
 
-    return () => smoother.kill();
-  }, [scrollSmootherReady, showLoader]);
+    const refreshFrame = window.requestAnimationFrame(() =>
+      gsapWindow.ScrollTrigger?.refresh(),
+    );
+
+    return () => {
+      window.cancelAnimationFrame(refreshFrame);
+      smoother.kill();
+    };
+  }, [prefersReducedMotion, scrollSmootherReady, showLoader]);
+
+  useEffect(() => {
+    if (
+      showLoader ||
+      !gsapLoaded ||
+      !scrollTriggerLoaded ||
+      !pageRef.current ||
+      prefersReducedMotion
+    ) {
+      return;
+    }
+
+    const gsapWindow = window as GsapWindow;
+    const gsap = gsapWindow.gsap;
+    const ScrollTrigger = gsapWindow.ScrollTrigger;
+    if (!gsap || !ScrollTrigger) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const context = gsap.context(() => {
+      const postHeroElements = pageRef.current?.querySelectorAll(
+        "[data-section-title], [data-reveal-item], [data-reveal-footer]",
+      );
+
+      // Keep every section after the hero hidden until the opening timeline ends.
+      // GSAP applies this only when motion is enabled, so content stays visible if
+      // JavaScript or the animation library is unavailable.
+      if (postHeroElements?.length) {
+        gsap.set(postHeroElements, { autoAlpha: 0 });
+      }
+
+      const openingTimeline = gsap.timeline({
+        defaults: { ease: "power3.out" },
+      });
+
+      openingTimeline.fromTo(
+        '[data-opening="header"]',
+        { autoAlpha: 0, y: -12 },
+        { autoAlpha: 1, y: 0, duration: 0.55 },
+      );
+      openingTimeline.fromTo(
+        '[data-opening="profile"]',
+        { autoAlpha: 0, rotate: -5, scale: 0.82 },
+        { autoAlpha: 1, rotate: 0, scale: 1, duration: 0.7 },
+        "-=0.25",
+      );
+      openingTimeline.fromTo(
+        '[data-opening="identity"]',
+        { autoAlpha: 0, x: -16 },
+        { autoAlpha: 1, x: 0, duration: 0.65 },
+        "-=0.52",
+      );
+      openingTimeline.fromTo(
+        '[data-opening="intro"]',
+        { autoAlpha: 0, y: 18 },
+        { autoAlpha: 1, y: 0, duration: 0.65 },
+        "-=0.36",
+      );
+      openingTimeline.fromTo(
+        '[data-opening="actions"] > *',
+        { autoAlpha: 0, y: 14 },
+        { autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.08 },
+        "-=0.4",
+      );
+      openingTimeline.fromTo(
+        '[data-opening="meta"] > *',
+        { autoAlpha: 0, y: 10 },
+        { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.07 },
+        "-=0.35",
+      );
+      openingTimeline.fromTo(
+        '[data-opening="nav"]',
+        { autoAlpha: 0, y: 24, scale: 0.97 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.6 },
+        "-=0.42",
+      );
+      openingTimeline.eventCallback("onComplete", () => {
+        setHeroEntranceComplete(true);
+      });
+
+      const progressBar = pageRef.current?.querySelector(
+        "[data-scroll-progress]",
+      );
+      if (progressBar) {
+        gsap.fromTo(
+          progressBar,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: "#smooth-content",
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 0.2,
+            },
+          },
+        );
+      }
+    }, pageRef.current);
+
+    const refreshFrame = window.requestAnimationFrame(() =>
+      ScrollTrigger.refresh(),
+    );
+
+    return () => {
+      window.cancelAnimationFrame(refreshFrame);
+      context.revert();
+    };
+  }, [gsapLoaded, prefersReducedMotion, scrollTriggerLoaded, showLoader]);
+
+  useEffect(() => {
+    if (
+      showLoader ||
+      !heroEntranceComplete ||
+      !gsapLoaded ||
+      !scrollTriggerLoaded ||
+      !pageRef.current ||
+      prefersReducedMotion
+    ) {
+      return;
+    }
+
+    const gsapWindow = window as GsapWindow;
+    const gsap = gsapWindow.gsap;
+    const ScrollTrigger = gsapWindow.ScrollTrigger;
+    const sections = pageRef.current.querySelectorAll<HTMLElement>(
+      "[data-gsap-section]",
+    );
+    if (!gsap || !ScrollTrigger || !sections.length) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const context = gsap.context(() => {
+      sections.forEach((section) => {
+        const title = section.querySelector("[data-section-title]");
+        if (title) {
+          gsap.fromTo(
+            title,
+            { autoAlpha: 0, y: 22 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.72,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: title,
+                start: "top 88%",
+                once: true,
+              },
+            },
+          );
+        }
+
+        section
+          .querySelectorAll<HTMLElement>("[data-reveal-item]")
+          .forEach((item) => {
+            gsap.fromTo(
+              item,
+              { autoAlpha: 0, y: 32 },
+              {
+                autoAlpha: 1,
+                y: 0,
+                duration: 0.76,
+                ease: "power3.out",
+                scrollTrigger: {
+                  trigger: item,
+                  start: "top 90%",
+                  once: true,
+                },
+              },
+            );
+          });
+      });
+
+      pageRef.current
+        ?.querySelectorAll<HTMLElement>("[data-reveal-footer]")
+        .forEach((item) => {
+          gsap.fromTo(
+            item,
+            { autoAlpha: 0, y: 24 },
+            {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.7,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: item,
+                start: "top 92%",
+                once: true,
+              },
+            },
+          );
+        });
+    }, pageRef.current);
+
+    const refreshFrame = window.requestAnimationFrame(() =>
+      ScrollTrigger.refresh(),
+    );
+    return () => {
+      window.cancelAnimationFrame(refreshFrame);
+      context.revert();
+    };
+  }, [
+    gsapLoaded,
+    heroEntranceComplete,
+    prefersReducedMotion,
+    scrollTriggerLoaded,
+    showLoader,
+  ]);
 
   useEffect(() => {
     const sectionIds = [
@@ -310,10 +568,17 @@ export default function HomePage() {
     <>
       <AnimatePresence>{showLoader && <PortfolioLoader />}</AnimatePresence>
       <motion.main
+      ref={pageRef}
       className={`${bodyFont} min-h-screen overflow-x-clip bg-[#FAFAF7] text-[#20221F] antialiased transition-colors duration-300 selection:bg-[#F97316]/20 selection:text-[#20221F] dark:bg-[#10110F] dark:text-[#F2F3EE] dark:selection:bg-[#FF7043]/25 dark:selection:text-[#F2F3EE]`}
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: showLoader ? 0 : 1, y: showLoader ? 16 : 0 }}
-      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 16 }}
+      animate={{
+        opacity: showLoader ? 0 : 1,
+        y: showLoader && !prefersReducedMotion ? 16 : 0,
+      }}
+      transition={{
+        duration: prefersReducedMotion ? 0 : 0.25,
+        ease: [0.22, 1, 0.36, 1],
+      }}
     >
       <Script
         id="gsap-core"
@@ -345,10 +610,20 @@ export default function HomePage() {
           onReady={() => setScrollSmootherReady(true)}
         />
       )}
+      <div
+        className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-[#C2410C] motion-reduce:hidden dark:bg-[#FF7043]"
+        data-scroll-progress
+        aria-hidden="true"
+        style={{ transform: "scaleX(0)" }}
+      />
       <div id="smooth-wrapper" className="bg-[#FAFAF7] dark:bg-[#10110F]">
         <div id="smooth-content" className="bg-[#FAFAF7] dark:bg-[#10110F]">
           <div className="mx-auto w-full max-w-[760px] px-6 pt-8 pb-32 sm:px-8 sm:pt-10 lg:px-6 lg:pt-16">
-        <header className="flex items-center justify-between" aria-label="Site header">
+        <header
+          className="flex items-center justify-between"
+          aria-label="Site header"
+          data-opening="header"
+        >
           <a
             className={`${displayFont} ${focusRing} inline-flex items-center gap-2 rounded-md text-[15px] tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
             href="#hero"
@@ -374,13 +649,14 @@ export default function HomePage() {
               onClick={() => setProfileFlipped((current) => !current)}
               aria-label="Switch between portrait and Dharaka Meth logo"
               aria-pressed={profileFlipped}
+              data-opening="profile"
             >
               <span className={`relative block size-[60px] transform-3d transition-transform duration-500 ease-out ${profileFlipped ? "rotate-y-180" : ""}`}>
                 <Image className="absolute inset-0 size-full rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 backface-hidden dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/profile.png" alt="Portrait of Dharaka Meth" width={60} height={60} priority />
                 <Image className="absolute inset-0 size-full rotate-y-180 rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 backface-hidden dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/logo.png" alt="Dharaka Meth logo" width={60} height={60} />
               </span>
             </button>
-            <div className="min-w-0">
+            <div className="min-w-0" data-opening="identity">
               <h1
                 className={`${displayFont} text-[18px] leading-[1.2] font-bold tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE]`}
               >
@@ -398,11 +674,15 @@ export default function HomePage() {
             ref={introductionRef}
             className="mt-10 max-w-[650px] whitespace-normal text-[18px] leading-7 tracking-normal text-[#555A52] [word-spacing:normal] sm:mt-12 sm:text-[19px] sm:leading-8 dark:text-[#B1B6AC]"
             aria-label={introduction}
+            data-opening="intro"
           >
             {introduction}
           </p>
 
-          <div className="mt-7 flex flex-wrap items-center gap-3">
+          <div
+            className="mt-7 flex flex-wrap items-center gap-3"
+            data-opening="actions"
+          >
             <CtaButton
               className={`${displayFont} ${focusRing} text-[16px]`}
               href="#projects"
@@ -423,6 +703,7 @@ export default function HomePage() {
 
           <div
             className={`${displayFont} mt-7 flex flex-wrap gap-x-6 gap-y-3 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
+            data-opening="meta"
           >
             <TextLink href="https://github.com" external>
               GitHub
@@ -440,33 +721,43 @@ export default function HomePage() {
         <Section id="experience" smoothEffect>
           <SectionTitle>Experience / My work</SectionTitle>
           <Timeline>
-            <TimelineItem period={["Jun 2026", "Jul 2026"]}>
-              <h3
-                className={`${displayFont} text-[21px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
-              >
-                JESA 2026 Registration Portal
-              </h3>
-              <p
-                className={`${displayFont} mt-1.5 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
-              >
-                Web Developer
-              </p>
-              <p className="mt-3 mb-4 text-[17px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
-                Revamped and developed the JESA 2026 award-registration
-                application with structured validation, Firebase integration,
-                and duplicate prevention.
-              </p>
-              <a
-                className={`${displayFont} ${focusRing} mb-4 inline-flex items-center gap-1.5 rounded-sm text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                href="https://jesa.lk"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Visit jesa.lk
-                <ArrowUpRight className="size-3.5 stroke-[1.75]" />
-              </a>
-              <TechChips items={experienceTechnologies} />
-            </TimelineItem>
+            {experiences.map(
+              ({
+                period,
+                title,
+                role,
+                description,
+                url,
+                linkLabel,
+                technologies,
+              }) => (
+                <TimelineItem period={period} key={title}>
+                  <h3
+                    className={`${displayFont} text-[21px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
+                  >
+                    {title}
+                  </h3>
+                  <p
+                    className={`${displayFont} mt-1.5 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
+                  >
+                    {role}
+                  </p>
+                  <p className="mt-3 mb-4 text-[17px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
+                    {description}
+                  </p>
+                  <a
+                    className={`${displayFont} ${focusRing} mb-4 inline-flex items-center gap-1.5 rounded-sm text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    href={url}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {linkLabel}
+                    <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                  </a>
+                  <TechChips items={technologies} />
+                </TimelineItem>
+              ),
+            )}
           </Timeline>
         </Section>
 
@@ -561,7 +852,7 @@ export default function HomePage() {
           <SectionTitle>Skills</SectionTitle>
           <div className="flex flex-col gap-9">
             {skills.map((skill) => (
-              <div key={skill.title}>
+              <div key={skill.title} data-reveal-item>
                 <h3
                   className={`${displayFont} mb-3 text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#292C28] dark:text-[#E8EAE5]`}
                 >
@@ -576,6 +867,7 @@ export default function HomePage() {
         <footer
           className="mt-6 border-t border-[#E5E6E1] pt-8 dark:border-[#282B26]"
           id="contact"
+          data-reveal-footer
         >
           <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-start">
             <div>
@@ -644,6 +936,7 @@ export default function HomePage() {
       <nav
         className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 flex w-[calc(100%_-_1.5rem)] max-w-[430px] -translate-x-1/2 rounded-2xl border border-[#D8DAD4]/90 bg-[#FFFFFF]/88 p-1.5 shadow-[0_16px_50px_rgba(32,34,31,0.16)] backdrop-blur-xl dark:border-[#363932]/90 dark:bg-[#181A17]/88 dark:shadow-[0_16px_50px_rgba(0,0,0,0.38)]"
         aria-label="Primary navigation"
+        data-opening="nav"
       >
         <NavLink href="#hero" label="Home" active={activeSection === "hero"}>
           <Home />
@@ -679,6 +972,7 @@ function Section({
     <section
       className="scroll-mt-16 py-14 sm:py-20"
       id={id}
+      data-gsap-section
       data-speed={smoothEffect ? "0.94" : undefined}
       data-lag={smoothEffect ? "0.08" : undefined}
     >
@@ -689,7 +983,7 @@ function Section({
 
 function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <div className="mb-8 sm:mb-10">
+    <div className="mb-8 sm:mb-10" data-section-title>
       <h2
         className={`${displayFont} text-[27px] leading-tight font-bold tracking-[-0.055em] text-[#20221F] sm:text-[31px] dark:text-[#F2F3EE]`}
       >
@@ -715,7 +1009,10 @@ function TimelineItem({
   children: ReactNode;
 }) {
   return (
-    <div className="relative grid gap-3 pb-12 pl-7 last:pb-0 before:absolute before:top-[7px] before:left-0 before:size-[9px] before:rounded-full before:bg-[#20221F] before:ring-4 before:ring-[#FAFAF7] dark:before:bg-[#F2F3EE] dark:before:ring-[#10110F] sm:grid-cols-[108px_1fr] sm:gap-7">
+    <div
+      className="relative grid gap-3 pb-12 pl-7 last:pb-0 before:absolute before:top-[7px] before:left-0 before:size-[9px] before:rounded-full before:bg-[#20221F] before:ring-4 before:ring-[#FAFAF7] dark:before:bg-[#F2F3EE] dark:before:ring-[#10110F] sm:grid-cols-[108px_1fr] sm:gap-7"
+      data-reveal-item
+    >
       <p
         className={`${displayFont} pt-px text-[14px] leading-5 text-[#898E86] dark:text-[#7D8279]`}
       >
