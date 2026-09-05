@@ -192,7 +192,6 @@ type GsapWindow = Window & {
       variables: Record<string, unknown>,
     ) => { kill: () => void };
   };
-  ScrambleTextPlugin?: unknown;
   ScrollTrigger?: {
     refresh: () => void;
   };
@@ -240,13 +239,11 @@ export default function HomePage() {
   const [profileFlipped, setProfileFlipped] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [gsapLoaded, setGsapLoaded] = useState(false);
-  const [scrambleReady, setScrambleReady] = useState(false);
   const [scrollTriggerLoaded, setScrollTriggerLoaded] = useState(false);
   const [scrollSmootherReady, setScrollSmootherReady] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
   const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
   const pageRef = useRef<HTMLElement>(null);
-  const introductionRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("portfolio-theme");
@@ -266,36 +263,6 @@ export default function HomePage() {
     );
     return () => window.clearTimeout(timer);
   }, [prefersReducedMotion]);
-
-  useEffect(() => {
-    if (
-      showLoader ||
-      !scrambleReady ||
-      !introductionRef.current ||
-      prefersReducedMotion
-    ) {
-      return;
-    }
-
-    const gsapWindow = window as GsapWindow;
-    if (!gsapWindow.gsap || !gsapWindow.ScrambleTextPlugin) return;
-
-    gsapWindow.gsap.registerPlugin(gsapWindow.ScrambleTextPlugin);
-    const tween = gsapWindow.gsap.to(introductionRef.current, {
-      delay: 0.35,
-      duration: 1.15,
-      ease: "none",
-      scrambleText: {
-        text: introduction,
-        chars: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789<>/{}",
-        delimiter: " ",
-        revealDelay: 0.1,
-        speed: 0.45,
-      },
-    });
-
-    return () => tween.kill();
-  }, [prefersReducedMotion, scrambleReady, showLoader]);
 
   useEffect(() => {
     if (
@@ -389,10 +356,9 @@ export default function HomePage() {
         "-=0.52",
       );
       openingTimeline.fromTo(
-        '[data-opening="intro"]',
-        { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 0.65 },
-        "-=0.36",
+        '[data-opening="intro"] > span',
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.45, stagger: 0.14 },
       );
       openingTimeline.fromTo(
         '[data-opening="actions"] > *',
@@ -607,12 +573,6 @@ export default function HomePage() {
         {gsapLoaded && (
           <>
             <Script
-              id="gsap-scramble-text"
-              src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrambleTextPlugin.min.js"
-              strategy="afterInteractive"
-              onReady={() => setScrambleReady(true)}
-            />
-            <Script
               id="gsap-scroll-trigger"
               src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"
               strategy="afterInteractive"
@@ -691,12 +651,19 @@ export default function HomePage() {
                     </div>
 
                     <p
-                      ref={introductionRef}
                       className="mx-auto mt-9 max-w-[62ch] whitespace-normal text-pretty text-[17px] leading-7 tracking-normal text-[#555A52] [word-spacing:normal] sm:mt-11 sm:text-[19px] sm:leading-8 dark:text-[#B1B6AC]"
                       aria-label={introduction}
                       data-opening="intro"
                     >
-                      {introduction}
+                      <span className="block">
+                        I am an IT undergraduate focused on building reliable backend systems and
+                      </span>
+                      <span className="block">
+                        growing practical skills in DevOps and cloud technologies. I enjoy turning
+                      </span>
+                      <span className="block">
+                        clear ideas into useful, maintainable products.
+                      </span>
                     </p>
 
                     <div
