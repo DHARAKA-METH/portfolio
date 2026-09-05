@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import Image from "next/image";
 import Script from "next/script";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -8,7 +8,6 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpRight,
-  BookOpen,
   Briefcase,
   Download,
   Home,
@@ -18,6 +17,10 @@ import {
 import { FaLinkedin } from "react-icons/fa6";
 import { CtaButton } from "@/components/ui/cta-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
+import { experiences } from "@/data/experiences";
+import { projects } from "@/data/projects";
+import { skills } from "@/data/skills";
+import { volunteerExperiences } from "@/data/volunteers";
 import {
   SiGithub,
   SiInstagram,
@@ -25,130 +28,6 @@ import {
   SiX,
   SiYoutube,
 } from "react-icons/si";
-
-const skills = [
-  {
-    title: "Backend",
-    items: ["Java", "Spring Boot", "Node.js", "Express.js", "REST APIs"],
-  },
-  {
-    title: "Database",
-    items: ["MySQL", "Cloud Firestore", "MongoDB"],
-  },
-  {
-    title: "DevOps & Cloud",
-    items: ["Docker", "NGINX", "GitHub Actions", "Firebase", "Linux"],
-  },
-  {
-    title: "Frontend",
-    items: ["Next.js", "React Native", "TypeScript", "Flutter", "Tailwind CSS"],
-  },
-];
-
-const projects = [
-  {
-    title: "MindSpace - Mental Wellness Support Platform",
-    period: ["Jul 2026", "Aug 2026"],
-    role: "Mobile Application Developer",
-    description:
-      "A mobile application supporting university student well-being through mood and stress tracking, AI-assisted guidance, personalized wellness resources, anonymous counselor chat, and appointment booking.",
-    mark: "MS",
-    accent: "from-[#595783] to-[#7773A3]",
-    technologies: ["React Native", "Expo", "TypeScript", "Tailwind CSS", "Firebase Auth", "Cloud Firestore", "Cloud Functions", "Hugging Face"],
-    url: "https://github.com/DHARAKA-METH/Mind-Space",
-    linkLabel: "View on GitHub",
-  },
-  {
-    title: "J'pura Employability Skills Awards: JESA 2026",
-    period: ["Jun 2026", "Jul 2026"],
-    role: "Web Developer",
-    description:
-      "Revamped the award registration application with a redesigned workflow, robust Zod validation, Firebase storage, improved data accuracy, and a streamlined application experience.",
-    mark: "J6",
-    accent: "from-[#C2410C] to-[#F97316]",
-    technologies: ["Next.js", "TypeScript", "Firebase", "Zod", "Teamwork"],
-    url: "https://jesa.lk",
-    linkLabel: "Visit jesa.lk",
-  },
-  {
-    title: "RescuePaws - Stray Dog Management System",
-    period: ["Mar 2026", "Apr 2026"],
-    role: "Full-Stack Developer",
-    description:
-      "A microservices-based platform for reporting, tracking, and managing stray dog rescue cases in real time, with secure authentication, image uploads, and containerized deployment.",
-    mark: "RP",
-    accent: "from-[#185E5B] to-[#2C8580]",
-    technologies: ["Spring Boot", "Next.js", "Spring Cloud Gateway", "JWT", "MySQL", "Docker", "NGINX", "Cloudinary"],
-    url: "https://github.com/DHARAKA-METH/RescuePaws",
-    linkLabel: "View on GitHub",
-  },
-  {
-    title: "Job Zone",
-    period: ["Dec 2025", "Jan 2026"],
-    role: "Backend Developer",
-    description:
-      "Contributed backend APIs for registration, authentication, job postings, and applications while maintaining data integrity, secure server-side logic, and reliable application performance.",
-    mark: "JZ",
-    accent: "from-[#4B5563] to-[#6B7280]",
-    technologies: ["Node.js", "Express.js", "REST APIs", "Authentication", "Database Design"],
-    url: "https://github.com/CHATHURAsangeeth/job-zone",
-    linkLabel: "View on GitHub",
-  },
-  {
-    title: "KaZU",
-    period: ["Oct 2025", "Dec 2025"],
-    role: "Mobile Application Developer",
-    description:
-      "An IoT device and mobile application that gives pet owners live GPS location updates, safety alerts, and simple real-time monitoring.",
-    mark: "KZ",
-    accent: "from-[#315B7D] to-[#5188A9]",
-    image:
-      "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&q=80",
-    technologies: ["Flutter", "Dart", "IoT", "GPS", "Mobile Development"],
-    url: "https://github.com/DHARAKA-METH/kazu",
-    linkLabel: "View on GitHub",
-  },
-];
-
-const experiences = [
-  {
-    period: ["Jun 2026", "Jul 2026"],
-    title: "JESA 2026 Registration Portal56",
-    role: "Web Developer",
-    description:
-      "Revamped and developed the JESA 2026 award-registration application with structured validation, Firebase integration, and duplicate prevention.",
-    url: "https://jesa.lk",
-    linkLabel: "Visit jesa.lk",
-    technologies: ["Next.js", "TypeScript", "Firebase", "Zod"],
-  },
-  {
-    period: ["Jun 2026", "Jul 2026"],
-    title: "JESA 2026 Registration Portal",
-    role: "Web Developer",
-    description:
-      "Revamped and developed the JESA 2026 award-registration application with structured validation, Firebase integration, and duplicate prevention.",
-    url: "https://jesa.lk",
-    linkLabel: "Visit jesa.lk",
-    technologies: ["Next.js", "TypeScript", "Firebase", "Zod"],
-  },
-];
-
-const volunteerExperiences = [
-  {
-    period: ["Dec 2025", "Apr 2026"],
-    name: "Hackathon Crew Member — Organizing Committee",
-    role: "ICTS — Information and Communication Technology Society",
-    description:
-      "Supported the organizing committee with the planning and delivery of hackathon activities.",
-  },
-  {
-    period: ["Dec 2025", "Apr 2026"],
-    name: "Programming Committee Member — Beauty of Cloud 2.0",
-    role: "IEEE CS Student Branch Chapter — University of Sri Jayewardenepura",
-    description:
-      "Contributed to the programming committee for Beauty of Cloud 2.0.",
-  },
-];
 
 const displayFont =
   "[font-family:var(--font-courier-prime),ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]";
@@ -196,7 +75,10 @@ type GsapWindow = Window & {
     refresh: () => void;
   };
   ScrollSmoother?: {
-    create: (options: Record<string, unknown>) => { kill: () => void };
+    create: (options: Record<string, unknown>) => {
+      kill: () => void;
+      scrollTo: (target: Element, smooth?: boolean, position?: string) => void;
+    };
   };
 };
 
@@ -244,6 +126,7 @@ export default function HomePage() {
   const [showLoader, setShowLoader] = useState(true);
   const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
   const pageRef = useRef<HTMLElement>(null);
+  const smootherRef = useRef<ReturnType<NonNullable<GsapWindow["ScrollSmoother"]>["create"]> | null>(null);
 
   useEffect(() => {
     const savedTheme = window.localStorage.getItem("portfolio-theme");
@@ -293,6 +176,7 @@ export default function HomePage() {
       smoothTouch: false,
       effects: true,
     });
+    smootherRef.current = smoother;
 
     const refreshFrame = window.requestAnimationFrame(() =>
       gsapWindow.ScrollTrigger?.refresh(),
@@ -301,6 +185,7 @@ export default function HomePage() {
     return () => {
       window.cancelAnimationFrame(refreshFrame);
       smoother.kill();
+      smootherRef.current = null;
     };
   }, [prefersReducedMotion, scrollSmootherReady, showLoader]);
 
@@ -548,6 +433,23 @@ export default function HomePage() {
     });
   };
 
+  const navigateToSection = (
+    event: MouseEvent<HTMLAnchorElement>,
+    href: "#hero" | "#experience",
+  ) => {
+    event.preventDefault();
+    const target = document.querySelector(href);
+    if (!target) return;
+
+    window.history.replaceState(null, "", href);
+    if (smootherRef.current) {
+      smootherRef.current.scrollTo(target, true, "top 24px");
+      return;
+    }
+
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
   return (
     <>
       <AnimatePresence>{showLoader && <PortfolioLoader />}</AnimatePresence>
@@ -615,7 +517,7 @@ export default function HomePage() {
 
                 <section
                   className="relative flex min-h-0 flex-1 scroll-mt-0 items-center justify-center py-16 pb-28 sm:py-20 sm:pb-32"
-                  id="#hero"
+                  id="hero"
                 >
                   <div className="w-full max-w-[780px] text-center">
                     <div className="flex items-center justify-center gap-3">
@@ -944,20 +846,23 @@ export default function HomePage() {
               exit={{ opacity: 0, y: 16, scale: 0.98 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             >
-              <NavLink href="#hero" label="Home" active={false}>
+                <NavLink
+                  href="#hero"
+                  label="Home"
+                  active={activeSection === "hero"}
+                  onClick={(event) => navigateToSection(event, "#hero")}
+                >
                 <Home />
               </NavLink>
               <NavLink
-                href="#projects"
+                href="#experience"
                 label="Work"
                 active={["skills", "experience", "projects", "volunteer"].includes(
                   activeSection,
                 )}
+                onClick={(event) => navigateToSection(event, "#experience")}
               >
                 <Briefcase />
-              </NavLink>
-              <NavLink href="/blog" label="Blog">
-                <BookOpen />
               </NavLink>
             </motion.nav>
           )}
@@ -1124,11 +1029,13 @@ function NavLink({
   label,
   active = false,
   children,
+  onClick,
 }: {
   href: string;
   label: string;
   active?: boolean;
   children: ReactNode;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 }) {
   return (
     <a
@@ -1137,6 +1044,7 @@ function NavLink({
         : "text-[#62675F] hover:bg-[#F2F2EC] hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE]"
         }`}
       href={href}
+      onClick={onClick}
       aria-current={active ? "page" : undefined}
     >
       {children}
