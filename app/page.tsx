@@ -118,7 +118,6 @@ function ThemeButton({ dark, onClick }: { dark: boolean; onClick: () => void }) 
 export default function HomePage() {
   const prefersReducedMotion = useReducedMotion();
   const [dark, setDark] = useState(false);
-  const [profileFlipped, setProfileFlipped] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [gsapLoaded, setGsapLoaded] = useState(false);
   const [scrollTriggerLoaded, setScrollTriggerLoaded] = useState(false);
@@ -520,32 +519,18 @@ export default function HomePage() {
                   id="hero"
                 >
                   <div className="w-full max-w-[780px] text-center">
-                    <div className="flex items-center justify-center gap-3">
-                      <button
-                        className={`${focusRing} group shrink-0 cursor-pointer rounded-xl [perspective:1000px]`}
-                        type="button"
-                        onMouseEnter={() => setProfileFlipped(true)}
-                        onMouseLeave={() => setProfileFlipped(false)}
-                        onFocus={() => setProfileFlipped(true)}
-                        onBlur={() => setProfileFlipped(false)}
-                        onClick={() => setProfileFlipped((current) => !current)}
-                        aria-label="Switch between portrait and Dharaka Meth logo"
-                        aria-pressed={profileFlipped}
-                        data-opening="profile"
-                      >
-                        <span className={`relative block size-[60px] transform-3d transition-transform duration-500 ease-out ${profileFlipped ? "rotate-y-180" : ""}`}>
-                          <Image className="absolute inset-0 size-full rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 backface-hidden dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/profile.png" alt="Portrait of Dharaka Meth" width={60} height={60} priority />
-                          <Image className="absolute inset-0 size-full rotate-y-180 rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 backface-hidden dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/logo.png" alt="Dharaka Meth logo" width={60} height={60} />
-                        </span>
-                      </button>
+                    <div className="flex items-center justify-center gap-5">
+                      <div className="shrink-0" data-opening="profile">
+                        <Image className="size-[120px] rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/profile.png" alt="Portrait of Dharaka Meth" width={120} height={120} priority />
+                      </div>
                       <div className="min-w-0 text-left" data-opening="identity">
                         <h1
-                          className={`${displayFont} text-[18px] leading-[1.2] font-bold tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE]`}
+                          className={`${displayFont} text-[26px] leading-[1.2] font-bold tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE]`}
                         >
                           Dharaka Meth
                         </h1>
                         <p
-                          className={`${displayFont} mt-1 text-[18px] leading-6 tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]`}
+                          className={`${displayFont} mt-2 text-[20px] leading-7 tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]`}
                         >
                           Aspiring Backend &amp; DevOps Engineer
                         </p>
