@@ -1,22 +1,62 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { SiYoutube } from "react-icons/si";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects } from "@/data/projects";
 
 const displayFont =
   "[font-family:var(--font-courier-prime),ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]";
 
 export default function ProjectSectionPage() {
+  const pageRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        "[data-project-heading]",
+        { autoAlpha: 0, y: 16 },
+        { autoAlpha: 1, y: 0, duration: 0.6, ease: "power3.out" },
+      );
+
+      gsap.utils.toArray<HTMLElement>("[data-project-reveal]").forEach((project) => {
+        gsap.fromTo(
+          project,
+          { autoAlpha: 0, y: 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.65,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: project,
+              start: "top 86%",
+              once: true,
+            },
+          },
+        );
+      });
+    }, pageRef);
+
+    return () => context.revert();
+  }, []);
+
   return (
-    <main className="mx-auto w-full max-w-[1120px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
+    <main ref={pageRef} className="mx-auto w-full max-w-[1120px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <section className="py-14 sm:py-20">
-        <h1 className={`${displayFont} text-[32px] font-bold tracking-[-0.055em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
+        <h1 data-project-heading className={`${displayFont} text-[32px] font-bold tracking-[-0.055em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
           Projects
         </h1>
       </section>
 
       <div className="divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
         {projects.map((project) => (
-          <article className="grid gap-7 py-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-12 lg:py-14" key={project.title}>
+          <article data-project-reveal className="grid gap-7 py-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-12 lg:py-14" key={project.title}>
             <div className="max-w-[62ch]">
               <p className={`${displayFont} text-[14px] text-[#898E86] dark:text-[#7D8279]`}>
                 {project.period.join(" - ")}

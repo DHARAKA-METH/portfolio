@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
@@ -9,9 +9,7 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpRight,
-  Briefcase,
   Download,
-  Home,
 } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa6";
 import { CtaButton } from "@/components/ui/cta-button";
@@ -98,14 +96,12 @@ function TechChips({ items }: { items: string[] }) {
 
 export default function HomePage() {
   const prefersReducedMotion = useReducedMotion();
-  const [activeSection, setActiveSection] = useState("hero");
   const [gsapLoaded, setGsapLoaded] = useState(false);
   const [scrollTriggerLoaded, setScrollTriggerLoaded] = useState(false);
   const [scrollSmootherReady, setScrollSmootherReady] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
   const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
   const pageRef = useRef<HTMLElement>(null);
-  const smootherRef = useRef<ReturnType<NonNullable<GsapWindow["ScrollSmoother"]>["create"]> | null>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(
@@ -144,7 +140,6 @@ export default function HomePage() {
       smoothTouch: false,
       effects: true,
     });
-    smootherRef.current = smoother;
 
     const refreshFrame = window.requestAnimationFrame(() =>
       gsapWindow.ScrollTrigger?.refresh(),
@@ -153,7 +148,6 @@ export default function HomePage() {
     return () => {
       window.cancelAnimationFrame(refreshFrame);
       smoother.kill();
-      smootherRef.current = null;
     };
   }, [prefersReducedMotion, scrollSmootherReady, showLoader]);
 
@@ -359,50 +353,6 @@ export default function HomePage() {
     scrollTriggerLoaded,
     showLoader,
   ]);
-
-  useEffect(() => {
-    const sectionIds = [
-      "hero",
-      "skills",
-      "experience",
-      "projects",
-      "volunteer",
-    ];
-    const sections = sectionIds
-      .map((id) => document.getElementById(id))
-      .filter((section): section is HTMLElement => Boolean(section));
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visibleEntry = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-        if (visibleEntry) setActiveSection(visibleEntry.target.id);
-      },
-      { rootMargin: "-20% 0px -55%", threshold: [0.1, 0.25, 0.5] },
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
-
-  const navigateToSection = (
-    event: MouseEvent<HTMLAnchorElement>,
-    href: "#hero" | "#experience",
-  ) => {
-    event.preventDefault();
-    const target = document.querySelector(href);
-    if (!target) return;
-
-    window.history.replaceState(null, "", href);
-    if (smootherRef.current) {
-      smootherRef.current.scrollTo(target, true, "top 24px");
-      return;
-    }
-
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
 
   return (
     <>
@@ -769,37 +719,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        <AnimatePresence>
-          {activeSection !== "hero" && (
-            <motion.nav
-              className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 flex w-[calc(100%_-_1.5rem)] max-w-[430px] -translate-x-1/2 rounded-2xl border border-[#D8DAD4]/90 bg-[#FFFFFF]/88 p-1.5 shadow-[0_16px_50px_rgba(32,34,31,0.16)] backdrop-blur-xl dark:border-[#363932]/90 dark:bg-[#181A17]/88 dark:shadow-[0_16px_50px_rgba(0,0,0,0.38)]"
-              aria-label="Primary navigation"
-              initial={{ opacity: 0, y: 20, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 16, scale: 0.98 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-            >
-                <NavLink
-                  href="#hero"
-                  label="Home"
-                  active={activeSection === "hero"}
-                  onClick={(event) => navigateToSection(event, "#hero")}
-                >
-                <Home />
-              </NavLink>
-              <NavLink
-                href="#experience"
-                label="Work"
-                active={["skills", "experience", "projects", "volunteer"].includes(
-                  activeSection,
-                )}
-                onClick={(event) => navigateToSection(event, "#experience")}
-              >
-                <Briefcase />
-              </NavLink>
-            </motion.nav>
-          )}
-        </AnimatePresence>
       </motion.main>
     </>
   );
@@ -957,31 +876,3 @@ function Social({
   );
 }
 
-function NavLink({
-  href,
-  label,
-  active = false,
-  children,
-  onClick,
-}: {
-  href: string;
-  label: string;
-  active?: boolean;
-  children: ReactNode;
-  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
-}) {
-  return (
-    <a
-      className={`${displayFont} ${focusRing} flex h-11 flex-1 items-center justify-center gap-2 rounded-xl px-2 text-[14px] font-bold transition duration-200 [&_svg]:size-[16px] [&_svg]:stroke-[1.75] ${active
-        ? "bg-[#20221F] text-[#FAFAF7] shadow-sm dark:bg-[#F2F3EE] dark:text-[#10110F]"
-        : "text-[#62675F] hover:bg-[#F2F2EC] hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE]"
-        }`}
-      href={href}
-      onClick={onClick}
-      aria-current={active ? "page" : undefined}
-    >
-      {children}
-      <span>{label}</span>
-    </a>
-  );
-}
