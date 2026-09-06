@@ -11,8 +11,6 @@ import {
   Briefcase,
   Download,
   Home,
-  Moon,
-  Sun,
 } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa6";
 import { CtaButton } from "@/components/ui/cta-button";
@@ -97,27 +95,8 @@ function TechChips({ items }: { items: string[] }) {
   );
 }
 
-function ThemeButton({ dark, onClick }: { dark: boolean; onClick: () => void }) {
-  return (
-    <button
-      className={`${focusRing} grid size-10 place-items-center rounded-full border border-[#D8DAD4] text-[#62675F] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFC2BA] hover:bg-[#F2F2EC] hover:text-[#20221F] dark:border-[#363932] dark:text-[#A6ABA1] dark:hover:border-[#50544A] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE]`}
-      type="button"
-      onClick={onClick}
-      aria-label={dark ? "Use light mode" : "Use dark mode"}
-      title={dark ? "Use light mode" : "Use dark mode"}
-    >
-      {dark ? (
-        <Sun className="size-[17px] stroke-[1.75]" />
-      ) : (
-        <Moon className="size-[17px] stroke-[1.75]" />
-      )}
-    </button>
-  );
-}
-
 export default function HomePage() {
   const prefersReducedMotion = useReducedMotion();
-  const [dark, setDark] = useState(false);
   const [activeSection, setActiveSection] = useState("hero");
   const [gsapLoaded, setGsapLoaded] = useState(false);
   const [scrollTriggerLoaded, setScrollTriggerLoaded] = useState(false);
@@ -126,17 +105,6 @@ export default function HomePage() {
   const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
   const pageRef = useRef<HTMLElement>(null);
   const smootherRef = useRef<ReturnType<NonNullable<GsapWindow["ScrollSmoother"]>["create"]> | null>(null);
-
-  useEffect(() => {
-    const savedTheme = window.localStorage.getItem("portfolio-theme");
-    const shouldUseDark = savedTheme
-      ? savedTheme === "dark"
-      : window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    document.documentElement.classList.toggle("dark", shouldUseDark);
-    const frame = window.requestAnimationFrame(() => setDark(shouldUseDark));
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
 
   useEffect(() => {
     const timer = window.setTimeout(
@@ -222,11 +190,6 @@ export default function HomePage() {
         defaults: { ease: "power3.out" },
       });
 
-      openingTimeline.fromTo(
-        '[data-opening="header"]',
-        { autoAlpha: 0, y: -12 },
-        { autoAlpha: 1, y: 0, duration: 0.55 },
-      );
       openingTimeline.fromTo(
         '[data-opening="profile"]',
         { autoAlpha: 0, rotate: -5, scale: 0.82 },
@@ -423,15 +386,6 @@ export default function HomePage() {
     return () => observer.disconnect();
   }, []);
 
-  const toggleTheme = () => {
-    setDark((current) => {
-      const next = !current;
-      document.documentElement.classList.toggle("dark", next);
-      window.localStorage.setItem("portfolio-theme", next ? "dark" : "light");
-      return next;
-    });
-  };
-
   const navigateToSection = (
     event: MouseEvent<HTMLAnchorElement>,
     href: "#hero" | "#experience",
@@ -499,21 +453,6 @@ export default function HomePage() {
           <div id="smooth-content" className="bg-[#FAFAF7] dark:bg-[#10110F]">
             <div className="mx-auto w-full max-w-[1120px] px-5 pb-32 sm:px-8 lg:px-10">
               <div className="relative flex min-h-[100svh] flex-col">
-                <header
-                  className="flex items-center justify-between pt-7 sm:pt-9 lg:pt-11"
-                  aria-label="Site header"
-                  data-opening="header"
-                >
-                  <a
-                    className={`${displayFont} ${focusRing} inline-flex items-center gap-2 rounded-md text-[15px] tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                    href="#hero"
-                  >
-                    <span className="size-1.5 rounded-full bg-[#C2410C] dark:bg-[#FF7043]" />
-                    DHARAKA / 2026
-                  </a>
-                  <ThemeButton dark={dark} onClick={toggleTheme} />
-                </header>
-
                 <section
                   className="relative flex min-h-0 flex-1 scroll-mt-0 items-center justify-center py-16 pb-28 sm:py-20 sm:pb-32"
                   id="hero"
@@ -800,7 +739,6 @@ export default function HomePage() {
                         <SiInstagram />
                       </Social>
                     </div>
-                    <ThemeButton dark={dark} onClick={toggleTheme} />
                   </div>
 
                   <div
