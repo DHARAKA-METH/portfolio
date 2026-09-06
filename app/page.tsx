@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type MouseEvent, type ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Script from "next/script";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
@@ -591,7 +592,16 @@ export default function HomePage() {
                 </Section>
 
                 <Section id="projects" smoothEffect>
-                  <SectionTitle>Featured projects</SectionTitle>
+                  <div className="flex items-center justify-between gap-4">
+                    <SectionTitle>Featured projects</SectionTitle>
+                    <Link
+                      className={`${displayFont} ${focusRing} mb-8 inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-md px-3.5 text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] sm:mb-10 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                      href="/projectSection"
+                    >
+                      View more
+                      <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                    </Link>
+                  </div>
                   <Timeline>
                     {projects.map((project) => (
                       <TimelineItem period={project.period} key={project.title}>

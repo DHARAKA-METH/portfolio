@@ -13,7 +13,7 @@ export function SiteNavigation() {
 
   return (
     <header
-      className="absolute inset-x-0 top-0 z-20 mx-auto flex w-full max-w-[1120px] items-center justify-between px-5 pt-7 sm:px-8 sm:pt-9 lg:px-10 lg:pt-11"
+      className="z-20 mx-auto flex w-full max-w-[1120px] items-center justify-between px-5 pt-7 sm:px-8 sm:pt-9 lg:px-10 lg:pt-11"
       aria-label="Site header"
     >
       <Link
