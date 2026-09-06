@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, Briefcase, Home, Moon, Sun } from "lucide-react";
@@ -12,6 +13,24 @@ export function SiteNavigation() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const isDark = theme === "dark";
+  const [isHeroVisible, setIsHeroVisible] = useState(pathname === "/");
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+
+    const hero = document.getElementById("hero");
+    if (!hero) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setIsHeroVisible(entry.isIntersecting),
+      { threshold: 0.2 },
+    );
+
+    observer.observe(hero);
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  const showBottomNavigation = pathname !== "/" || !isHeroVisible;
 
   return (
     <>
@@ -36,10 +55,20 @@ export function SiteNavigation() {
           {isDark ? <Sun className="size-[17px] stroke-[1.75]" /> : <Moon className="size-[17px] stroke-[1.75]" />}
         </button>
       </header>
-      <nav className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 flex w-[calc(100%_-_1.5rem)] max-w-[420px] -translate-x-1/2 rounded-2xl border border-[#D8DAD4]/90 bg-[#FFFFFF]/88 p-1.5 shadow-[0_16px_50px_rgba(32,34,31,0.16)] backdrop-blur-xl dark:border-[#363932]/90 dark:bg-[#181A17]/88 dark:shadow-[0_16px_50px_rgba(0,0,0,0.38)]" aria-label="Primary navigation">
-        <Link className={`${displayFont} flex h-11 flex-1 items-center justify-center gap-2 rounded-xl text-[14px] font-bold transition-colors ${pathname === "/" ? "bg-[#20221F] text-[#FAFAF7] shadow-sm dark:bg-[#F2F3EE] dark:text-[#10110F]" : "text-[#62675F] hover:bg-[#F2F2EC] hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE]"}`} href="/#hero" aria-current={pathname === "/" ? "page" : undefined}><Home className="size-4 stroke-[1.75]" />Home</Link>
-        <Link className={`${displayFont} flex h-11 flex-1 items-center justify-center gap-2 rounded-xl text-[14px] font-bold transition-colors ${pathname === "/projectSection" ? "bg-[#20221F] text-[#FAFAF7] shadow-sm dark:bg-[#F2F3EE] dark:text-[#10110F]" : "text-[#62675F] hover:bg-[#F2F2EC] hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE]"}`} href="/projectSection" aria-current={pathname === "/projectSection" ? "page" : undefined}><Briefcase className="size-4 stroke-[1.75]" />Projects</Link>
-        <Link className={`${displayFont} flex h-11 flex-1 items-center justify-center gap-2 rounded-xl text-[14px] font-bold transition-colors ${pathname === "/Blogs" ? "bg-[#20221F] text-[#FAFAF7] shadow-sm dark:bg-[#F2F3EE] dark:text-[#10110F]" : "text-[#62675F] hover:bg-[#F2F2EC] hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE]"}`} href="/Blogs" aria-current={pathname === "/Blogs" ? "page" : undefined}><BookOpen className="size-4 stroke-[1.75]" />Blog</Link>
+      <nav className={`fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-1/2 z-50 flex w-fit max-w-[calc(100%_-_1.5rem)] -translate-x-1/2 items-center gap-[5px] overflow-visible rounded-2xl border border-[#E4E4E7] bg-white p-1 shadow-[0_10px_30px_rgba(24,24,27,0.12)] transition-all duration-300 ease-out has-[a:hover]:scale-x-[1.02] has-[button:hover]:scale-x-[1.02] [&>a]:origin-center [&>a:hover]:z-10 [&>button]:origin-center [&>button:hover]:z-10 motion-reduce:transition-none dark:border-[#27272A] dark:bg-black ${showBottomNavigation ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"}`} aria-label="Primary navigation" aria-hidden={!showBottomNavigation} inert={!showBottomNavigation}>
+        <button
+          className="grid size-11 place-items-center rounded-xl text-[#18181B] transition-[transform,background-color,color] duration-200 ease-out hover:scale-[1.08] hover:bg-[#ECECEF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181B] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transform-none motion-reduce:transition-none dark:text-white dark:hover:bg-[#18181B] dark:hover:text-white dark:focus-visible:ring-white dark:focus-visible:ring-offset-black"
+          type="button"
+          onClick={() => setTheme(isDark ? "light" : "dark")}
+          aria-label={isDark ? "Use light mode" : "Use dark mode"}
+          title={isDark ? "Use light mode" : "Use dark mode"}
+        >
+          {isDark ? <Sun className="size-[18px] stroke-[1.75]" /> : <Moon className="size-[18px] stroke-[1.75]" />}
+        </button>
+        <span className="h-6 w-0.5 bg-[#D4D4D8] dark:bg-[#3F3F46]" aria-hidden="true" />
+        <Link className={`${displayFont} relative inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-[10px] text-[13px] font-bold text-[#18181B] transition-[transform,background-color,color] duration-200 ease-out hover:scale-[1.08] hover:bg-[#ECECEF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181B] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transform-none motion-reduce:transition-none dark:text-white dark:hover:bg-[#18181B] dark:hover:text-white dark:focus-visible:ring-white dark:focus-visible:ring-offset-black ${pathname === "/" ? "after:absolute after:bottom-1 after:h-0.5 after:w-4 after:rounded-full after:bg-[#18181B] dark:after:bg-white" : ""}`} href="/#hero" aria-current={pathname === "/" ? "page" : undefined}><Home className="size-[18px] stroke-[1.75]" /><span>Home</span></Link>
+        <Link className={`${displayFont} relative inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-[10px] text-[13px] font-bold text-[#18181B] transition-[transform,background-color,color] duration-200 ease-out hover:scale-[1.08] hover:bg-[#ECECEF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181B] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transform-none motion-reduce:transition-none dark:text-white dark:hover:bg-[#18181B] dark:hover:text-white dark:focus-visible:ring-white dark:focus-visible:ring-offset-black ${pathname === "/projectSection" ? "after:absolute after:bottom-1 after:h-0.5 after:w-4 after:rounded-full after:bg-[#18181B] dark:after:bg-white" : ""}`} href="/projectSection" aria-current={pathname === "/projectSection" ? "page" : undefined}><Briefcase className="size-[18px] stroke-[1.75]" /><span>Projects</span></Link>
+        <Link className={`${displayFont} relative inline-flex min-h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl px-[10px] text-[13px] font-bold text-[#18181B] transition-[transform,background-color,color] duration-200 ease-out hover:scale-[1.08] hover:bg-[#ECECEF] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#18181B] focus-visible:ring-offset-2 focus-visible:ring-offset-white motion-reduce:transform-none motion-reduce:transition-none dark:text-white dark:hover:bg-[#18181B] dark:hover:text-white dark:focus-visible:ring-white dark:focus-visible:ring-offset-black ${pathname === "/Blogs" ? "after:absolute after:bottom-1 after:h-0.5 after:w-4 after:rounded-full after:bg-[#18181B] dark:after:bg-white" : ""}`} href="/Blogs" aria-current={pathname === "/Blogs" ? "page" : undefined}><BookOpen className="size-[18px] stroke-[1.75]" /><span>Blog</span></Link>
       </nav>
     </>
   );

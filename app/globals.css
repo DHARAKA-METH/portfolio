@@ -17,4 +17,15 @@
       transform: rotate(360deg);
     }
   }
+
+  @keyframes shiny-button {
+    0%,
+    45% {
+      transform: translateX(-120%) skewX(-12deg);
+    }
+    70%,
+    100% {
+      transform: translateX(500%) skewX(-12deg);
+    }
+  }
 }

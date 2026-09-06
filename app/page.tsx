@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import Script from "next/script";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
@@ -12,10 +11,9 @@ import {
   Download,
 } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa6";
-import { CtaButton } from "@/components/ui/cta-button";
+import { ShinyButton } from "@/registry/magicui/shiny-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { experiences } from "@/data/experiences";
-import { projects } from "@/data/projects";
 import { skills } from "@/data/skills";
 import { volunteerExperiences } from "@/data/volunteers";
 import {
@@ -25,6 +23,7 @@ import {
   SiX,
   SiYoutube,
 } from "react-icons/si";
+import { InternshipStatus } from "@/components/ui/InternshipStatus";
 
 const displayFont =
   "[font-family:var(--font-courier-prime),ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]";
@@ -447,14 +446,13 @@ export default function HomePage() {
                       className="mt-7 flex flex-wrap items-center justify-center gap-3"
                       data-opening="actions"
                     >
-                      <CtaButton
+                      <ShinyButton
                         className={`${displayFont} ${focusRing} text-[16px]`}
-                        href="#projects"
-                        shimmer
+                        href="/projectSection"
                       >
-                        View projects
+                        My works
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
-                      </CtaButton>
+                      </ShinyButton>
                       <a
                         className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8DAD4] px-5 text-[16px] font-bold text-[#343832] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]`}
                         href="/documents/dharaka-meth-cv.pdf"
@@ -475,10 +473,7 @@ export default function HomePage() {
                       <TextLink href="https://linkedin.com" external>
                         LinkedIn
                       </TextLink>
-                      <span className="inline-flex items-center gap-2">
-                        <span className="size-1.5 rounded-full bg-[#4E8A63] dark:bg-[#78BE8F]" />
-                        Open to internship opportunities
-                      </span>
+               <InternshipStatus />
                     </div>
                   </div>
 
@@ -541,7 +536,7 @@ export default function HomePage() {
                   </Timeline>
                 </Section>
 
-                <Section id="projects" smoothEffect>
+                {/* <Section id="projects" smoothEffect>
                   <div className="flex items-center justify-between gap-4">
                     <SectionTitle>Featured projects</SectionTitle>
                     <Link
@@ -615,7 +610,7 @@ export default function HomePage() {
                       </TimelineItem>
                     ))}
                   </Timeline>
-                </Section>
+                </Section> */}
 
                 <Section id="volunteer">
                   <SectionTitle>Volunteer experience</SectionTitle>

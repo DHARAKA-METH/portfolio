@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 export function PortfolioLoader() {
   return (
     <motion.div
-      className="fixed inset-0 z-[100] flex items-center justify-center "
+      className="fixed inset-0 z-[100] flex items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: 0.25, ease: "easeOut" } }}
@@ -27,21 +27,41 @@ export function PortfolioLoader() {
       >
         <Image
           className="size-full object-cover"
-          src="/logo2.png"
+          src="/logo.png"
           alt="Dharaka logo"
           width={150}
           height={150}
           priority
         />
 
-        <span className="absolute top-[34%] left-[38%] h-[32%] w-[27%] bg-[#0D0826]" />
-        <motion.span
-          className="absolute inset-0 bg-[url('/logo.png')] bg-cover [clip-path:polygon(38%_34%,66%_34%,66%_66%,38%_66%)]"
-          initial={{ opacity: 0, x: 0 }}
-          animate={{ opacity: [0, 1, 0, 1], x: [0, 0, 4, 4] }}
-          transition={{ delay: 0.9, duration: 0.55, times: [0, 0.3, 0.65, 1] }}
+        {/* Hide the original middle symbol. */}
+        <span
+          className="absolute left-[40%] top-[38%] h-[24%] w-[19%] bg-black"
           aria-hidden="true"
         />
+
+        {/* Rotate only the isolated middle symbol. */}
+        <motion.div
+          className="absolute inset-0"
+          style={{ transformOrigin: "50% 50%" }}
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{
+            delay: 0.9,
+            duration: 1.2,
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatDelay: 0.4,
+          }}
+          aria-hidden="true"
+        >
+          <div
+            className="absolute inset-0 bg-[url('/logo.png')] bg-cover bg-center"
+            style={{
+              clipPath: "polygon(40% 38%, 59% 38%, 59% 62%, 40% 62%)",
+            }}
+          />
+        </motion.div>
       </motion.div>
     </motion.div>
   );

@@ -1,20 +1,33 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { SiYoutube } from "react-icons/si";
+import { AnimatePresence, useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { projects } from "@/data/projects";
 
 const displayFont =
   "[font-family:var(--font-courier-prime),ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]";
 
 export default function ProjectSectionPage() {
+  const prefersReducedMotion = useReducedMotion();
+  const [showLoader, setShowLoader] = useState(true);
+  const [contentReady, setContentReady] = useState(false);
   const pageRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const timer = window.setTimeout(
+      () => setShowLoader(false),
+      prefersReducedMotion ? 0 : 500,
+    );
+    return () => window.clearTimeout(timer);
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (!contentReady || prefersReducedMotion) return;
 
     gsap.registerPlugin(ScrollTrigger);
     const context = gsap.context(() => {
@@ -44,10 +57,14 @@ export default function ProjectSectionPage() {
     }, pageRef);
 
     return () => context.revert();
-  }, []);
+  }, [contentReady, prefersReducedMotion]);
 
   return (
-    <main ref={pageRef} className="mx-auto w-full max-w-[1120px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
+    <>
+      <AnimatePresence onExitComplete={() => setContentReady(true)}>
+        {showLoader && <PortfolioLoader />}
+      </AnimatePresence>
+      {contentReady && <main ref={pageRef} className="mx-auto w-full max-w-[1120px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
       <section className="py-14 sm:py-20">
         <h1 data-project-heading className={`${displayFont} text-[32px] font-bold tracking-[-0.055em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
           Projects
@@ -107,6 +124,7 @@ export default function ProjectSectionPage() {
           </article>
         ))}
       </div>
-    </main>
+      </main>}
+    </>
   );
 }
