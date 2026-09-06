@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { AnimatePresence, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa6";
 import { SiMedium } from "react-icons/si";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { blogs } from "@/data/blogs";
 
@@ -16,6 +18,7 @@ export default function BlogsPage() {
   const prefersReducedMotion = useReducedMotion();
   const [showLoader, setShowLoader] = useState(true);
   const [contentReady, setContentReady] = useState(false);
+  const pageRef = useRef<HTMLElement>(null);
   const newestFirst = [...blogs].sort(
     (first, second) =>
       new Date(second.publishedAt).getTime() - new Date(first.publishedAt).getTime(),
@@ -29,23 +32,52 @@ export default function BlogsPage() {
     return () => window.clearTimeout(timer);
   }, [prefersReducedMotion]);
 
+  useEffect(() => {
+    if (!contentReady || prefersReducedMotion) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+    const context = gsap.context(() => {
+      gsap.fromTo(
+        "[data-blog-heading]",
+        { autoAlpha: 0, y: 16 },
+        { autoAlpha: 1, y: 0, duration: 0.6, ease: "power3.out" },
+      );
+
+      gsap.utils.toArray<HTMLElement>("[data-blog-reveal]").forEach((article) => {
+        gsap.fromTo(
+          article,
+          { autoAlpha: 0, y: 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.65,
+            ease: "power3.out",
+            scrollTrigger: { trigger: article, start: "top 86%", once: true },
+          },
+        );
+      });
+    }, pageRef);
+
+    return () => context.revert();
+  }, [contentReady, prefersReducedMotion]);
+
   return (
     <>
       <AnimatePresence onExitComplete={() => setContentReady(true)}>
         {showLoader && <PortfolioLoader />}
       </AnimatePresence>
-      {contentReady && <main className="mx-auto mt-[-20px] w-full max-w-[1120px] px-5 pb-32 sm:px-8 lg:px-10">
+      {contentReady && <main ref={pageRef} className="mx-auto mt-[-20px] w-full max-w-[1120px] px-5 pb-32 sm:px-8 lg:px-10">
       <section className="py-14 sm:py-20">
-        <h1 className={`${displayFont} text-[32px] font-bold tracking-[-0.055em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
-          Blogs
+        <h1 data-blog-heading className={`${displayFont} text-[32px] font-bold tracking-[-0.055em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
+          My Blogs
         </h1>
         <p className="mt-1 max-w-[58ch] text-[17px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
-          Notes on backend engineering, DevOps, and the projects I build along the way.
+          Sharing what I learn through the blogs I write, with insights, experiences, and lessons from the topics I explore along the way.
         </p>
       </section>
       <section className="mt-[-15px] grid gap-5 border-t border-[#E5E6E1] pt-8 sm:grid-cols-2 sm:gap-6 dark:border-[#282B26]">
         {newestFirst.map((blog) => (
-          <article className="group w-full max-w-[480px] justify-self-center overflow-hidden rounded-2xl border border-[#E5E6E1] bg-[#FAFAF7] transition-colors hover:border-[#BFC2BA] dark:border-[#282B26] dark:bg-[#10110F] dark:hover:border-[#50544A]" key={blog.title}>
+          <article data-blog-reveal className="group w-full max-w-[480px] justify-self-center overflow-hidden rounded-2xl border border-[#E5E6E1] bg-[#FAFAF7] transition-colors hover:border-[#BFC2BA] dark:border-[#282B26] dark:bg-[#10110F] dark:hover:border-[#50544A]" key={blog.title}>
             <div className={`relative aspect-[16/8] overflow-hidden bg-gradient-to-br ${blog.accent} p-5 text-white`}>
               {blog.image && <Image className="object-cover transition-transform duration-300 group-hover:scale-[1.03]" src={blog.image} alt={`${blog.title} cover`} fill sizes="(min-width: 640px) 50vw, 100vw" />}
               <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
