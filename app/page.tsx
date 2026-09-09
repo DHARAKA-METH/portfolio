@@ -421,7 +421,7 @@ export default function HomePage() {
                         <p
                           className={`${displayFont} mt-2 text-[20px] leading-7 tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]`}
                         >
-                          Aspiring Backend &amp; DevOps Engineer
+                          Aspiring Backend Developer
                         </p>
                       </div>
                     </div>
@@ -451,6 +451,15 @@ export default function HomePage() {
                         href="/projectSection"
                       >
                         My works
+                        <ArrowUpRight className="size-4 stroke-[1.75]" />
+                      </ShinyButton>
+                      <ShinyButton
+                        className={`${displayFont} ${focusRing} text-[16px] transition-colors hover:bg-[#F2F2EC] dark:hover:bg-[#232520]`}
+                        href="/Blogs"
+                        hover={false}
+                        shine={false}
+                      >
+                        Writing
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
                       </ShinyButton>
                       <a
@@ -493,7 +502,7 @@ export default function HomePage() {
 
               <div className="mx-auto w-full max-w-[880px]">
 
-                <Section id="experience" smoothEffect>
+                {/* <Section id="experience" smoothEffect>
                   <SectionTitle>Experience / My work</SectionTitle>
                   <Timeline>
                     {experiences.map(
@@ -534,7 +543,7 @@ export default function HomePage() {
                       ),
                     )}
                   </Timeline>
-                </Section>
+                </Section> */}
 
                 {/* <Section id="projects" smoothEffect>
                   <div className="flex items-center justify-between gap-4">
@@ -630,7 +639,7 @@ export default function HomePage() {
                 </Section>
 
                 <Section id="skills">
-                  <SectionTitle>Skills</SectionTitle>
+                  <SectionTitle>Stack .</SectionTitle>
                   <div className="flex flex-col gap-9">
                     {skills.map((skill) => (
                       <div key={skill.title} data-reveal-item>
@@ -816,13 +825,13 @@ function Volunteer({
           {description}
         </p>
       </div>
-      <a
+      {/* <a
         className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
         href="#contact"
       >
         Certificate
         <ArrowUpRight className="size-3.5 stroke-[1.75]" />
-      </a>
+      </a> */}
     </div>
   );
 }

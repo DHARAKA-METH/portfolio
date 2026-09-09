@@ -1,4 +1,12 @@
 export const volunteerExperiences = [
+
+  {
+    period: ["Jun 2026", "Jul 2026"],
+    name: "IT  Member - JESA 2026 ",
+    role: "Web Developer",
+    description: "Revamped and developed the JESA 2026 website, improving its design, responsiveness, and user experience."
+  },
+
   {
     period: ["Dec 2025", "Apr 2026"],
     name: "Hackathon Crew Member - Organizing Committee",

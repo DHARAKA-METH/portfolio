@@ -21,8 +21,12 @@ const courierPrime = Courier_Prime({
 });
 
 export const metadata: Metadata = {
-  title: "Dharaka Meth | Backend & DevOps Engineer",
-  description: "Portfolio of Dharaka Meth, an aspiring backend and DevOps engineer.",
+  title: "Dharaka Meth | Aspiring Backend Developer",
+  description: "Portfolio of Dharaka Meth, an Aspiring Backend Developer.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
