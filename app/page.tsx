@@ -414,7 +414,7 @@ export default function HomePage() {
           aria-hidden="true"
           style={{ transform: "scaleX(0)" }}
         />
-        <div id="smooth-wrapper" className="bg-[#FAFAF7] dark:bg-[#10110F] ">
+        <div id="smooth-wrapper" className="bg-[#FAFAF7] dark:bg-[#10110F] my-[-40px] ">
           <div id="smooth-content" className="bg-[#FAFAF7] dark:bg-[#10110F]">
             <div className="mx-auto w-full max-w-[1120px] px-5 pb-32 sm:px-8 lg:px-10">
               <div className="relative flex min-h-[100svh] flex-col">
@@ -509,7 +509,7 @@ export default function HomePage() {
                   </div>
 
                   <div
-                    className={`${displayFont} ${focusRing} group absolute bottom-5 left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    className={`${displayFont} ${focusRing} group absolute  bottom-1 left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
 
                     aria-label="Scroll to experience"
                     data-opening="scroll-cue"
