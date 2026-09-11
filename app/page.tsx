@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import Script from "next/script";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
@@ -16,7 +17,8 @@ import {
 import { FaLinkedin } from "react-icons/fa6";
 import { ShinyButton } from "@/registry/magicui/shiny-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
-import { experiences } from "@/data/experiences";
+import { blogs } from "@/data/blogs";
+import { projects } from "@/data/projects";
 import { skills } from "@/data/skills";
 import { volunteerExperiences } from "@/data/volunteers";
 import {
@@ -39,6 +41,10 @@ const focusRing =
 
 const introduction =
   "I am an IT undergraduate focused on building reliable backend systems and growing practical skills in DevOps and cloud technologies. I enjoy turning clear ideas into useful, maintainable products.";
+
+function truncateText(text: string, limit: number) {
+  return text.length > limit ? `${text.slice(0, limit).trimEnd()}...` : text;
+}
 
 type GsapWindow = Window & {
   gsap?: {
@@ -463,7 +469,7 @@ export default function HomePage() {
                         My works
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
                       </ShinyButton>
-                      <ShinyButton
+                      {/* <ShinyButton
                         className={`${displayFont} ${focusRing} text-[16px] transition-colors hover:bg-[#F2F2EC] dark:hover:bg-[#232520]`}
                         href="/Blogs"
                         hover={false}
@@ -471,7 +477,7 @@ export default function HomePage() {
                       >
                         Writing
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
-                      </ShinyButton>
+                      </ShinyButton> */}
                       <a
                         className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8DAD4] px-5 text-[16px] font-bold text-[#343832] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]`}
                         href="/documents/dharaka-meth-cv.pdf"
@@ -639,7 +645,6 @@ export default function HomePage() {
                     ))}
                   </Timeline>
                 </Section> */}
-
                 <Section id="volunteer">
                   <SectionTitle>Volunteer experience</SectionTitle>
                   <Timeline>
@@ -669,6 +674,36 @@ export default function HomePage() {
                         </h3>
                         <TechChips items={skill.items} />
                       </div>
+                    ))}
+                  </div>
+                </Section>
+
+                <Section id="latest-writing">
+                  <div className="flex items-end justify-between gap-5">
+                    <div>
+                      <SectionTitle>Latest writing</SectionTitle>
+                      <p className="-mt-5 mb-8 max-w-[56ch] text-[16px] leading-7 text-[#62675F] sm:mb-10 dark:text-[#A6ABA1]">
+                        Notes on engineering concepts, tools, and the things I&apos;m learning.
+                      </p>
+                    </div>
+                    <Link className={`${displayFont} ${focusRing} mb-8 inline-flex shrink-0 items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] sm:mb-10 dark:text-[#A6ABA1]`} href="/Blogs">
+                      Read all
+                      <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                    </Link>
+                  </div>
+                  <div className="flex flex-col gap-9">
+                    {[...blogs].sort((first, second) => second.publishedAt.localeCompare(first.publishedAt)).slice(0, 2).map((blog) => (
+                      <a className={`${focusRing} flex items-start justify-between gap-5 rounded-sm`} data-reveal-item href={blog.url} key={blog.title} target="_blank" rel="noreferrer">
+                        <div className="min-w-0">
+                          <p className={`${displayFont} text-[13px] text-[#898E86] dark:text-[#7D8279]`}>{blog.date} · {blog.platform}</p>
+                          <h3 className={`${displayFont} mt-2 text-[20px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}>{truncateText(blog.title, 70)}</h3>
+                          <p className="mt-2 max-w-[70ch] text-[15px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">{truncateText(blog.excerpt, 150)}</p>
+                          <span className={`${displayFont} mt-4 inline-flex items-center gap-1.5 text-[14px] font-bold text-[#62675F] dark:text-[#A6ABA1]`}>
+                            Read article
+                            <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                          </span>
+                        </div>
+                      </a>
                     ))}
                   </div>
                 </Section>
