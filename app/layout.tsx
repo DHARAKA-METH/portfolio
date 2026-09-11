@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Courier_Prime, Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import { SiteNavigation } from "@/components/layout/site-navigation";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
@@ -7,17 +7,6 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const courierPrime = Courier_Prime({
-  variable: "--font-courier-prime",
-  subsets: ["latin"],
-  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -33,7 +22,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${courierPrime.variable} h-full antialiased`}
+      className={`${geistSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-[#FAFAF7] transition-colors duration-300 dark:bg-[#10110F]">
         <ThemeProvider>

@@ -30,10 +30,10 @@ import {
 import { InternshipStatus } from "@/components/ui/InternshipStatus";
 
 const displayFont =
-  "[font-family:var(--font-courier-prime),ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]";
+  "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
 
 const bodyFont =
-  "[font-family:var(--font-inter),Inter,ui-sans-serif,system-ui,sans-serif]";
+  "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF7] dark:focus-visible:ring-[#FF8A65] dark:focus-visible:ring-offset-[#10110F]";
@@ -429,12 +429,12 @@ export default function HomePage() {
                       </div>
                       <div className="min-w-0 text-left" data-opening="identity">
                         <h1
-                          className={`${displayFont} text-[26px] leading-[1.2] font-bold tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE]`}
+                          className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] text-[26px] leading-[1.2] font-medium tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE]"
                         >
                           Dharaka Meth
                         </h1>
                         <p
-                          className={`${displayFont} mt-2 text-[20px] leading-7 tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]`}
+                          className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] mt-2 text-[20px] leading-7 font-medium tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]"
                         >
                           Aspiring Backend Developer
                         </p>
@@ -460,7 +460,7 @@ export default function HomePage() {
                       data-opening="actions"
                     >
                       <ShinyButton
-                        className={`${displayFont} ${focusRing} text-[16px]`}
+                        className={`${displayFont} ${focusRing} text-[16px] font-medium tracking-normal`}
                         href="/projectSection"
                       >
                         My works
@@ -476,7 +476,7 @@ export default function HomePage() {
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
                       </ShinyButton> */}
                       <a
-                        className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8DAD4] px-5 text-[16px] font-bold text-[#343832] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]`}
+                        className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8DAD4] px-5 text-[16px] font-medium tracking-normal text-[#343832] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]`}
                         href="/documents/dharaka-meth-cv.pdf"
                         download
                       >
@@ -484,7 +484,7 @@ export default function HomePage() {
                         Download CV
                       </a>
                       <div className="inline-flex min-h-11 items-center rounded-lg border border-[#D8DAD4] text-[#343832] transition-colors hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]">
-                        <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 rounded-l-lg px-4 text-[14px] font-bold`} href="mailto:deshandm699@gmail.com">
+                        <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 rounded-l-lg px-4 text-[16px] font-medium tracking-normal`} href="mailto:deshandm699@gmail.com">
                           <Mail className="size-4 stroke-[1.75]" />
                           deshandm699@gmail.com
                         </a>
@@ -498,10 +498,10 @@ export default function HomePage() {
                       className={`${displayFont} mt-7 flex flex-wrap justify-center gap-x-6 gap-y-3 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
                       data-opening="meta"
                     >
-                      <TextLink href="https://github.com" external>
+                      <TextLink href="https://github.com/DHARAKA-METH" external>
                         GitHub
                       </TextLink>
-                      <TextLink href="https://linkedin.com" external>
+                      <TextLink href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" external>
                         LinkedIn
                       </TextLink>
                <InternshipStatus />
@@ -719,12 +719,12 @@ export default function HomePage() {
                       </p>
                       <p className="mt-2 max-w-[58ch] text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
                         I am open to internship opportunities, collaborations, and
-                        conversations about backend engineering and DevOps.
+                        conversations about Software engineering .
                       </p>
                     </div>
                     <a
                       className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                      href="https://linkedin.com"
+                      href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215"
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -735,13 +735,13 @@ export default function HomePage() {
 
                   <div className="mt-8 flex items-center justify-between gap-5">
                     <div className="flex flex-wrap gap-4 text-[#62675F] dark:text-[#A6ABA1]">
-                      <Social href="https://github.com" label="GitHub">
+                      <Social href="https://github.com/DHARAKA-METH" label="GitHub">
                         <SiGithub />
                       </Social>
                       <Social href="https://x.com" label="X">
                         <SiX />
                       </Social>
-                      <Social href="https://linkedin.com" label="LinkedIn">
+                      <Social href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" label="LinkedIn">
                         <FaLinkedin />
                       </Social>
                       <Social href="https://youtube.com" label="YouTube">

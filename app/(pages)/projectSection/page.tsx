@@ -11,7 +11,7 @@ import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { projects } from "@/data/projects";
 
 const displayFont =
-  "[font-family:var(--font-courier-prime),ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]";
+  "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
 
 export default function ProjectSectionPage() {
   const prefersReducedMotion = useReducedMotion();
@@ -65,6 +65,25 @@ export default function ProjectSectionPage() {
           },
         );
       });
+
+      gsap.utils.toArray<HTMLElement>("[data-project-gallery]").forEach((gallery) => {
+        gsap.fromTo(
+          gallery.querySelectorAll<HTMLElement>("[data-project-image]"),
+          { autoAlpha: 0, y: 24 },
+          {
+            autoAlpha: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: gallery,
+              start: "top 88%",
+              once: true,
+            },
+          },
+        );
+      });
     }, pageRef);
 
     return () => context.revert();
@@ -80,9 +99,12 @@ export default function ProjectSectionPage() {
         <h1 data-project-heading className={`${displayFont} text-[32px] font-bold tracking-[-0.055em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
           Projects
         </h1>
+        <p className="mt-3 text-[16px] leading-6 font-medium tracking-[-0.04em] text-[#929292]">
+          My work, my experiments, and my journey of continuous improvement.
+        </p>
       </section>
 
-      <div className="divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
+      <div className="mt-[-60px] divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
         {projects.map((project) => (
           <article data-project-reveal className="py-10 lg:py-14" key={project.title}>
             <div className="w-full">
@@ -120,12 +142,12 @@ export default function ProjectSectionPage() {
               </div>
             </div>
 
-            {project.imageUrls.length > 0 && <div className={`mt-8 grid grid-cols-2 gap-3 lg:mt-10 ${project.imageUrls.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-2"} sm:gap-4`}>
+            {project.imageUrls.length > 0 && <div data-project-gallery className={`mt-8 grid grid-cols-2 gap-3 lg:mt-10 ${project.imageUrls.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-2"} sm:gap-4`}>
               {project.imageUrls.map((imageUrl, index) => {
                 const imageLoaded = loadedImageUrls.has(imageUrl);
 
                 return (
-                <div className="rounded-2xl bg-[#F2F2EC] p-2 dark:bg-[#181A17] sm:p-3" key={imageUrl}>
+                <div data-project-image className="rounded-2xl bg-[#F2F2EC] p-2 dark:bg-[#181A17] sm:p-3" key={imageUrl}>
                   <div className={`relative w-full overflow-hidden rounded-xl ${project.screenType === "mobile" ? "aspect-[9/19]" : "aspect-[4/3]"}`}>
                     <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageLoaded ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
                     <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"}`} src={imageUrl} alt={`${project.title} screenshot ${index + 1}`} fill sizes={project.imageUrls.length === 4 ? "(min-width: 1024px) 260px, 50vw" : "(min-width: 1024px) 520px, 50vw"} style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />

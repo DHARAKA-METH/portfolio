@@ -12,7 +12,7 @@ import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { blogs } from "@/data/blogs";
 
 const displayFont =
-  "[font-family:var(--font-courier-prime),ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace]";
+  "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
 
 export default function BlogsPage() {
   const prefersReducedMotion = useReducedMotion();
