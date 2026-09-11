@@ -31,7 +31,6 @@ export const projects = [
     ],
     technologies: ["React Native", "Expo", "TypeScript", "Tailwind CSS", "Firebase Auth", "Cloud Firestore", "Cloud Functions", "Hugging Face"],
     url: "https://github.com/DHARAKA-METH/Mind-Space",
-    demoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
     linkLabel: "View on GitHub",
   },
       {

@@ -18,7 +18,6 @@ import { FaLinkedin } from "react-icons/fa6";
 import { ShinyButton } from "@/registry/magicui/shiny-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { blogs } from "@/data/blogs";
-import { projects } from "@/data/projects";
 import { skills } from "@/data/skills";
 import { volunteerExperiences } from "@/data/volunteers";
 import {
@@ -40,7 +39,7 @@ const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF7] dark:focus-visible:ring-[#FF8A65] dark:focus-visible:ring-offset-[#10110F]";
 
 const introduction =
-  "I am an IT undergraduate focused on building reliable backend systems and growing practical skills in DevOps and cloud technologies. I enjoy turning clear ideas into useful, maintainable products.";
+  "I'm Dharaka, a developer exploring new technologies and turning ideas into meaningful digital experiences. I'm passionate about continuously learning, building, and growing through technology. Currently an undergraduate at the University of Sri Jayewardenepura, pursuing my journey in technology and software engineering.";
 
 function truncateText(text: string, limit: number) {
   return text.length > limit ? `${text.slice(0, limit).trimEnd()}...` : text;
@@ -443,18 +442,16 @@ export default function HomePage() {
                     </div>
 
                     <p
-                      className="mx-auto mt-9 max-w-[62ch] whitespace-normal text-pretty text-[17px] leading-7 tracking-normal text-[#555A52] [word-spacing:normal] sm:mt-11 sm:text-[19px] sm:leading-8 dark:text-[#B1B6AC]"
+                      className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] mx-auto mt-4 max-w-[62ch] whitespace-normal text-pretty text-[16px] leading-6 font-medium tracking-[-0.04em] text-[#929292] [word-spacing:normal]"
                       aria-label={introduction}
                       data-opening="intro"
                     >
-                      <span className="block">
-                        I am an IT undergraduate focused on building reliable backend systems and
+                      <span className="">
+                        I&apos;m dharaka, a developer exploring new technologies and turning ideas into meaningful digital experiences.
+                        I&apos;m passionate about continuously learning, building, and growing through technology.
                       </span>
-                      <span className="block">
-                        growing practical skills in DevOps and cloud technologies. I enjoy turning
-                      </span>
-                      <span className="block">
-                        clear ideas into useful, maintainable products.
+                      <span className="mt-5 block">
+                        Currently an undergraduate at the <Image className="mx-1 inline-block size-5 rounded-sm align-text-bottom" src="/usjp.jpg" alt="University of Sri Jayewardenepura" width={20} height={20} /> <a className={`${focusRing} inline rounded-sm text-white underline decoration-1 underline-offset-4`} href="https://www.sjp.ac.lk/" target="_blank" rel="noreferrer">University of Sri Jayewardenepura</a>, pursuing my journey in technology and software engineering.
                       </span>
                     </p>
 
