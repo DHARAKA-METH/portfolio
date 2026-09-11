@@ -8,7 +8,10 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpRight,
+  Check,
+  Copy,
   Download,
+  Mail,
 } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa6";
 import { ShinyButton } from "@/registry/magicui/shiny-button";
@@ -100,7 +103,14 @@ export default function HomePage() {
   const [scrollSmootherReady, setScrollSmootherReady] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
   const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
   const pageRef = useRef<HTMLElement>(null);
+
+  const copyEmail = async () => {
+    await navigator.clipboard.writeText("deshandm699@gmail.com");
+    setEmailCopied(true);
+    window.setTimeout(() => setEmailCopied(false), 1800);
+  };
 
   useEffect(() => {
     const timer = window.setTimeout(
@@ -470,6 +480,15 @@ export default function HomePage() {
                         <Download className="size-4 stroke-[1.75]" />
                         Download CV
                       </a>
+                      <div className="inline-flex min-h-11 items-center rounded-lg border border-[#D8DAD4] text-[#343832] transition-colors hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]">
+                        <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 rounded-l-lg px-4 text-[14px] font-bold`} href="mailto:deshandm699@gmail.com">
+                          <Mail className="size-4 stroke-[1.75]" />
+                          deshandm699@gmail.com
+                        </a>
+                        <button className={`${focusRing} inline-flex min-h-11 items-center border-l border-[#D8DAD4] px-3 transition-colors hover:bg-[#E8E9E4] dark:border-[#363932] dark:hover:bg-[#2B2E29]`} type="button" onClick={copyEmail} aria-label="Copy email address" title="Copy email address">
+                          {emailCopied ? <Check className="size-4 text-[#C2410C]" /> : <Copy className="size-4 stroke-[1.75]" />}
+                        </button>
+                      </div>
                     </div>
 
                     <div
@@ -626,7 +645,7 @@ export default function HomePage() {
                   <Timeline>
                     {volunteerExperiences.map(
                       ({ period, name, role, description }) => (
-                        <TimelineItem period={period} key={name}>
+                        <TimelineItem period={period} key={`${name}-${role}-${period.join("-")}`}>
                           <Volunteer
                             name={name}
                             role={role}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 import { SiYoutube } from "react-icons/si";
 import { AnimatePresence, useReducedMotion } from "framer-motion";
@@ -73,7 +74,7 @@ export default function ProjectSectionPage() {
 
       <div className="divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
         {projects.map((project) => (
-          <article data-project-reveal className="grid gap-7 py-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-12 lg:py-14" key={project.title}>
+          <article data-project-reveal className={`grid gap-7 py-10 lg:gap-12 lg:py-14 ${project.imageUrls.length > 0 ? "lg:grid-cols-[minmax(0,1fr)_560px]" : ""}`} key={project.title}>
             <div className="max-w-[62ch]">
               <p className={`${displayFont} text-[14px] text-[#898E86] dark:text-[#7D8279]`}>
                 {project.period.join(" - ")}
@@ -109,18 +110,15 @@ export default function ProjectSectionPage() {
               </div>
             </div>
 
-            <div className={`grid self-start rounded-2xl bg-[#F2F2EC] dark:bg-[#181A17] ${project.screenshotCount === 4 ? "grid-cols-2" : "grid-cols-3"} ${project.screenType === "mobile" ? "gap-2 p-4 sm:gap-3 sm:p-6" : "gap-3 p-3"}`}>
-              {Array.from({ length: project.screenshotCount }, (_, index) => String(index + 1).padStart(2, "0")).map((screen) => (
-                <div className={`relative w-full overflow-hidden rounded-xl bg-gradient-to-br ${project.accent} text-white ${project.screenType === "mobile" ? "aspect-[9/16] p-2 sm:p-3" : "aspect-[4/3] p-3"}`} key={screen}>
-                  <span className={`${displayFont} text-[11px] tracking-[0.12em] text-white/70 uppercase`}>
-                    {project.screenType === "mobile" ? "Mobile" : "Desktop"} {screen}
-                  </span>
-                  <span className={`${displayFont} absolute right-3 bottom-2 text-[22px] font-bold tracking-[-0.06em]`}>
-                    {project.mark}
-                  </span>
+            {project.imageUrls.length > 0 && <div className={`grid self-start ${project.screenType === "mobile" && project.imageUrls.length === 4 ? "grid-cols-4" : project.imageUrls.length <= 2 || project.imageUrls.length === 4 ? "grid-cols-2" : "grid-cols-3"} ${project.screenType === "mobile" ? "gap-2 sm:gap-3" : "gap-3"}`}>
+              {project.imageUrls.map((imageUrl, index) => (
+                <div className="relative rounded-2xl cursor-pointer bg-[#F2F2EC] p-1.5 transition-transform duration-300 ease-out hover:z-10 hover:scale-[1.08] motion-reduce:transform-none dark:bg-[#181A17] sm:p-2" key={imageUrl}>
+                  <div className={`relative w-full h-auto rounded-xl ${project.screenType === "mobile" ? "aspect-[9/19]" : "aspect-[4/3]"}`}>
+                    <Image className="object-fill object-center" src={imageUrl} alt={`${project.title} screenshot ${index + 1}`} fill sizes="(min-width: 1024px) 120px, 45vw" />
+                  </div>
                 </div>
               ))}
-            </div>
+            </div>}
           </article>
         ))}
       </div>

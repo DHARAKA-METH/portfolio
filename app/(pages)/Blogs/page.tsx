@@ -75,18 +75,18 @@ export default function BlogsPage() {
           Sharing what I learn through the blogs I write, with insights, experiences, and lessons from the topics I explore along the way.
         </p>
       </section>
-      <section className="mt-[-15px] grid gap-5 border-t border-[#E5E6E1] pt-8 sm:grid-cols-2 sm:gap-6 dark:border-[#282B26]">
+      <section className="mt-[-15px] divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
         {newestFirst.map((blog) => (
-          <article data-blog-reveal className="group w-full max-w-[480px] justify-self-center overflow-hidden rounded-2xl border border-[#E5E6E1] bg-[#FAFAF7] transition-colors hover:border-[#BFC2BA] dark:border-[#282B26] dark:bg-[#10110F] dark:hover:border-[#50544A]" key={blog.title}>
-            <div className={`relative aspect-[16/8] overflow-hidden bg-gradient-to-br ${blog.accent} p-5 text-white`}>
-              {blog.image && <Image className="object-cover transition-transform duration-300 group-hover:scale-[1.03]" src={blog.image} alt={`${blog.title} cover`} fill sizes="(min-width: 640px) 50vw, 100vw" />}
+          <article data-blog-reveal className="group grid gap-5 py-8 sm:grid-cols-[240px_minmax(0,1fr)] sm:items-start sm:gap-7 sm:py-10" key={blog.title}>
+            <div className={`relative aspect-[16/10] overflow-hidden rounded-xl bg-gradient-to-br ${blog.accent} p-5 text-white`}>
+              {blog.image && <Image className="object-cover transition-transform duration-300 group-hover:scale-[1.04]" src={blog.image} alt={`${blog.title} cover`} fill sizes="(min-width: 640px) 240px, 100vw" />}
               <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
               <span className={`${displayFont} relative text-[12px] tracking-[0.12em] text-white/75 uppercase`}>{blog.platform} article</span>
               <span className={`${displayFont} absolute right-5 bottom-4 text-[15px] text-white/80`}>{blog.date}</span>
             </div>
-            <div className="p-5 sm:p-6">
-              <h2 className={`${displayFont} text-[20px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}>{blog.title}</h2>
-              <p className="mt-3 text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">{blog.excerpt}</p>
+            <div className="sm:pt-1">
+              <h2 className={`${displayFont} text-[22px] leading-7 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}>{blog.title}</h2>
+              <p className="mt-3 max-w-[68ch] text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">{blog.excerpt}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {blog.tags.map((tag) => <span className={`${displayFont} rounded-md border border-[#D8DAD4] px-2 py-1 text-[12px] text-[#62675F] dark:border-[#363932] dark:text-[#A6ABA1]`} key={tag}>{tag}</span>)}
               </div>
