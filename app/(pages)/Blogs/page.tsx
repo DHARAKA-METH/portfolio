@@ -78,7 +78,7 @@ export default function BlogsPage() {
       <section className="mt-[-15px] divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
         {newestFirst.map((blog) => (
           <article data-blog-reveal className="group grid gap-5 py-8 sm:grid-cols-[240px_minmax(0,1fr)] sm:items-start sm:gap-7 sm:py-10" key={blog.title}>
-            <div className={`relative aspect-[16/10] overflow-hidden rounded-xl bg-gradient-to-br ${blog.accent} p-5 text-white`}>
+            <div className={`relative w-[220px] max-w-full aspect-[16/10] overflow-hidden rounded-xl bg-gradient-to-br ${blog.accent} p-5 text-white sm:w-auto`}>
               {blog.image && <Image className="object-cover transition-transform duration-300 group-hover:scale-[1.04]" src={blog.image} alt={`${blog.title} cover`} fill sizes="(min-width: 640px) 240px, 100vw" />}
               <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
               <span className={`${displayFont} relative text-[12px] tracking-[0.12em] text-white/75 uppercase`}>{blog.platform} article</span>

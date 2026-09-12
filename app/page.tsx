@@ -738,7 +738,7 @@ export default function HomePage() {
                       <Social href="https://github.com/DHARAKA-METH" label="GitHub">
                         <SiGithub />
                       </Social>
-                      <Social href="https://x.com" label="X">
+                      <Social href="https://x.com/DM_DESHAN" label="X">
                         <SiX />
                       </Social>
                       <Social href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" label="LinkedIn">
@@ -750,7 +750,7 @@ export default function HomePage() {
                       <Social href="https://tiktok.com" label="TikTok">
                         <SiTiktok />
                       </Social>
-                      <Social href="https://instagram.com" label="Instagram">
+                      <Social href="https://www.instagram.com/dharaka__" label="Instagram">
                         <SiInstagram />
                       </Social>
                     </div>
@@ -760,13 +760,14 @@ export default function HomePage() {
                     className={`${displayFont} mt-7 flex flex-col justify-between gap-3 text-[14px] text-[#898E86] sm:flex-row dark:text-[#7D8279]`}
                   >
                     <p>© 2026 Dharaka Meth. All rights reserved.</p>
-                    <a
+                    <button
                       className={`${focusRing} inline-flex w-fit items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
-                      href="#hero"
+                      type="button"
+                      onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" })}
                     >
                       Back to top
                       <ArrowUp className="size-3.5 stroke-[1.75]" />
-                    </a>
+                    </button>
                   </div>
                 </footer>
               </div>
@@ -898,7 +899,7 @@ function TextLink({
 }) {
   return (
     <a
-      className={`${focusRing} inline-flex items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
+      className={`${focusRing} inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-[#D8DAD4] px-4 transition-colors hover:border-[#BFC2BA] hover:bg-[#F2F2EC] hover:text-[#20221F] sm:min-h-0 sm:rounded-sm sm:border-0 sm:px-0 sm:hover:bg-transparent dark:border-[#363932] dark:hover:border-[#50544A] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE] sm:dark:hover:bg-transparent`}
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noreferrer" : undefined}
