@@ -509,7 +509,7 @@ export default function HomePage() {
                   </div>
 
                   <div
-                    className={`${displayFont} ${focusRing} group absolute  top-[80%] sm:top-[65%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    className={`${displayFont} ${focusRing} group absolute  top-[72%] sm:top-[65%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
 
                     aria-label="Scroll to experience"
                     data-opening="scroll-cue"
