@@ -2,8 +2,46 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { ArrowUpRight } from "lucide-react";
-import { SiYoutube } from "react-icons/si";
+import {
+  ArrowUpRight,
+  BadgeCheck,
+  Boxes,
+  Braces,
+  Cpu,
+  Database,
+  DatabaseBackup,
+  KeyRound,
+  LockKeyhole,
+  MapPin,
+  Shield,
+  ShieldCheck,
+  Smartphone,
+  TableProperties,
+  Users,
+  Waypoints,
+} from "lucide-react";
+import {
+  SiCloudinary,
+  SiDart,
+  SiDocker,
+  SiExpo,
+  SiExpress,
+  SiFirebase,
+  SiFlutter,
+  SiHuggingface,
+  SiMongodb,
+  SiMysql,
+  SiNextdotjs,
+  SiNginx,
+  SiNodedotjs,
+  SiReact,
+  SiSharp,
+  SiSpringboot,
+  SiTailwindcss,
+  SiTypescript,
+  SiUpstash,
+  SiYoutube,
+} from "react-icons/si";
 import { AnimatePresence, useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -12,6 +50,80 @@ import { projects } from "@/data/projects";
 
 const displayFont =
   "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
+
+const technologyIcons = {
+  "Next.js": SiNextdotjs,
+  TypeScript: SiTypescript,
+  Firebase: SiFirebase,
+  Zod: BadgeCheck,
+  Teamwork: Users,
+  "React Native": SiReact,
+  Expo: SiExpo,
+  "Tailwind CSS": SiTailwindcss,
+  "Firebase Auth": ShieldCheck,
+  "Cloud Firestore": Database,
+  "Cloud Functions": Braces,
+  "Hugging Face": SiHuggingface,
+  Flutter: SiFlutter,
+  Dart: SiDart,
+  IoT: Cpu,
+  GPS: MapPin,
+  "Mobile Development": Smartphone,
+  "Spring Boot": SiSpringboot,
+  JWT: KeyRound,
+  MySQL: SiMysql,
+  Docker: SiDocker,
+  NGINX: SiNginx,
+  Cloudinary: SiCloudinary,
+  Microservices: Boxes,
+  MongoDB: SiMongodb,
+  "Node.js": SiNodedotjs,
+  "Express.js": SiExpress,
+  "REST APIs": Waypoints,
+  Authentication: LockKeyhole,
+  "Database Design": DatabaseBackup,
+  Arcjet: Shield,
+  Upstash: SiUpstash,
+  "C#": SiSharp,
+  SQL: TableProperties,
+} as const;
+
+const technologyIconColors: Record<keyof typeof technologyIcons, string> = {
+  "Next.js": "text-[#111111] dark:text-[#F2F3EE]",
+  TypeScript: "text-[#3178C6]",
+  Firebase: "text-[#FFCA28]",
+  Zod: "text-[#3E67B1]",
+  Teamwork: "text-[#7C3AED]",
+  "React Native": "text-[#61DAFB]",
+  Expo: "text-[#111111] dark:text-[#F2F3EE]",
+  "Tailwind CSS": "text-[#06B6D4]",
+  "Firebase Auth": "text-[#F59E0B]",
+  "Cloud Firestore": "text-[#F97316]",
+  "Cloud Functions": "text-[#A855F7]",
+  "Hugging Face": "text-[#EAB308]",
+  Flutter: "text-[#54C5F8]",
+  Dart: "text-[#0175C2]",
+  IoT: "text-[#14B8A6]",
+  GPS: "text-[#EF4444]",
+  "Mobile Development": "text-[#8B5CF6]",
+  "Spring Boot": "text-[#6DB33F]",
+  JWT: "text-[#CA8A04]",
+  MySQL: "text-[#4479A1]",
+  Docker: "text-[#2496ED]",
+  NGINX: "text-[#009639]",
+  Cloudinary: "text-[#3448C5]",
+  Microservices: "text-[#EA580C]",
+  MongoDB: "text-[#47A248]",
+  "Node.js": "text-[#5FA04E]",
+  "Express.js": "text-[#20232A] dark:text-[#E8EAE5]",
+  "REST APIs": "text-[#0EA5E9]",
+  Authentication: "text-[#EC4899]",
+  "Database Design": "text-[#6366F1]",
+  Arcjet: "text-[#EA580C]",
+  Upstash: "text-[#00A67E]",
+  "C#": "text-[#512BD4]",
+  SQL: "text-[#2563EB]",
+};
 
 export default function ProjectSectionPage() {
   const prefersReducedMotion = useReducedMotion();
@@ -106,7 +218,7 @@ export default function ProjectSectionPage() {
 
       <div className="mt-[-60px] divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
         {projects.map((project) => (
-          <article data-project-reveal className="py-10 lg:py-14" key={project.title}>
+          <article data-project-reveal className="py-20 lg:py-32" key={project.title}>
             <div className="w-full">
               <p className={`${displayFont} text-[14px] text-[#898E86] dark:text-[#7D8279]`}>
                 {project.period.join(" - ")}
@@ -122,9 +234,17 @@ export default function ProjectSectionPage() {
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 {project.technologies.map((technology) => (
-                  <span className={`${displayFont} rounded-md border border-[#D8DAD4] px-2.5 py-1.5 text-[14px] text-[#40443E] dark:border-[#363932] dark:text-[#C5C9C0]`} key={technology}>
-                    {technology}
-                  </span>
+                  (() => {
+                    const TechnologyIcon = technologyIcons[technology as keyof typeof technologyIcons];
+                    const iconColor = technologyIconColors[technology as keyof typeof technologyIconColors];
+
+                    return (
+                      <span className={`${displayFont} inline-flex items-center gap-1.5 rounded-md border border-[#D8DAD4] px-2.5 py-1.5 text-[14px] text-[#40443E] dark:border-[#363932] dark:text-[#C5C9C0]`} key={technology}>
+                        {TechnologyIcon && <TechnologyIcon className={`size-4 shrink-0 ${iconColor}`} aria-hidden="true" />}
+                        {technology}
+                      </span>
+                    );
+                  })()
                 ))}
               </div>
               <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">

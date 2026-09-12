@@ -48,7 +48,7 @@ export const projects = [
       "https://res.cloudinary.com/dgpiqnweu/image/upload/v1788972675/03-pet-details-cropped.png",
       "https://res.cloudinary.com/dgpiqnweu/image/upload/v1788972675/04-safe-zone-cropped.png",
     ],
-    technologies: ["Flutter", "Dart", "IoT", "GPS", "Mobile Development"],
+    technologies: ["Flutter", "Dart", "IoT", "GPS", "Mobile Development","Arduino","MQTT"],
     url: "https://github.com/DHARAKA-METH/kazu",
     demoUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
     linkLabel: "View on GitHub",
