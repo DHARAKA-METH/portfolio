@@ -10,8 +10,48 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Dharaka Meth | Aspiring Backend Developer",
-  description: "Portfolio of Dharaka Meth, an Aspiring Backend Developer.",
+  title: {
+    default: "Dharaka Meth | Aspiring Backend Developer",
+    template: "%s | Dharaka Meth",
+  },
+  description:
+    "Portfolio of Dharaka Meth, an undergraduate developer exploring backend engineering, DevOps, cloud technologies, and meaningful digital experiences.",
+  applicationName: "Dharaka Meth Portfolio",
+  authors: [{ name: "Dharaka Meth" }],
+  creator: "Dharaka Meth",
+  publisher: "Dharaka Meth",
+  keywords: [
+    "Dharaka Meth",
+    "Backend Developer",
+    "Linux",
+    "Software Engineer",
+    "Next.js",
+    "Java",
+    "Sri Lanka",
+  ],
+  category: "technology",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
+  openGraph: {
+    title: "Dharaka Meth | Aspiring Backend Developer",
+    description:
+      "Backend engineering, DevOps, projects, technical writing, and continuous learning.",
+    siteName: "Dharaka Meth Portfolio",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: "Dharaka Meth | Aspiring Backend Developer",
+    description:
+      "Backend engineering, DevOps, projects, technical writing, and continuous learning.",
+  },
   icons: {
     icon: "/logo.png",
     apple: "/logo.png",

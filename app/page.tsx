@@ -509,7 +509,7 @@ export default function HomePage() {
                   </div>
 
                   <div
-                    className={`${displayFont} ${focusRing} group absolute  bottom-1 left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    className={`${displayFont} ${focusRing} group absolute  top-[80%] sm:top-[65%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
 
                     aria-label="Scroll to experience"
                     data-opening="scroll-cue"
@@ -643,7 +643,7 @@ export default function HomePage() {
                   </Timeline>
                 </Section> */}
                 <Section id="volunteer">
-                  <SectionTitle>Volunteer experience</SectionTitle>
+                  <SectionTitle>Activities & Contributions</SectionTitle>
                   <Timeline>
                     {volunteerExperiences.map(
                       ({ period, name, role, description }) => (
@@ -805,7 +805,7 @@ function SectionTitle({ children }: { children: ReactNode }) {
   return (
     <div className="mb-8 sm:mb-10" data-section-title>
       <h2
-        className={`${displayFont} text-[27px] leading-tight font-bold tracking-[-0.055em] text-[#20221F] sm:text-[31px] dark:text-[#F2F3EE]`}
+        className={`${displayFont} text-[20px] sm:text-[24px]  leading-tight font-semibold tracking-[-0.055em] text-[#20221F] sm:text-[31px] dark:text-[#F2F3EE]`}
       >
         {children}
       </h2>
@@ -863,7 +863,7 @@ function Volunteer({
     <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-8">
       <div>
         <h3
-          className={`${displayFont} text-[21px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
+          className={`${displayFont} text-[14px] sm:text-[20px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
         >
           {name}
         </h3>

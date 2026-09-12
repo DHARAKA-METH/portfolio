@@ -116,7 +116,7 @@ export const projects = [
   accent: "from-[#185E5B] to-[#2C8580]",
   imageUrls: [],
   technologies: ["C#","SQL"],
-  url: "https://github.com/DHARAKA-METH/subscription-tracker-API",
+  url: "https://github.com/DHARAKA-METH/Project-black-bird.git",
   linkLabel: "View on GitHub",
 },
 
