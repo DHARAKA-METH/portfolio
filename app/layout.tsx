@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Dharaka Meth | Aspiring Backend Developer",
     description:
-      "Backend engineering, DevOps, projects, technical writing, and continuous learning.",
+      "A software developer and Linux enthusiast exploring new technologies through projects, technical writing, and continuous learning.",
     siteName: "Dharaka Meth Portfolio",
     locale: "en_US",
     type: "website",
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Dharaka Meth | Aspiring Backend Developer",
     description:
-      "Backend engineering, DevOps, projects, technical writing, and continuous learning.",
+      "A software developer and Linux enthusiast exploring new technologies through projects, technical writing, and continuous learning.",
   },
   icons: {
     icon: "/logo.png",
