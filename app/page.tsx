@@ -451,7 +451,7 @@ export default function HomePage() {
                         I&apos;m passionate about continuously learning, building, and growing through technology.
                       </span>
                       <span className="mt-5 block">
-                        Currently an undergraduate at the <Image className="mx-1 inline-block size-5 rounded-sm align-text-bottom" src="/usjp.jpg" alt="University of Sri Jayewardenepura" width={20} height={20} /> <a className={`${focusRing} inline rounded-sm text-white underline decoration-1 underline-offset-4`} href="https://www.sjp.ac.lk/" target="_blank" rel="noreferrer">University of Sri Jayewardenepura</a>, pursuing my journey in technology and software engineering.
+                        Currently an undergraduate at the <Image className="mx-1 inline-block size-5 rounded-sm align-text-bottom" src="/usjp.jpg" alt="University of Sri Jayewardenepura" width={20} height={20} /> <a className={`${focusRing} inline rounded-sm text-[#20221F] underline decoration-1 underline-offset-4 dark:text-white`} href="https://www.sjp.ac.lk/" target="_blank" rel="noreferrer">University of Sri Jayewardenepura</a>, pursuing my journey in technology and software engineering.
                       </span>
                     </p>
 
@@ -460,12 +460,13 @@ export default function HomePage() {
                       data-opening="actions"
                     >
                       <ShinyButton
-                        className={`${displayFont} ${focusRing} text-[16px] font-medium tracking-normal`}
+                        className={`${displayFont} ${focusRing} text-[16px]`}
                         href="/projectSection"
                       >
                         My works
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
                       </ShinyButton>
+                      <span className="hidden select-none text-[#898E86] md:inline dark:text-[#7D8279]" aria-hidden="true">|</span>
                       {/* <ShinyButton
                         className={`${displayFont} ${focusRing} text-[16px] transition-colors hover:bg-[#F2F2EC] dark:hover:bg-[#232520]`}
                         href="/Blogs"
@@ -475,14 +476,14 @@ export default function HomePage() {
                         Writing
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
                       </ShinyButton> */}
-                      <a
+                      {/* <a
                         className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-[#D8DAD4] px-5 text-[16px] font-medium tracking-normal text-[#343832] transition duration-200 hover:-translate-y-0.5 hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]`}
                         href="/documents/dharaka-meth-cv.pdf"
                         download
                       >
                         <Download className="size-4 stroke-[1.75]" />
                         Download CV
-                      </a>
+                      </a> */}
                       <div className="inline-flex min-h-11 items-center rounded-lg border border-[#D8DAD4] text-[#343832] transition-colors hover:border-[#BFC2BA] hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#E1E4DD] dark:hover:border-[#50544A] dark:hover:bg-[#232520]">
                         <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 rounded-l-lg px-4 text-[16px] font-medium tracking-normal`} href="mailto:deshandm699@gmail.com">
                           <Mail className="size-4 stroke-[1.75]" />
@@ -498,23 +499,23 @@ export default function HomePage() {
                       className={`${displayFont} mt-7 flex flex-wrap justify-center gap-x-6 gap-y-3 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
                       data-opening="meta"
                     >
-                      <TextLink href="https://github.com/DHARAKA-METH" external>
+                      {/* <TextLink href="https://github.com/DHARAKA-METH" external>
                         GitHub
                       </TextLink>
                       <TextLink href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" external>
                         LinkedIn
-                      </TextLink>
+                      </TextLink> */}
                <InternshipStatus />
                     </div>
                   </div>
 
                   <div
-                    className={`${displayFont} ${focusRing} group absolute  top-[72%] sm:top-[65%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    className={`${displayFont} ${focusRing} group absolute  top-[80%] sm:top-[75%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
 
                     aria-label="Scroll to experience"
                     data-opening="scroll-cue"
                   >
-                    <span>Let&apos;s Talk</span>
+                    {/* <span>Let&apos;s Talk</span> */}
                     <span className="grid size-10 place-items-center rounded-full border border-[#D8DAD4] bg-[#FFFFFF]/70 transition duration-200 group-hover:translate-y-1 group-hover:border-[#BFC2BA] group-hover:bg-[#F2F2EC] dark:border-[#363932] dark:bg-[#181A17]/70 dark:group-hover:border-[#50544A] dark:group-hover:bg-[#232520]">
                       <ArrowDown className="size-4 stroke-[1.75] motion-safe:animate-bounce" />
                     </span>
@@ -722,15 +723,26 @@ export default function HomePage() {
                         conversations about Software engineering .
                       </p>
                     </div>
-                    <a
-                      className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                      href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Connect on LinkedIn
-                      <ArrowUpRight className="size-4 stroke-[1.75]" />
-                    </a>
+                    <div className="flex items-center gap-5 whitespace-nowrap">
+                      <a
+                        className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                        href="https://github.com/DHARAKA-METH"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        View GitHub
+                        <ArrowUpRight className="size-4 stroke-[1.75]" />
+                      </a>
+                      <a
+                        className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                        href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215"
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Connect on LinkedIn
+                        <ArrowUpRight className="size-4 stroke-[1.75]" />
+                      </a>
+                    </div>
                   </div>
 
                   <div className="mt-8 flex items-center justify-between gap-5">
