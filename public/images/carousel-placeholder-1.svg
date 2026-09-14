@@ -1,0 +1,12 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#F2F2EC"/>
+  <rect x="130" y="150" width="1340" height="900" rx="40" fill="#FAFAF7" stroke="#D8DAD4" stroke-width="8"/>
+  <rect x="220" y="250" width="520" height="90" rx="20" fill="#20221F"/>
+  <rect x="220" y="405" width="360" height="28" rx="14" fill="#BFC2BA"/>
+  <rect x="220" y="465" width="440" height="28" rx="14" fill="#D8DAD4"/>
+  <rect x="860" y="260" width="380" height="180" rx="28" fill="#F97316"/>
+  <rect x="860" y="500" width="180" height="320" rx="28" fill="#20221F"/>
+  <rect x="1100" y="500" width="180" height="320" rx="28" fill="#62675F"/>
+  <text x="220" y="720" fill="#20221F" font-family="Arial, sans-serif" font-size="72" font-weight="700">Architecture overview</text>
+  <text x="220" y="800" fill="#62675F" font-family="Arial, sans-serif" font-size="38">1600 × 1200 placeholder</text>
+</svg>

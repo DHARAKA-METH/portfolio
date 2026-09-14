@@ -1,0 +1,12 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#F7F1EC"/>
+  <rect x="130" y="150" width="1340" height="900" rx="40" fill="#FAFAF7" stroke="#D8DAD4" stroke-width="8"/>
+  <rect x="560" y="215" width="480" height="770" rx="58" fill="#20221F"/>
+  <rect x="590" y="280" width="420" height="630" rx="34" fill="#F2F2EC"/>
+  <circle cx="800" cy="470" r="104" fill="#F97316"/>
+  <rect x="650" y="640" width="300" height="32" rx="16" fill="#62675F"/>
+  <rect x="690" y="710" width="220" height="32" rx="16" fill="#BFC2BA"/>
+  <rect x="650" y="790" width="300" height="62" rx="20" fill="#315B7D"/>
+  <text x="205" y="330" fill="#20221F" font-family="Arial, sans-serif" font-size="64" font-weight="700">Mobile experience</text>
+  <text x="205" y="410" fill="#62675F" font-family="Arial, sans-serif" font-size="38">Temporary placeholder</text>
+</svg>

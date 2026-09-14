@@ -1,0 +1,10 @@
+<svg width="1600" height="1200" viewBox="0 0 1600 1200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="1200" fill="#EEF1F0"/>
+  <rect x="130" y="150" width="1340" height="900" rx="40" fill="#FAFAF7" stroke="#D8DAD4" stroke-width="8"/>
+  <rect x="220" y="240" width="1160" height="92" rx="20" fill="#20221F"/>
+  <rect x="220" y="410" width="280" height="500" rx="28" fill="#315B7D"/>
+  <rect x="560" y="410" width="360" height="220" rx="28" fill="#E5E6E1"/>
+  <rect x="980" y="410" width="400" height="220" rx="28" fill="#F97316"/>
+  <rect x="560" y="690" width="820" height="220" rx="28" fill="#E5E6E1"/>
+  <text x="220" y="1000" fill="#20221F" font-family="Arial, sans-serif" font-size="64" font-weight="700">Project dashboard</text>
+</svg>
