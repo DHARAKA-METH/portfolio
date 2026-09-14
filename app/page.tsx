@@ -28,6 +28,7 @@ import {
   SiYoutube,
 } from "react-icons/si";
 import { InternshipStatus } from "@/components/ui/InternshipStatus";
+import { ImageCarousel } from "@/components/ui/image-carousel";
 
 const displayFont =
   "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
@@ -37,6 +38,24 @@ const bodyFont =
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF7] dark:focus-visible:ring-[#FF8A65] dark:focus-visible:ring-offset-[#10110F]";
+
+const projectHighlightImages = [
+  {
+    src: "/images/carousel-placeholder-1.svg",
+    alt: "Placeholder project architecture overview",
+    title: "Architecture",
+  },
+  {
+    src: "/images/carousel-placeholder-2.svg",
+    alt: "Placeholder project dashboard interface",
+    title: "Dashboard",
+  },
+  {
+    src: "/images/carousel-placeholder-3.svg",
+    alt: "Placeholder project mobile application interface",
+    title: "Mobile experience",
+  },
+];
 
 const introduction =
   "I'm Dharaka, a developer exploring new technologies and turning ideas into meaningful digital experiences. I'm passionate about continuously learning, building, and growing through technology. Currently an undergraduate at the University of Sri Jayewardenepura, pursuing my journey in technology and software engineering.";
@@ -643,6 +662,10 @@ export default function HomePage() {
                     ))}
                   </Timeline>
                 </Section> */}
+                <Section id="project-highlights">
+                  <SectionTitle>Project highlights</SectionTitle>
+                  <ImageCarousel images={projectHighlightImages} autoPlay interval={4000} showIndicators />
+                </Section>
                 <Section id="volunteer">
                   <SectionTitle>Activities & Contributions</SectionTitle>
                   <Timeline>
