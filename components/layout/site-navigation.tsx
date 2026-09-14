@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { BookOpen, Briefcase, Home, Moon, Sun } from "lucide-react";
@@ -13,24 +12,7 @@ export function SiteNavigation() {
   const { theme, setTheme } = useTheme();
   const pathname = usePathname();
   const isDark = theme === "dark";
-  const [isHeroVisible, setIsHeroVisible] = useState(pathname === "/");
-
-  useEffect(() => {
-    if (pathname !== "/") return;
-
-    const hero = document.getElementById("hero");
-    if (!hero) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsHeroVisible(entry.isIntersecting),
-      { threshold: 0.2 },
-    );
-
-    observer.observe(hero);
-    return () => observer.disconnect();
-  }, [pathname]);
-
-  const showBottomNavigation = pathname !== "/" || !isHeroVisible;
+  const showBottomNavigation = true;
 
   return (
     <>
