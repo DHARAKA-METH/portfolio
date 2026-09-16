@@ -282,15 +282,15 @@ export default function ProjectSectionPage() {
                  <h3 className={`${displayFont} mb-5 text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
                    Architecture &amp; supporting visuals
                  </h3>
-                 <div data-project-gallery className={`grid grid-cols-1 gap-1 ${project.extraImageUrls.length === 2 ? "md:flex md:aspect-[8/3]" : project.extraImageUrls.length > 1 ? "md:grid-cols-2" : ""}`}>
+                 <div data-project-gallery className="grid max-w-[860px] grid-cols-1 gap-5">
                    {project.extraImageUrls.map((imageUrl, index) => {
                      const imageLoaded = loadedImageUrls.has(imageUrl);
 
                      return (
-                       <div data-project-image className={`rounded-2xl ${project.extraImageUrls.length === 2 ? "cursor-pointer md:min-w-0 md:flex-1 md:transition-[flex] md:duration-500 md:hover:delay-150 md:hover:flex-[2.5] motion-reduce:md:transition-none" : ""}`} key={`${imageUrl}-${index}`}>
-                         <div className={`relative aspect-[4/3] w-full overflow-hidden rounded-2xl ${project.extraImageUrls.length === 2 ? "md:h-full md:aspect-auto" : ""}`}>
+                       <div data-project-image className="rounded-2xl" key={`${imageUrl}-${index}`}>
+                         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
                            <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageLoaded ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
-                           <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"}`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes={project.extraImageUrls.length === 2 ? "(min-width: 1024px) 700px, (min-width: 768px) 65vw, 100vw" : project.extraImageUrls.length > 1 ? "(min-width: 768px) 520px, 100vw" : "(min-width: 1024px) 1040px, 100vw"} style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                            <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"}`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 860px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
                          </div>
                        </div>
                      );
