@@ -144,7 +144,7 @@ export default function ProjectSectionPage() {
   useEffect(() => {
     const timer = window.setTimeout(
       () => setShowLoader(false),
-      prefersReducedMotion ? 0 : 500,
+      prefersReducedMotion ? 0 : 300,
     );
     return () => window.clearTimeout(timer);
   }, [prefersReducedMotion]);
@@ -201,6 +201,28 @@ export default function ProjectSectionPage() {
     return () => context.revert();
   }, [contentReady, prefersReducedMotion]);
 
+  useEffect(() => {
+    if (!contentReady) return;
+
+    const scrollToProjectHash = () => {
+      const hash = window.location.hash.slice(1);
+      if (!hash) return;
+
+      document.getElementById(decodeURIComponent(hash))?.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    };
+
+    const frame = window.requestAnimationFrame(scrollToProjectHash);
+    window.addEventListener("hashchange", scrollToProjectHash);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("hashchange", scrollToProjectHash);
+    };
+  }, [contentReady, prefersReducedMotion]);
+
   return (
     <>
       <AnimatePresence onExitComplete={() => setContentReady(true)}>
@@ -218,7 +240,7 @@ export default function ProjectSectionPage() {
 
       <div className="mt-[-60px] divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
         {projects.map((project) => (
-          <article data-project-reveal className="py-20 lg:py-32" key={project.title}>
+          <article data-project-reveal className="scroll-mt-20 py-20 lg:py-32" id={project.slug} key={project.slug}>
             <div className="w-full">
               <p className={`${displayFont} text-[14px] text-[#898E86] dark:text-[#7D8279]`}>
                 {project.period.join(" - ")}

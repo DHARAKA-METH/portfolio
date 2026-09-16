@@ -9,8 +9,8 @@ export function PortfolioLoader() {
       className="fixed inset-0 z-[100] flex items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0, transition: { duration: 0.25, ease: "easeOut" } }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
+      exit={{ opacity: 0, transition: { duration: 0.16, ease: "easeOut" } }}
+      transition={{ duration: 0.15, ease: "easeOut" }}
       aria-label="Loading Dharaka Meth portfolio"
       role="status"
     >
@@ -18,10 +18,10 @@ export function PortfolioLoader() {
         className="relative size-[150px] overflow-hidden rounded-4xl"
         initial={{ opacity: 0, scale: 0.85, y: 8 }}
         animate={{ opacity: 1, scale: [0.85, 1.04, 1], y: 0 }}
-        exit={{ opacity: 0, y: -10, transition: { duration: 0.25 } }}
+        exit={{ opacity: 0, y: -10, transition: { duration: 0.16 } }}
         transition={{
-          delay: 0.25,
-          duration: 0.75,
+          delay: 0.08,
+          duration: 0.35,
           ease: [0.22, 1, 0.36, 1],
         }}
       >
@@ -47,11 +47,11 @@ export function PortfolioLoader() {
           initial={{ rotate: 0 }}
           animate={{ rotate: 360 }}
           transition={{
-            delay: 0.9,
-            duration: 1.2,
+            delay: 0.35,
+            duration: 0.8,
             ease: "easeInOut",
             repeat: Infinity,
-            repeatDelay: 0.4,
+            repeatDelay: 0.2,
           }}
           aria-hidden="true"
         >

@@ -27,7 +27,7 @@ export default function BlogsPage() {
   useEffect(() => {
     const timer = window.setTimeout(
       () => setShowLoader(false),
-      prefersReducedMotion ? 0 : 500,
+      prefersReducedMotion ? 0 : 300,
     );
     return () => window.clearTimeout(timer);
   }, [prefersReducedMotion]);

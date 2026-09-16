@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 
 export type ImageCarouselImage = {
   src: string;
@@ -14,6 +15,9 @@ export type ImageCarouselImage = {
     name: string;
     icon: ReactNode;
   }[];
+  href?: string;
+  external?: boolean;
+  linkLabel?: string;
 };
 
 type ImageCarouselProps = {
@@ -154,25 +158,51 @@ export function ImageCarousel({
               transition={{ duration: prefersReducedMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
             >
               <Image className="object-contain" src={activeImage.src} alt={activeImage.alt} fill sizes="(min-width: 1024px) 760px, (min-width: 640px) 78vw, 90vw" priority={currentIndex === 0} />
-              {(activeImage.title || activeImage.description || activeImage.technologies?.length) && (
-                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#10110F]/85 via-[#10110F]/35 to-transparent px-5 pt-16 pb-5 text-white sm:px-7 sm:pb-6">
-                  {activeImage.title && <h3 className="text-[22px] leading-7 font-bold tracking-[-0.04em] sm:text-[26px]">{activeImage.title}</h3>}
-                  {activeImage.description && <p className="mt-1.5 max-w-[60ch] text-[14px] leading-6 text-white/85 sm:text-[15px]">{activeImage.description}</p>}
-                  {activeImage.technologies?.length && (
-                    <div className="mt-3 flex items-center gap-3" aria-label="Technology stack">
-                      {activeImage.technologies.map((technology) => (
-                        <span className="grid size-7 place-items-center text-white" key={technology.name} role="img" aria-label={technology.name} title={technology.name}>
-                          {technology.icon}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </figcaption>
-              )}
             </motion.figure>
           </AnimatePresence>
         </div>
       </motion.div>
+
+      {(activeImage.title || activeImage.description || activeImage.technologies?.length || activeImage.href) && (
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.div
+            className="mt-5"
+            key={`slide-content-${currentIndex}`}
+            initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: prefersReducedMotion ? 0 : -8 }}
+            transition={{ duration: prefersReducedMotion ? 0 : 0.25, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {activeImage.title && <h3 className="text-[22px] leading-7 font-bold tracking-[-0.04em] text-[#292C28] sm:text-[26px] dark:text-[#E8EAE5]">{activeImage.title}</h3>}
+            {activeImage.description && <p className="mt-1.5 max-w-[60ch] text-[15px] leading-6 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">{activeImage.description}</p>}
+            {activeImage.technologies?.length && (
+              <div className="mt-3 flex items-center gap-3" aria-label="Technology stack">
+                {activeImage.technologies.map((technology) => (
+                  <span className="group relative grid size-7 place-items-center text-[#40443E] dark:text-[#C5C9C0]" key={technology.name} role="img" aria-label={technology.name}>
+                    {technology.icon}
+                    <span className="pointer-events-none absolute top-full left-1/2 z-20 mt-2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[#20221F] px-2 py-1 text-[12px] font-medium text-white opacity-0 transition-opacity duration-150 group-hover:opacity-100 dark:bg-[#F2F3EE] dark:text-[#10110F]" aria-hidden="true">
+                      {technology.name}
+                    </span>
+                  </span>
+                ))}
+              </div>
+            )}
+            {activeImage.href && (
+              activeImage.external ? (
+                <a className={`${focusRing} mt-4 inline-flex items-center gap-1.5 rounded-sm text-[14px] font-semibold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={activeImage.href} target="_blank" rel="noreferrer">
+                  {activeImage.linkLabel ?? "View highlight"}
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                </a>
+              ) : (
+                <Link className={`${focusRing} mt-4 inline-flex items-center gap-1.5 rounded-sm text-[14px] font-semibold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={activeImage.href}>
+                  {activeImage.linkLabel ?? "View project"}
+                  <ArrowUpRight className="size-3.5" aria-hidden="true" />
+                </Link>
+              )
+            )}
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {hasMultipleImages && (
         <div className="mt-5 flex flex-col items-center gap-4">

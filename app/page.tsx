@@ -18,14 +18,22 @@ import { FaLinkedin } from "react-icons/fa6";
 import { ShinyButton } from "@/registry/magicui/shiny-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { blogs } from "@/data/blogs";
+import { projectHighlights } from "@/data/project-highlights";
 import { skills } from "@/data/skills";
 import { volunteerExperiences } from "@/data/volunteers";
 import {
   SiGithub,
   SiFirebase,
+  SiDocker,
+  SiDart,
+  SiExpo,
+  SiFlutter,
   SiInstagram,
+  SiMqtt,
+  SiMysql,
   SiNextdotjs,
   SiReact,
+  SiSpringboot,
   SiTiktok,
   SiTypescript,
   SiX,
@@ -43,38 +51,30 @@ const bodyFont =
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF7] dark:focus-visible:ring-[#FF8A65] dark:focus-visible:ring-offset-[#10110F]";
 
-const projectHighlightImages = [
-  {
-    src: "/images/carousel-placeholder-1.svg",
-    alt: "Placeholder project architecture overview",
-    title: "Architecture",
-    description: "A concise system overview connecting frontend, services, and data layers.",
-    technologies: [
-      { name: "Next.js", icon: <SiNextdotjs className="size-4" aria-hidden="true" /> },
-      { name: "TypeScript", icon: <SiTypescript className="size-4 text-[#3178C6]" aria-hidden="true" /> },
-    ],
-  },
-  {
-    src: "/images/carousel-placeholder-2.svg",
-    alt: "Placeholder project dashboard interface",
-    title: "Dashboard",
-    description: "A focused workspace for viewing essential project data at a glance.",
-    technologies: [
-      { name: "React", icon: <SiReact className="size-4 text-[#61DAFB]" aria-hidden="true" /> },
-      { name: "Firebase", icon: <SiFirebase className="size-4 text-[#FFCA28]" aria-hidden="true" /> },
-    ],
-  },
-  {
-    src: "/images/carousel-placeholder-3.svg",
-    alt: "Placeholder project mobile application interface",
-    title: "Mobile experience",
-    description: "A clear mobile flow designed around quick, accessible interactions.",
-    technologies: [
-      { name: "React Native", icon: <SiReact className="size-4 text-[#61DAFB]" aria-hidden="true" /> },
-      { name: "TypeScript", icon: <SiTypescript className="size-4 text-[#3178C6]" aria-hidden="true" /> },
-    ],
-  },
-];
+const projectHighlightIcons: Record<string, ReactNode> = {
+  "Spring Boot": <SiSpringboot className="size-4 text-[#6DB33F]" aria-hidden="true" />,
+  "Next.js": <SiNextdotjs className="size-4" aria-hidden="true" />,
+  Docker: <SiDocker className="size-4 text-[#2496ED]" aria-hidden="true" />,
+  MySQL: <SiMysql className="size-4 text-[#4479A1]" aria-hidden="true" />,
+  "React Native": <SiReact className="size-4 text-[#61DAFB]" aria-hidden="true" />,
+  Expo: <SiExpo className="size-4" aria-hidden="true" />,
+  Firebase: <SiFirebase className="size-4 text-[#FFCA28]" aria-hidden="true" />,
+  TypeScript: <SiTypescript className="size-4 text-[#3178C6]" aria-hidden="true" />,
+  Flutter: <SiFlutter className="size-4 text-[#02569B]" aria-hidden="true" />,
+  Dart: <SiDart className="size-4 text-[#0175C2]" aria-hidden="true" />,
+  MQTT: <SiMqtt className="size-4 text-[#660066]" aria-hidden="true" />,
+};
+
+const projectHighlightImages = projectHighlights.map((highlight) => ({
+  src: highlight.imageUrl,
+  alt: `${highlight.title} project highlight`,
+  title: highlight.title,
+  description: highlight.description,
+  technologies: highlight.technologies.map((technology) => ({ name: technology, icon: projectHighlightIcons[technology] })),
+  href: highlight.href,
+  external: highlight.external,
+  linkLabel: highlight.external ? "View on LinkedIn" : "View project",
+}));
 
 const introduction =
   "I'm Dharaka, a developer exploring new technologies and turning ideas into meaningful digital experiences. I'm passionate about continuously learning, building, and growing through technology. Currently an undergraduate at the University of Sri Jayewardenepura, pursuing my journey in technology and software engineering.";
@@ -158,7 +158,7 @@ export default function HomePage() {
   useEffect(() => {
     const timer = window.setTimeout(
       () => setShowLoader(false),
-      prefersReducedMotion ? 0 : 1750,
+      prefersReducedMotion ? 0 : 700,
     );
     return () => window.clearTimeout(timer);
   }, [prefersReducedMotion]);
@@ -682,8 +682,8 @@ export default function HomePage() {
                   </Timeline>
                 </Section> */}
                 <Section id="project-highlights">
-                  <SectionTitle>Project highlights</SectionTitle>
-                  <ImageCarousel images={projectHighlightImages} autoPlay interval={4000} showIndicators />
+                  <SectionTitle>Featured</SectionTitle>
+                  <ImageCarousel className="mt-[-40px]" images={projectHighlightImages} autoPlay interval={4000} showIndicators />
                 </Section>
                 <Section id="volunteer">
                   <SectionTitle>Activities & Contributions</SectionTitle>

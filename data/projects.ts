@@ -1,5 +1,6 @@
 export const projects = [
   {
+    slug: "jesa-2026",
     title: "J'pura Employability Skills Awards: JESA 2026",
     period: ["Jun 2026", "Jul 2026"],
     role: "Web Developer",
@@ -17,6 +18,7 @@ export const projects = [
     linkLabel: "Visit jesa.lk",
   },
     {
+    slug: "rescuepaws",
     title: "RescuePaws - Stray Dog Management System",
     period: ["Mar 2026", "Apr 2026"],
     role: "Full-Stack Developer",
@@ -31,6 +33,7 @@ export const projects = [
     linkLabel: "View on GitHub",
   },
   {
+    slug: "mindspace",
     title: "MindSpace - Mental Wellness Support Platform",
     period: ["Jul 2026", "Aug 2026"],
     role: "Mobile Application Developer",
@@ -53,6 +56,7 @@ export const projects = [
     linkLabel: "View on GitHub",
   },
       {
+    slug: "kazu",
     title: "KaZU",
     period: ["Oct 2025", "Dec 2025"],
     role: "Mobile Application Developer",
@@ -78,6 +82,7 @@ export const projects = [
   },
 
   {
+    slug: "smart-tourist-platform",
     title: "SmartTouristPlatform",
     period: ["Jun  2026", "Jun  2026"],
     role: "Backend Developer",
@@ -93,6 +98,7 @@ export const projects = [
   },
 
   {
+    slug: "job-zone",
     title: "Job Zone",
     period: ["Dec 2025", "Jan 2026"],
     role: "Backend Developer",
@@ -107,6 +113,7 @@ export const projects = [
     linkLabel: "View on GitHub",
   },
   {
+  slug: "subscription-tracker-api",
   title: "Subscription Tracker API",
   period: ["Apr 2025", "May 2026"],
   role: "Backend Developer",
@@ -121,6 +128,7 @@ export const projects = [
   linkLabel: "View on GitHub",
 },
   {
+  slug: "hospital-management-system",
   title: "Mini Funtional Hospital Management System",
   period: ["Apr 2025", "May 2026"],
   role: "Developer",
