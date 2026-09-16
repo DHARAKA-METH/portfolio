@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,6 +9,11 @@ export type ImageCarouselImage = {
   src: string;
   alt: string;
   title?: string;
+  description?: string;
+  technologies?: {
+    name: string;
+    icon: ReactNode;
+  }[];
 };
 
 type ImageCarouselProps = {
@@ -113,7 +118,7 @@ export function ImageCarousel({
       onMouseLeave={() => setIsHovered(false)}
     >
       <motion.div
-        className="relative aspect-[4/3] w-full touch-pan-y overflow-hidden rounded-2xl border border-[#D8DAD4] bg-[#F2F2EC] dark:border-[#363932] dark:bg-[#181A17]"
+        className="relative aspect-[4/3] w-full touch-pan-y overflow-hidden rounded-2xl"
         drag={hasMultipleImages && !prefersReducedMotion ? "x" : false}
         dragConstraints={{ left: 0, right: 0 }}
         dragElastic={0.12}
@@ -125,7 +130,7 @@ export function ImageCarousel({
         <AnimatePresence initial={false}>
           {sideSlides.map(({ index, position }) => (
             <motion.div
-              className={`pointer-events-none absolute top-[10%] h-[80%] w-[48%] overflow-hidden rounded-xl border border-[#D8DAD4]/70 bg-[#E5E6E1] dark:border-[#363932] dark:bg-[#282B26] ${position === "left" ? "-left-[18%]" : "-right-[18%]"}`}
+              className={`pointer-events-none absolute top-[10%] h-[80%] w-[48%] overflow-hidden rounded-xl ${position === "left" ? "-left-[18%]" : "-right-[18%]"}`}
               key={`${position}-${index}`}
               initial={{ opacity: 0, scale: 0.72, x: position === "left" ? -36 : 36 }}
               animate={{ opacity: 0.38, scale: 0.82, x: 0 }}
@@ -141,7 +146,7 @@ export function ImageCarousel({
         <div className="absolute inset-y-[5%] left-1/2 z-10 w-[78%] -translate-x-1/2">
           <AnimatePresence initial={false} mode="popLayout">
             <motion.figure
-              className="size-full overflow-hidden rounded-xl border border-[#D8DAD4] bg-[#FAFAF7] shadow-[0_20px_50px_rgba(32,34,31,0.16)] dark:border-[#50544A] dark:bg-[#10110F] dark:shadow-[0_20px_50px_rgba(0,0,0,0.36)]"
+              className="size-full overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(32,34,31,0.16)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.36)]"
               key={`active-${currentIndex}`}
               initial={{ opacity: 0, scale: 0.92, x: direction * 44 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -149,9 +154,19 @@ export function ImageCarousel({
               transition={{ duration: prefersReducedMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
             >
               <Image className="object-contain" src={activeImage.src} alt={activeImage.alt} fill sizes="(min-width: 1024px) 760px, (min-width: 640px) 78vw, 90vw" priority={currentIndex === 0} />
-              {activeImage.title && (
-                <figcaption className="absolute right-3 bottom-3 left-3 rounded-md bg-[#10110F]/72 px-3 py-2 text-center text-[13px] font-medium text-white backdrop-blur-sm dark:bg-[#F2F3EE]/82 dark:text-[#10110F]">
-                  {activeImage.title}
+              {(activeImage.title || activeImage.description || activeImage.technologies?.length) && (
+                <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#10110F]/85 via-[#10110F]/35 to-transparent px-5 pt-16 pb-5 text-white sm:px-7 sm:pb-6">
+                  {activeImage.title && <h3 className="text-[22px] leading-7 font-bold tracking-[-0.04em] sm:text-[26px]">{activeImage.title}</h3>}
+                  {activeImage.description && <p className="mt-1.5 max-w-[60ch] text-[14px] leading-6 text-white/85 sm:text-[15px]">{activeImage.description}</p>}
+                  {activeImage.technologies?.length && (
+                    <div className="mt-3 flex items-center gap-3" aria-label="Technology stack">
+                      {activeImage.technologies.map((technology) => (
+                        <span className="grid size-7 place-items-center text-white" key={technology.name} role="img" aria-label={technology.name} title={technology.name}>
+                          {technology.icon}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </figcaption>
               )}
             </motion.figure>

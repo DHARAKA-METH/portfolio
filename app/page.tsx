@@ -22,8 +22,12 @@ import { skills } from "@/data/skills";
 import { volunteerExperiences } from "@/data/volunteers";
 import {
   SiGithub,
+  SiFirebase,
   SiInstagram,
+  SiNextdotjs,
+  SiReact,
   SiTiktok,
+  SiTypescript,
   SiX,
   SiYoutube,
 } from "react-icons/si";
@@ -44,16 +48,31 @@ const projectHighlightImages = [
     src: "/images/carousel-placeholder-1.svg",
     alt: "Placeholder project architecture overview",
     title: "Architecture",
+    description: "A concise system overview connecting frontend, services, and data layers.",
+    technologies: [
+      { name: "Next.js", icon: <SiNextdotjs className="size-4" aria-hidden="true" /> },
+      { name: "TypeScript", icon: <SiTypescript className="size-4 text-[#3178C6]" aria-hidden="true" /> },
+    ],
   },
   {
     src: "/images/carousel-placeholder-2.svg",
     alt: "Placeholder project dashboard interface",
     title: "Dashboard",
+    description: "A focused workspace for viewing essential project data at a glance.",
+    technologies: [
+      { name: "React", icon: <SiReact className="size-4 text-[#61DAFB]" aria-hidden="true" /> },
+      { name: "Firebase", icon: <SiFirebase className="size-4 text-[#FFCA28]" aria-hidden="true" /> },
+    ],
   },
   {
     src: "/images/carousel-placeholder-3.svg",
     alt: "Placeholder project mobile application interface",
     title: "Mobile experience",
+    description: "A clear mobile flow designed around quick, accessible interactions.",
+    technologies: [
+      { name: "React Native", icon: <SiReact className="size-4 text-[#61DAFB]" aria-hidden="true" /> },
+      { name: "TypeScript", icon: <SiTypescript className="size-4 text-[#3178C6]" aria-hidden="true" /> },
+    ],
   },
 ];
 
