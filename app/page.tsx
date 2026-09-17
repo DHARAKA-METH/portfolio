@@ -9,12 +9,18 @@ import {
   ArrowDown,
   ArrowUp,
   ArrowUpRight,
+  Boxes,
   Check,
+  Cloud,
   Copy,
+  Database,
   Download,
+  KeyRound,
   Mail,
+  Terminal,
+  Waypoints,
 } from "lucide-react";
-import { FaLinkedin } from "react-icons/fa6";
+import { FaJava, FaLinkedin } from "react-icons/fa6";
 import { ShinyButton } from "@/registry/magicui/shiny-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { blogs } from "@/data/blogs";
@@ -26,16 +32,22 @@ import {
   SiFirebase,
   SiDocker,
   SiDart,
+  SiExpress,
   SiExpo,
   SiFlutter,
   SiInstagram,
   SiMqtt,
   SiMysql,
+  SiMongodb,
+  SiNginx,
+  SiNodedotjs,
   SiNextdotjs,
   SiReact,
   SiSpringboot,
+  SiTailwindcss,
   SiTiktok,
   SiTypescript,
+  SiJavascript,
   SiX,
   SiYoutube,
 } from "react-icons/si";
@@ -50,6 +62,32 @@ const bodyFont =
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF7] dark:focus-visible:ring-[#FF8A65] dark:focus-visible:ring-offset-[#10110F]";
+
+const techChipIcons: Record<string, ReactNode> = {
+  Java: <FaJava className="size-4 text-[#F89820]" aria-hidden="true" />,
+  "Spring Boot": <SiSpringboot className="size-4 text-[#6DB33F]" aria-hidden="true" />,
+  "Node.js": <SiNodedotjs className="size-4 text-[#5FA04E]" aria-hidden="true" />,
+  "Express.js": <SiExpress className="size-4 text-[#20232A] dark:text-[#E8EAE5]" aria-hidden="true" />,
+  "REST APIs": <Waypoints className="size-4 text-[#0EA5E9]" aria-hidden="true" />,
+  Microservices: <Boxes className="size-4 text-[#EA580C]" aria-hidden="true" />,
+  JWT: <KeyRound className="size-4 text-[#CA8A04]" aria-hidden="true" />,
+  MySQL: <SiMysql className="size-4 text-[#4479A1]" aria-hidden="true" />,
+  MongoDB: <SiMongodb className="size-4 text-[#47A248]" aria-hidden="true" />,
+  "Cloud Firestore": <Database className="size-4 text-[#F97316]" aria-hidden="true" />,
+  AWS: <Cloud className="size-4 text-[#FF9900]" aria-hidden="true" />,
+  Docker: <SiDocker className="size-4 text-[#2496ED]" aria-hidden="true" />,
+  NGINX: <SiNginx className="size-4 text-[#009639]" aria-hidden="true" />,
+  Firebase: <SiFirebase className="size-4 text-[#FFCA28]" aria-hidden="true" />,
+  "GitHub Actions": <SiGithub className="size-4" aria-hidden="true" />,
+  Linux: <Terminal className="size-4 text-[#FCC624]" aria-hidden="true" />,
+  JavaScript: <SiJavascript className="size-4 text-[#F7DF1E]" aria-hidden="true" />,
+  TypeScript: <SiTypescript className="size-4 text-[#3178C6]" aria-hidden="true" />,
+  React: <SiReact className="size-4 text-[#61DAFB]" aria-hidden="true" />,
+  "Next.js": <SiNextdotjs className="size-4" aria-hidden="true" />,
+  "Tailwind CSS": <SiTailwindcss className="size-4 text-[#06B6D4]" aria-hidden="true" />,
+  "React Native": <SiReact className="size-4 text-[#61DAFB]" aria-hidden="true" />,
+  Flutter: <SiFlutter className="size-4 text-[#02569B]" aria-hidden="true" />,
+};
 
 const projectHighlightIcons: Record<string, ReactNode> = {
   "Spring Boot": <SiSpringboot className="size-4 text-[#6DB33F]" aria-hidden="true" />,
@@ -129,9 +167,10 @@ function TechChips({ items }: { items: string[] }) {
     <div className="flex flex-wrap gap-2">
       {items.map((item) => (
         <span
-          className={`${displayFont} inline-flex min-h-8 items-center rounded-md border border-[#D8DAD4] px-2.5 py-1.5 text-[15px] leading-none font-normal tracking-[-0.01em] text-[#40443E] transition-colors hover:border-[#898E86] hover:text-[#20221F] dark:border-[#363932] dark:text-[#C5C9C0] dark:hover:border-[#7D8279] dark:hover:text-[#F2F3EE]`}
+          className={`${displayFont} inline-flex min-h-8 items-center gap-1.5 rounded-md border border-[#D8DAD4] px-2.5 py-1.5 text-[15px] leading-none font-normal tracking-[-0.01em] text-[#40443E] transition-colors hover:border-[#898E86] hover:text-[#20221F] dark:border-[#363932] dark:text-[#C5C9C0] dark:hover:border-[#7D8279] dark:hover:text-[#F2F3EE]`}
           key={item}
         >
+          {techChipIcons[item]}
           {item}
         </span>
       ))}
@@ -548,7 +587,7 @@ export default function HomePage() {
                   </div>
 
                   <div
-                    className={`${displayFont} ${focusRing} group absolute  top-[80%] sm:top-[75%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    className={`${displayFont} ${focusRing} group absolute  top-[72%] sm:top-[75%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
 
                     aria-label="Scroll to experience"
                     data-opening="scroll-cue"
@@ -683,7 +722,7 @@ export default function HomePage() {
                 </Section> */}
                 <Section id="project-highlights">
                   <SectionTitle>Featured</SectionTitle>
-                  <ImageCarousel className="mt-[-40px]" images={projectHighlightImages} autoPlay interval={4000} showIndicators />
+                  <ImageCarousel className="mt-[-20px]" images={projectHighlightImages} autoPlay interval={4000} showIndicators />
                 </Section>
                 <Section id="volunteer">
                   <SectionTitle>Activities & Contributions</SectionTitle>
@@ -792,18 +831,18 @@ export default function HomePage() {
                       <Social href="https://github.com/DHARAKA-METH" label="GitHub">
                         <SiGithub />
                       </Social>
-                      <Social href="https://x.com/DM_DESHAN" label="X">
+                      {/* <Social href="https://x.com/DM_DESHAN" label="X">
                         <SiX />
-                      </Social>
+                      </Social> */}
                       <Social href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" label="LinkedIn">
                         <FaLinkedin />
                       </Social>
-                      <Social href="https://youtube.com" label="YouTube">
+                      {/* <Social href="https://youtube.com" label="YouTube">
                         <SiYoutube />
-                      </Social>
-                      <Social href="https://tiktok.com" label="TikTok">
+                      </Social> */}
+                      {/* <Social href="https://tiktok.com" label="TikTok">
                         <SiTiktok />
-                      </Social>
+                      </Social> */}
                       <Social href="https://www.instagram.com/dharaka__" label="Instagram">
                         <SiInstagram />
                       </Social>

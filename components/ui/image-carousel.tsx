@@ -48,6 +48,8 @@ export function ImageCarousel({
   const [isHovered, setIsHovered] = useState(false);
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
   const [isManuallyPaused, setIsManuallyPaused] = useState(false);
+  const [isInViewport, setIsInViewport] = useState(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
   const resumeTimerRef = useRef<number | null>(null);
   const hasMultipleImages = images.length > 1;
 
@@ -61,6 +63,23 @@ export function ImageCarousel({
 
   useEffect(() => () => {
     if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
+  }, []);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setIsInViewport(true);
+        observer.disconnect();
+      },
+      { threshold: 0.15 },
+    );
+
+    observer.observe(carousel);
+    return () => observer.disconnect();
   }, []);
 
   const pauseAfterManualInteraction = () => {
@@ -112,14 +131,18 @@ export function ImageCarousel({
   };
 
   return (
-    <div
+    <motion.div
       className={`w-full overflow-hidden ${className}`}
+      ref={carouselRef}
       role="region"
       aria-label="Project highlights carousel"
       tabIndex={hasMultipleImages ? 0 : undefined}
       onKeyDown={handleKeyDown}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 28 }}
+      animate={isInViewport || prefersReducedMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 28 }}
+      transition={{ duration: prefersReducedMotion ? 0 : 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
       <motion.div
         className="relative aspect-[4/3] w-full touch-pan-y overflow-hidden rounded-2xl"
@@ -157,10 +180,21 @@ export function ImageCarousel({
               exit={{ opacity: 0, scale: 0.92, x: direction * -44 }}
               transition={{ duration: prefersReducedMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
             >
-              <Image className="object-contain" src={activeImage.src} alt={activeImage.alt} fill sizes="(min-width: 1024px) 760px, (min-width: 640px) 78vw, 90vw" priority={currentIndex === 0} />
+              <Image className="object-contain" src={activeImage.src} alt={activeImage.alt} fill loading="lazy" sizes="(min-width: 1024px) 760px, (min-width: 640px) 78vw, 90vw" />
             </motion.figure>
           </AnimatePresence>
         </div>
+
+        {hasMultipleImages && (
+          <div className="pointer-events-none absolute inset-y-0 right-4 left-4 z-20 hidden items-center justify-between lg:flex">
+            <button className={`${focusRing} pointer-events-auto grid size-11 place-items-center rounded-full border border-[#D8DAD4]/80 bg-[#FAFAF7]/85 text-[#40443E] shadow-sm backdrop-blur-sm transition-[transform,background-color] hover:scale-105 hover:bg-[#FAFAF7] dark:border-[#50544A] dark:bg-[#10110F]/85 dark:text-[#C5C9C0] dark:hover:bg-[#10110F]`} type="button" onClick={() => navigate(currentIndex - 1, true)} aria-label="Show previous image">
+              <ChevronLeft className="size-5" aria-hidden="true" />
+            </button>
+            <button className={`${focusRing} pointer-events-auto grid size-11 place-items-center rounded-full border border-[#D8DAD4]/80 bg-[#FAFAF7]/85 text-[#40443E] shadow-sm backdrop-blur-sm transition-[transform,background-color] hover:scale-105 hover:bg-[#FAFAF7] dark:border-[#50544A] dark:bg-[#10110F]/85 dark:text-[#C5C9C0] dark:hover:bg-[#10110F]`} type="button" onClick={() => navigate(currentIndex + 1, true)} aria-label="Show next image">
+              <ChevronRight className="size-5" aria-hidden="true" />
+            </button>
+          </div>
+        )}
       </motion.div>
 
       {(activeImage.title || activeImage.description || activeImage.technologies?.length || activeImage.href) && (
@@ -206,7 +240,7 @@ export function ImageCarousel({
 
       {hasMultipleImages && (
         <div className="mt-5 flex flex-col items-center gap-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 lg:hidden">
             <button className={`${focusRing} grid size-10 place-items-center rounded-full border border-[#D8DAD4] text-[#40443E] transition-colors hover:bg-[#F2F2EC] dark:border-[#363932] dark:text-[#C5C9C0] dark:hover:bg-[#232520]`} type="button" onClick={() => navigate(currentIndex - 1, true)} aria-label="Show previous image">
               <ChevronLeft className="size-4" aria-hidden="true" />
             </button>
@@ -231,6 +265,6 @@ export function ImageCarousel({
           )}
         </div>
       )}
-    </div>
+    </motion.div>
   );
 }

@@ -34,13 +34,13 @@ export const projectHighlights: ProjectHighlight[] = [
     imageUrl: "/images/kazu-architecture-1920x1440.png",
     href: "/projectSection#kazu",
   },
-  // {
-  //   id: "member-of-the-month",
-  //   title: "Member of the Month",
-  //   description: "Recognized as CSDS Member of the Month for August for my dedication and contributions as an IT member and developer.",
-  //   technologies: [],
-  //   imageUrl: "/images/member-of-august-1920x1440.png",
-  //   href: "https://www.linkedin.com/posts/career-skills-development-society_memberofthemonth-csds-cgu-activity-7505815636682510336-glPm?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADZ1nZkBrhl0FrnwwBwMyEvUJkGEoKruecE",
-  //   external: true,
-  // },
+  {
+    id: "member-of-the-month",
+    title: "Member of the Month",
+    description: "Recognized as CSDS Member of the Month for August for my dedication and contributions as an IT member and developer.",
+    technologies: [],
+    imageUrl: "/images/member-of-august-1920x1440.png",
+    href: "https://www.linkedin.com/posts/career-skills-development-society_memberofthemonth-csds-cgu-activity-7505815636682510336-glPm?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAADZ1nZkBrhl0FrnwwBwMyEvUJkGEoKruecE",
+    external: true,
+  },
 ];
