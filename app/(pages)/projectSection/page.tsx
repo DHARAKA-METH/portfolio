@@ -46,7 +46,9 @@ import { AnimatePresence, useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
+import { JsonLd } from "@/components/seo/json-ld";
 import { projects } from "@/data/projects";
+import { site } from "@/data/site";
 
 const displayFont =
   "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
@@ -225,6 +227,34 @@ export default function ProjectSectionPage() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "@id": `${site.url}/projectSection#projects`,
+          name: "Dharaka Meth software projects",
+          itemListElement: projects.map((project, position) => ({
+            "@type": "ListItem",
+            position: position + 1,
+            item: {
+              "@type": "SoftwareApplication",
+              name: project.title,
+              description: project.description,
+              url: `${site.url}/projectSection#${project.slug}`,
+              sameAs: project.url,
+              image: [...project.imageUrls, ...project.extraImageUrls],
+              applicationCategory:
+                project.slug === "mindspace"
+                  ? "HealthApplication"
+                  : project.slug === "kazu"
+                    ? "UtilitiesApplication"
+                    : "WebApplication",
+              programmingLanguage: project.technologies,
+              author: { "@id": site.personId },
+            },
+          })),
+        }}
+      />
       <AnimatePresence onExitComplete={() => setContentReady(true)}>
         {showLoader && <PortfolioLoader />}
       </AnimatePresence>

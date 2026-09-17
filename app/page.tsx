@@ -23,10 +23,12 @@ import {
 import { FaJava, FaLinkedin } from "react-icons/fa6";
 import { ShinyButton } from "@/registry/magicui/shiny-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
+import { JsonLd } from "@/components/seo/json-ld";
 import { blogs } from "@/data/blogs";
 import { projectHighlights } from "@/data/project-highlights";
 import { skills } from "@/data/skills";
 import { volunteerExperiences } from "@/data/volunteers";
+import { site } from "@/data/site";
 import {
   SiGithub,
   SiFirebase,
@@ -447,6 +449,15 @@ export default function HomePage() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          "@id": `${site.url}/#profile`,
+          url: site.url,
+          mainEntity: { "@id": site.personId },
+        }}
+      />
       <AnimatePresence>{showLoader && <PortfolioLoader />}</AnimatePresence>
       <motion.main
         ref={pageRef}

@@ -9,7 +9,9 @@ import { SiMedium } from "react-icons/si";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
+import { JsonLd } from "@/components/seo/json-ld";
 import { blogs } from "@/data/blogs";
+import { site } from "@/data/site";
 
 const displayFont =
   "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
@@ -63,6 +65,27 @@ export default function BlogsPage() {
 
   return (
     <>
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "Blog",
+          "@id": `${site.url}/Blogs#blog`,
+          url: `${site.url}/Blogs`,
+          name: "Dharaka Meth's technical writing",
+          description:
+            "Technical articles by Dharaka Meth about software engineering, backend development, and developer tools.",
+          author: { "@id": site.personId },
+          blogPost: blogs.map((blog) => ({
+            "@type": "BlogPosting",
+            headline: blog.title,
+            description: blog.excerpt,
+            datePublished: blog.publishedAt,
+            url: blog.url,
+            image: blog.image,
+            author: { "@id": site.personId },
+          })),
+        }}
+      />
       <AnimatePresence onExitComplete={() => setContentReady(true)}>
         {showLoader && <PortfolioLoader />}
       </AnimatePresence>
