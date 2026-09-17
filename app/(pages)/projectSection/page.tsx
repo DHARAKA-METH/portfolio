@@ -251,9 +251,12 @@ export default function ProjectSectionPage() {
               <p className={`${displayFont} mt-2 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}>
                 {project.role}
               </p>
-              <p className="mt-4 text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
-                {project.description}
-              </p>
+              <div className="mt-4 space-y-4 text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
+                <p>{project.description}</p>
+                {project.details && <p>{project.details}</p>}
+                {project.features && <p><span className="font-semibold text-[#40443E] dark:text-[#C5C9C0]">Features: </span>{project.features}</p>}
+                {project.note && <p>{project.note}</p>}
+              </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 {project.technologies.map((technology) => (
                   (() => {
@@ -289,10 +292,10 @@ export default function ProjectSectionPage() {
                 const imageLoaded = loadedImageUrls.has(imageUrl);
 
                 return (
-                <div data-project-image className="rounded-2xl bg-[#F2F2EC] p-2 dark:bg-[#181A17] sm:p-3" key={imageUrl}>
+                  <div data-project-image className="group cursor-pointer rounded-2xl bg-[#F2F2EC] p-2 dark:bg-[#181A17] sm:p-3" key={imageUrl}>
                   <div className={`relative w-full overflow-hidden rounded-xl ${project.screenType === "mobile" ? "aspect-[9/19]" : "aspect-[4/3]"}`}>
                     <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageLoaded ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
-                    <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"}`} src={imageUrl} alt={`${project.title} screenshot ${index + 1}`} fill sizes={project.imageUrls.length === 4 ? "(min-width: 1024px) 260px, 50vw" : "(min-width: 1024px) 520px, 50vw"} style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                    <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.02] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} screenshot ${index + 1}`} fill sizes={project.imageUrls.length === 4 ? "(min-width: 1024px) 260px, 50vw" : "(min-width: 1024px) 520px, 50vw"} style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
                   </div>
                 </div>
                 );
@@ -309,10 +312,10 @@ export default function ProjectSectionPage() {
                      const imageLoaded = loadedImageUrls.has(imageUrl);
 
                      return (
-                       <div data-project-image className="rounded-2xl" key={`${imageUrl}-${index}`}>
+                        <div data-project-image className="group cursor-pointer rounded-2xl" key={`${imageUrl}-${index}`}>
                          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
                            <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageLoaded ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
-                            <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"}`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 860px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                             <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.02] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 860px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
                          </div>
                        </div>
                      );

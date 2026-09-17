@@ -173,10 +173,11 @@ export function ImageCarousel({
         <div className="absolute inset-y-[5%] left-1/2 z-10 w-[78%] -translate-x-1/2">
           <AnimatePresence initial={false} mode="popLayout">
             <motion.figure
-              className="size-full overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(32,34,31,0.16)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.36)]"
+              className="size-full cursor-pointer overflow-hidden rounded-xl shadow-[0_20px_50px_rgba(32,34,31,0.16)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.36)]"
               key={`active-${currentIndex}`}
               initial={{ opacity: 0, scale: 0.92, x: direction * 44 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
+              whileHover={prefersReducedMotion ? undefined : { scale: 1.02 }}
               exit={{ opacity: 0, scale: 0.92, x: direction * -44 }}
               transition={{ duration: prefersReducedMotion ? 0 : 0.48, ease: [0.22, 1, 0.36, 1] }}
             >

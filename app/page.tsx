@@ -804,7 +804,7 @@ export default function HomePage() {
                         conversations about Software engineering .
                       </p>
                     </div>
-                    <div className="flex items-center gap-5 whitespace-nowrap">
+                    <div className="flex flex-wrap items-center gap-x-5 gap-y-3 whitespace-nowrap">
                       <a
                         className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
                         href="https://github.com/DHARAKA-METH"
@@ -823,6 +823,14 @@ export default function HomePage() {
                         Connect on LinkedIn
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
                       </a>
+                      <ShinyButton
+                        className={`${displayFont} ${focusRing} min-h-4 cursor-pointer rounded-full px-3 text-[13px] whitespace-nowrap`}
+                        type="button"
+                        onClick={() => window.alert("CV download coming soon.")}
+                      >
+                        <Download className="size-4 stroke-[1.75]" />
+                        Download CV
+                      </ShinyButton>
                     </div>
                   </div>
 
