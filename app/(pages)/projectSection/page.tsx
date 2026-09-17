@@ -132,7 +132,10 @@ export default function ProjectSectionPage() {
   const [showLoader, setShowLoader] = useState(true);
   const [contentReady, setContentReady] = useState(false);
   const [loadedImageUrls, setLoadedImageUrls] = useState<Set<string>>(() => new Set());
+  const [visibleImageUrls, setVisibleImageUrls] = useState<Set<string>>(() => new Set());
+  const [revealedImageUrls, setRevealedImageUrls] = useState<Set<string>>(() => new Set());
   const pageRef = useRef<HTMLElement>(null);
+  const pendingImageReveals = useRef(new Set<string>());
 
   const markImageLoaded = (imageUrl: string) => {
     setLoadedImageUrls((current) => {
@@ -202,6 +205,62 @@ export default function ProjectSectionPage() {
 
     return () => context.revert();
   }, [contentReady, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (!contentReady) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visibleUrls = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => entry.target.getAttribute("data-image-url"))
+          .filter((imageUrl): imageUrl is string => Boolean(imageUrl));
+
+        if (visibleUrls.length === 0) return;
+        setVisibleImageUrls((current) => {
+          const next = new Set(current);
+          visibleUrls.forEach((imageUrl) => next.add(imageUrl));
+          return next;
+        });
+        entries
+          .filter((entry) => entry.isIntersecting)
+          .forEach((entry) => observer.unobserve(entry.target));
+      },
+      { threshold: 0.1 },
+    );
+
+    pageRef.current
+      ?.querySelectorAll<HTMLElement>("[data-image-url]")
+      .forEach((image) => observer.observe(image));
+
+    return () => observer.disconnect();
+  }, [contentReady]);
+
+  useEffect(() => {
+    loadedImageUrls.forEach((imageUrl) => {
+      if (
+        !visibleImageUrls.has(imageUrl) ||
+        revealedImageUrls.has(imageUrl) ||
+        pendingImageReveals.current.has(imageUrl)
+      ) {
+        return;
+      }
+
+      pendingImageReveals.current.add(imageUrl);
+      // Let the hidden state paint before revealing fast or cached images.
+      window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          pendingImageReveals.current.delete(imageUrl);
+          setRevealedImageUrls((current) => {
+            if (current.has(imageUrl)) return current;
+            const next = new Set(current);
+            next.add(imageUrl);
+            return next;
+          });
+        });
+      });
+    });
+  }, [loadedImageUrls, revealedImageUrls, visibleImageUrls]);
 
   useEffect(() => {
     if (!contentReady) return;
@@ -319,13 +378,13 @@ export default function ProjectSectionPage() {
 
              {project.imageUrls.length > 0 && <div data-project-gallery className={`mt-8 grid grid-cols-2 gap-3 lg:mt-10 ${project.imageUrls.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-2"} sm:gap-4`}>
               {project.imageUrls.map((imageUrl, index) => {
-                const imageLoaded = loadedImageUrls.has(imageUrl);
+                const imageRevealed = revealedImageUrls.has(imageUrl);
 
                 return (
-                  <div data-project-image className="group cursor-pointer rounded-2xl bg-[#F2F2EC] p-2 dark:bg-[#181A17] sm:p-3" key={imageUrl}>
+                  <div data-project-image data-image-url={imageUrl} className="group cursor-pointer rounded-2xl bg-[#F2F2EC] p-2 dark:bg-[#181A17] sm:p-3" key={imageUrl}>
                   <div className={`relative w-full overflow-hidden rounded-xl ${project.screenType === "mobile" ? "aspect-[9/19]" : "aspect-[4/3]"}`}>
-                    <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageLoaded ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
-                    <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.02] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} screenshot ${index + 1}`} fill sizes={project.imageUrls.length === 4 ? "(min-width: 1024px) 260px, 50vw" : "(min-width: 1024px) 520px, 50vw"} style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                    <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageRevealed ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
+                    <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.02] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} screenshot ${index + 1}`} fill sizes={project.imageUrls.length === 4 ? "(min-width: 1024px) 260px, 50vw" : "(min-width: 1024px) 520px, 50vw"} style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
                   </div>
                 </div>
                 );
@@ -339,13 +398,13 @@ export default function ProjectSectionPage() {
                  </h3>
                  <div data-project-gallery className="grid max-w-[860px] grid-cols-1 gap-5">
                    {project.extraImageUrls.map((imageUrl, index) => {
-                     const imageLoaded = loadedImageUrls.has(imageUrl);
+                      const imageRevealed = revealedImageUrls.has(imageUrl);
 
-                     return (
-                        <div data-project-image className="group cursor-pointer rounded-2xl" key={`${imageUrl}-${index}`}>
-                         <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
-                           <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageLoaded ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
-                             <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageLoaded ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.02] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 860px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                      return (
+                        <div data-project-image data-image-url={imageUrl} className="group cursor-pointer rounded-2xl" key={`${imageUrl}-${index}`}>
+                          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+                            <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageRevealed ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
+                              <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.02] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 860px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
                          </div>
                        </div>
                      );
