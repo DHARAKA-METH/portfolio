@@ -138,11 +138,20 @@ export default function ProjectSectionPage() {
   const pendingImageReveals = useRef(new Set<string>());
 
   const markImageLoaded = (imageUrl: string) => {
-    setLoadedImageUrls((current) => {
-      if (current.has(imageUrl)) return current;
-      const next = new Set(current);
-      next.add(imageUrl);
-      return next;
+    if (loadedImageUrls.has(imageUrl) || pendingImageReveals.current.has(imageUrl)) return;
+
+    pendingImageReveals.current.add(imageUrl);
+    // Let the hidden state paint before revealing fast or cached images.
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        pendingImageReveals.current.delete(imageUrl);
+        setLoadedImageUrls((current) => {
+          if (current.has(imageUrl)) return current;
+          const next = new Set(current);
+          next.add(imageUrl);
+          return next;
+        });
+      });
     });
   };
 
