@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import {
+  ArrowDown,
+  ArrowUp,
   ArrowUpRight,
   BadgeCheck,
   Boxes,
@@ -129,6 +131,10 @@ const technologyIconColors: Record<keyof typeof technologyIcons, string> = {
 
 export default function ProjectSectionPage() {
   const prefersReducedMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const directionRef = useRef(1);
+  const showcaseRef = useRef<HTMLDivElement>(null);
+  const projectCount = projects.length;
   const [showLoader, setShowLoader] = useState(true);
   const [contentReady, setContentReady] = useState(false);
   const [loadedImageUrls, setLoadedImageUrls] = useState<Set<string>>(() => new Set());
@@ -138,21 +144,30 @@ export default function ProjectSectionPage() {
   const pendingImageReveals = useRef(new Set<string>());
 
   const markImageLoaded = (imageUrl: string) => {
-    if (loadedImageUrls.has(imageUrl) || pendingImageReveals.current.has(imageUrl)) return;
-
-    pendingImageReveals.current.add(imageUrl);
-    // Let the hidden state paint before revealing fast or cached images.
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        pendingImageReveals.current.delete(imageUrl);
-        setLoadedImageUrls((current) => {
-          if (current.has(imageUrl)) return current;
-          const next = new Set(current);
-          next.add(imageUrl);
-          return next;
-        });
-      });
+    setLoadedImageUrls((current) => {
+      if (current.has(imageUrl)) return current;
+      const next = new Set(current);
+      next.add(imageUrl);
+      return next;
     });
+  };
+
+  const selectProject = (index: number) => {
+    if (projectCount === 0) return;
+
+    const nextIndex = (index + projectCount) % projectCount;
+    if (nextIndex === activeIndex) return;
+
+    directionRef.current = index > activeIndex ? 1 : -1;
+    setActiveIndex(nextIndex);
+    window.history.pushState(null, "", `#${encodeURIComponent(projects[nextIndex].slug)}`);
+
+    if (showcaseRef.current && showcaseRef.current.getBoundingClientRect().top < 0) {
+      showcaseRef.current.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    }
   };
 
   useEffect(() => {
@@ -168,26 +183,15 @@ export default function ProjectSectionPage() {
 
     gsap.registerPlugin(ScrollTrigger);
     const context = gsap.context(() => {
-      gsap.fromTo(
-        "[data-project-heading]",
-        { autoAlpha: 0, y: 16 },
-        { autoAlpha: 1, y: 0, duration: 0.6, ease: "power3.out" },
-      );
-
       gsap.utils.toArray<HTMLElement>("[data-project-reveal]").forEach((project) => {
         gsap.fromTo(
           project,
-          { autoAlpha: 0, y: 24 },
+          { autoAlpha: 0, y: 16 * directionRef.current },
           {
             autoAlpha: 1,
             y: 0,
-            duration: 0.65,
+            duration: 0.3,
             ease: "power3.out",
-            scrollTrigger: {
-              trigger: project,
-              start: "top 86%",
-              once: true,
-            },
           },
         );
       });
@@ -213,7 +217,7 @@ export default function ProjectSectionPage() {
     }, pageRef);
 
     return () => context.revert();
-  }, [contentReady, prefersReducedMotion]);
+  }, [activeIndex, contentReady, prefersReducedMotion]);
 
   useEffect(() => {
     if (!contentReady) return;
@@ -243,7 +247,7 @@ export default function ProjectSectionPage() {
       .forEach((image) => observer.observe(image));
 
     return () => observer.disconnect();
-  }, [contentReady]);
+  }, [activeIndex, contentReady]);
 
   useEffect(() => {
     loadedImageUrls.forEach((imageUrl) => {
@@ -272,26 +276,34 @@ export default function ProjectSectionPage() {
   }, [loadedImageUrls, revealedImageUrls, visibleImageUrls]);
 
   useEffect(() => {
-    if (!contentReady) return;
+    const selectFromHash = () => {
+      let slug = "";
 
-    const scrollToProjectHash = () => {
-      const hash = window.location.hash.slice(1);
-      if (!hash) return;
+      try {
+        slug = decodeURIComponent(window.location.hash.slice(1));
+      } catch {
+        // Invalid hashes fall back to the first project.
+      }
 
-      document.getElementById(decodeURIComponent(hash))?.scrollIntoView({
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-        block: "start",
+      const foundIndex = projects.findIndex((project) => project.slug === slug);
+      const nextIndex = foundIndex >= 0 ? foundIndex : 0;
+      setActiveIndex((currentIndex) => {
+        if (nextIndex !== currentIndex) {
+          directionRef.current = nextIndex > currentIndex ? 1 : -1;
+        }
+        return nextIndex;
       });
     };
 
-    const frame = window.requestAnimationFrame(scrollToProjectHash);
-    window.addEventListener("hashchange", scrollToProjectHash);
+    selectFromHash();
+    window.addEventListener("hashchange", selectFromHash);
+    window.addEventListener("popstate", selectFromHash);
 
     return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("hashchange", scrollToProjectHash);
+      window.removeEventListener("hashchange", selectFromHash);
+      window.removeEventListener("popstate", selectFromHash);
     };
-  }, [contentReady, prefersReducedMotion]);
+  }, []);
 
   return (
     <>
@@ -326,105 +338,137 @@ export default function ProjectSectionPage() {
       <AnimatePresence onExitComplete={() => setContentReady(true)}>
         {showLoader && <PortfolioLoader />}
       </AnimatePresence>
-      {contentReady && <main ref={pageRef} className="mx-auto w-full max-w-[1120px] px-5 pb-20 sm:px-8 sm:pb-28 lg:px-10">
-      <section className="py-14 sm:py-20">
-        <h1 data-project-heading className={`${displayFont} text-[32px] font-bold tracking-[-0.055em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
-          Projects
-        </h1>
-        <p className="mt-3 text-[16px] leading-6 font-medium tracking-[-0.04em] text-[#929292]">
-          My work, my experiments, and my journey of continuous improvement.
-        </p>
-      </section>
+      {contentReady && (
+        <main
+          ref={pageRef}
+          className="mx-auto w-full max-w-[1120px] px-5 pb-[calc(7rem+env(safe-area-inset-bottom))] sm:w-[84%] sm:px-0 lg:w-[60%]"
+        >
+          <section className="pt-10 pb-7 sm:pt-14 sm:pb-8">
+            <h1 className={`${displayFont} text-[30px] font-bold tracking-[-0.045em] text-[#20221F] sm:text-[38px] dark:text-[#F2F3EE]`}>
+              Projects
+            </h1>
+            <p className="mt-3 max-w-xl text-[14px] leading-6 text-[#62675F] sm:text-[15px] dark:text-[#A6ABA1]">
+              My work, my experiments, and my journey of continuous improvement.
+            </p>
+          </section>
 
-      <div className="mt-[-60px] divide-y divide-[#E5E6E1] border-t border-[#E5E6E1] dark:divide-[#282B26] dark:border-[#282B26]">
-        {projects.map((project) => (
-          <article data-project-reveal className="scroll-mt-20 py-20 lg:py-32" id={project.slug} key={project.slug}>
-            <div className="w-full">
-              <p className={`${displayFont} text-[14px] text-[#898E86] dark:text-[#7D8279]`}>
-                {project.period.join(" - ")}
-              </p>
-              <h2 className={`${displayFont} mt-3 text-[24px] leading-tight font-bold tracking-[-0.04em] text-[#292C28] sm:text-[28px] dark:text-[#E8EAE5]`}>
-                {project.title}
-              </h2>
-              <p className={`${displayFont} mt-2 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}>
-                {project.role}
-              </p>
-              <div className="mt-4 space-y-4 text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
-                <p>{project.description}</p>
-                {project.details && <p>{project.details}</p>}
-                {project.features && <p><span className="font-semibold text-[#40443E] dark:text-[#C5C9C0]">Features: </span>{project.features}</p>}
-                {project.note && <p>{project.note}</p>}
-              </div>
-              <div className="mt-5 flex flex-wrap gap-2">
-                {project.technologies.map((technology) => (
-                  (() => {
-                    const TechnologyIcon = technologyIcons[technology as keyof typeof technologyIcons];
-                    const iconColor = technologyIconColors[technology as keyof typeof technologyIconColors];
+          <div ref={showcaseRef} className="relative scroll-mt-8 border-t border-[#E5E6E1] dark:border-[#282B26]">
+            <p className="sr-only" role="status" aria-live="polite" aria-atomic="true">
+              {projectCount > 0
+                ? `Project ${activeIndex + 1} of ${projectCount}: ${projects[activeIndex]?.title}`
+                : "No projects available"}
+            </p>
 
-                    return (
-                      <span className={`${displayFont} inline-flex items-center gap-1.5 rounded-md border border-[#D8DAD4] px-2.5 py-1.5 text-[14px] text-[#40443E] dark:border-[#363932] dark:text-[#C5C9C0]`} key={technology}>
-                        {TechnologyIcon && <TechnologyIcon className={`size-4 shrink-0 ${iconColor}`} aria-hidden="true" />}
-                        {technology}
-                      </span>
-                    );
-                  })()
-                ))}
-              </div>
-              <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
-                <a className={`${displayFont} inline-flex items-center gap-1.5 text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={project.url} target="_blank" rel="noreferrer">
-                  {project.linkLabel}
-                  <ArrowUpRight className="size-3.5 stroke-[1.75]" />
-                </a>
-                {project.demoUrl && (
-                  <a className={`${displayFont} inline-flex items-center gap-1.5 text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={project.demoUrl} target="_blank" rel="noreferrer">
-                    <SiYoutube className="size-3.5" />
-                    Demo video
-                    <ArrowUpRight className="size-3.5 stroke-[1.75]" />
-                  </a>
-                )}
-              </div>
-            </div>
+            {projects.slice(activeIndex, activeIndex + 1).map((project) => (
+              <article data-project-reveal className="min-w-0 scroll-mt-8 pt-5 pb-8 sm:pt-8 lg:pt-12" id={project.slug} key={project.slug}>
+                <div className="w-full">
+                  <p className={`${displayFont} text-[14px] text-[#62675F] dark:text-[#9EA594]`}>
+                    {project.period.join(" - ")}
+                  </p>
+                  <h2 className={`${displayFont} mt-3 text-[24px] leading-[1.2] font-bold tracking-[-0.035em] text-balance text-[#292C28] sm:text-[30px] dark:text-[#E8EAE5]`}>
+                    {project.title}
+                  </h2>
+                  <p className={`${displayFont} mt-2 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}>
+                    {project.role}
+                  </p>
+                  <div className="mt-5 space-y-4 text-[15px] leading-7 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">
+                    <p>{project.description}</p>
+                    {project.details && <p>{project.details}</p>}
+                    {project.features && (
+                      <p>
+                        <span className="font-semibold text-[#40443E] dark:text-[#C5C9C0]">Features: </span>
+                        {project.features}
+                      </p>
+                    )}
+                    {project.note && <p>{project.note}</p>}
+                  </div>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {project.technologies.map((technology) => {
+                      const TechnologyIcon = technologyIcons[technology as keyof typeof technologyIcons];
+                      const iconColor = technologyIconColors[technology as keyof typeof technologyIconColors];
 
-             {project.imageUrls.length > 0 && <div data-project-gallery className={`mt-8 grid grid-cols-2 gap-3 lg:mt-10 ${project.imageUrls.length === 4 ? "lg:grid-cols-4" : "lg:grid-cols-2"} sm:gap-4`}>
-              {project.imageUrls.map((imageUrl, index) => {
-                const imageRevealed = revealedImageUrls.has(imageUrl);
-
-                return (
-                  <div data-project-image data-image-url={imageUrl} className="group cursor-pointer rounded-2xl bg-[#F2F2EC] p-2 dark:bg-[#181A17] sm:p-3" key={imageUrl}>
-                  <div className={`relative w-full overflow-hidden rounded-xl ${project.screenType === "mobile" ? "aspect-[9/19]" : "aspect-[4/3]"}`}>
-                    <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageRevealed ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
-                    <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.02] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} screenshot ${index + 1}`} fill sizes={project.imageUrls.length === 4 ? "(min-width: 1024px) 260px, 50vw" : "(min-width: 1024px) 520px, 50vw"} style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                      return (
+                        <span className={`${displayFont} inline-flex items-center gap-1.5 rounded-lg border border-[#D8DAD4] bg-[#F5F6F1] px-2.5 py-1.5 text-[12px] text-[#40443E] dark:border-[#363932] dark:bg-[#171A15] dark:text-[#C5C9C0]`} key={technology}>
+                          {TechnologyIcon && <TechnologyIcon className={`size-4 shrink-0 ${iconColor}`} aria-hidden="true" />}
+                          {technology}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-3">
+                    <a className={`${displayFont} inline-flex min-h-11 items-center gap-2 rounded-md text-[14px] font-medium text-[#62675F] underline-offset-4 transition-colors hover:text-[#20221F] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={project.url} target="_blank" rel="noreferrer">
+                      {project.linkLabel}
+                      <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                    </a>
+                    {project.demoUrl && (
+                      <a className={`${displayFont} inline-flex min-h-11 items-center gap-2 rounded-md text-[14px] font-medium text-[#62675F] underline-offset-4 transition-colors hover:text-[#20221F] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={project.demoUrl} target="_blank" rel="noreferrer">
+                        <SiYoutube className="size-3.5" />
+                        Demo video
+                        <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+                      </a>
+                    )}
                   </div>
                 </div>
-                );
-               })}
-             </div>}
 
-             {project.extraImageUrls.length > 0 && (
-               <section className="mt-10 lg:mt-14">
-                 <h3 className={`${displayFont} mb-5 text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
-                   Architecture &amp; supporting visuals
-                 </h3>
-                 <div data-project-gallery className="grid max-w-[860px] grid-cols-1 gap-5">
-                   {project.extraImageUrls.map((imageUrl, index) => {
+                {project.imageUrls.length > 0 && (
+                  <div data-project-gallery className={`mt-7 grid gap-4 sm:gap-5 ${project.screenType === "mobile" ? project.imageUrls.length === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}>
+                    {project.imageUrls.map((imageUrl, index) => {
                       const imageRevealed = revealedImageUrls.has(imageUrl);
 
                       return (
-                        <div data-project-image data-image-url={imageUrl} className="group cursor-pointer rounded-2xl" key={`${imageUrl}-${index}`}>
-                          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+                        <div data-project-image data-image-url={imageUrl} className="group rounded-2xl border border-[#DFE2D9] bg-[#F2F2EC] p-2 transition-colors hover:border-[#AAB2A0] dark:border-[#2C3326] dark:bg-[#181A17] dark:hover:border-[#505B44] sm:p-3" key={imageUrl}>
+                          <div className={`relative w-full overflow-hidden rounded-xl ${project.screenType === "mobile" ? "aspect-[9/19]" : "aspect-[4/3]"}`}>
                             <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageRevealed ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
-                              <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.02] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 860px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
-                         </div>
-                       </div>
-                     );
-                   })}
-                 </div>
-               </section>
-             )}
-           </article>
-        ))}
-      </div>
-      </main>}
+                            <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.01] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} screenshot ${index + 1}`} fill sizes={project.imageUrls.length === 4 ? "(min-width: 1024px) 260px, 50vw" : "(min-width: 1024px) 520px, 100vw"} style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {project.extraImageUrls.length > 0 && (
+                  <section className="mt-10 lg:mt-14">
+                    <h3 className={`${displayFont} mb-5 text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
+                      Architecture &amp; supporting visuals
+                    </h3>
+                    <div data-project-gallery className="mx-auto grid max-w-[860px] grid-cols-1 gap-5">
+                      {project.extraImageUrls.map((imageUrl, index) => {
+                        const imageRevealed = revealedImageUrls.has(imageUrl);
+
+                        return (
+                          <div data-project-image data-image-url={imageUrl} className="group rounded-2xl" key={`${imageUrl}-${index}`}>
+                            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
+                              <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageRevealed ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
+                              <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.01] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 860px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+                )}
+              </article>
+            ))}
+
+            {projectCount > 0 && (
+              <nav aria-label="Project navigation" className="flex items-center justify-between gap-3 border-t border-[#E5E6E1] pt-5 lg:fixed lg:top-1/2 lg:left-[calc(80%+1.5rem)] lg:z-20 lg:w-24 lg:-translate-y-1/2 lg:flex-col lg:gap-5 lg:border-0 lg:pt-0 dark:border-[#282B26]">
+                <button type="button" onClick={() => selectProject(activeIndex - 1)} className="group flex min-h-14 min-w-16 flex-col items-center justify-center gap-2 rounded-xl px-3 py-2 text-[12px] text-[#62675F] transition-colors hover:bg-[#ECEEE6] hover:text-[#20221F] focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#A6ABA1] dark:hover:bg-[#20251B] dark:hover:text-[#F2F3EE]">
+                  <ArrowUp className="size-5" aria-hidden="true" />
+                  Previous
+                </button>
+                <span className="whitespace-nowrap text-[12px] tracking-[0.12em] text-[#62675F] tabular-nums dark:text-[#A6ABA1]">
+                  {String(activeIndex + 1).padStart(2, "0")} / {String(projectCount).padStart(2, "0")}
+                </span>
+                <button type="button" onClick={() => selectProject(activeIndex + 1)} className="group flex min-h-14 min-w-16 flex-col items-center justify-center gap-2 rounded-xl px-3 py-2 text-[12px] text-[#62675F] transition-colors hover:bg-[#ECEEE6] hover:text-[#20221F] focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#A6ABA1] dark:hover:bg-[#20251B] dark:hover:text-[#F2F3EE]">
+                  Next
+                  <ArrowDown className="size-5" aria-hidden="true" />
+                </button>
+              </nav>
+            )}
+          </div>
+        </main>
+      )}
     </>
   );
 }

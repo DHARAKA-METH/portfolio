@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 
 type Theme = "light" | "dark";
+const themeStorageKey = "portfolio-theme";
 
 const ThemeContext = createContext<{
   theme: Theme;
@@ -10,27 +11,53 @@ const ThemeContext = createContext<{
 } | null>(null);
 
 function applyTheme(theme: Theme) {
-  document.documentElement.classList.toggle("dark", theme === "dark");
+  const root = document.documentElement;
+  root.classList.toggle("dark", theme === "dark");
+  root.style.colorScheme = theme;
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setThemeState] = useState<Theme>("light");
 
   useEffect(() => {
-    const savedTheme = window.localStorage.getItem("portfolio-theme");
-    const initialTheme: Theme = savedTheme === "dark" ||
-      (!savedTheme && window.matchMedia("(prefers-color-scheme: dark)").matches)
-      ? "dark"
-      : "light";
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    let frame = 0;
 
-    applyTheme(initialTheme);
-    const frame = window.requestAnimationFrame(() => setThemeState(initialTheme));
-    return () => window.cancelAnimationFrame(frame);
+    const resolveTheme = (): Theme => {
+      const savedTheme = window.localStorage.getItem(themeStorageKey);
+      if (savedTheme === "light" || savedTheme === "dark") return savedTheme;
+      return mediaQuery.matches ? "dark" : "light";
+    };
+
+    const syncTheme = () => {
+      const nextTheme = resolveTheme();
+      applyTheme(nextTheme);
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(() => setThemeState(nextTheme));
+    };
+
+    const handleSystemThemeChange = () => {
+      if (!window.localStorage.getItem(themeStorageKey)) syncTheme();
+    };
+
+    const handleStorageChange = (event: StorageEvent) => {
+      if (event.key === themeStorageKey) syncTheme();
+    };
+
+    syncTheme();
+    mediaQuery.addEventListener("change", handleSystemThemeChange);
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      mediaQuery.removeEventListener("change", handleSystemThemeChange);
+      window.removeEventListener("storage", handleStorageChange);
+    };
   }, []);
 
   const setTheme = (nextTheme: Theme) => {
     applyTheme(nextTheme);
-    window.localStorage.setItem("portfolio-theme", nextTheme);
+    window.localStorage.setItem(themeStorageKey, nextTheme);
     setThemeState(nextTheme);
   };
 

@@ -2,6 +2,18 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
 @theme {
   --animate-shimmer-slide: shimmer-slide 3s ease-in-out infinite alternate;
   --animate-spin-around: spin-around 3s linear infinite;
