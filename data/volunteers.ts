@@ -7,8 +7,9 @@ export const volunteerExperiences = [
     description: "Contributed to the ICTS by supporting IT operations and assisting with the successful coordination of society events and activities.",
   },
   {
-    period: ["Jun 2026", "Jul 2026"],
-    name: "Career Skills Development Society - JESA 2026 ",
+    period: ["Jun 2026", "sep 2026"],
+    name: "Career Skills Development Society - JESA 2026",
+    award: "Announced as Member of the Month for August",
     role: "IT Member / Web Developer",
     description: "Revamped and developed the JESA 2026 website, improving its design, responsiveness, and user experience."
   },

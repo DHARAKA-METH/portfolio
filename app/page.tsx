@@ -731,18 +731,21 @@ export default function HomePage() {
                     ))}
                   </Timeline>
                 </Section> */}
-                <Section id="project-highlights">
+
+                 {/* commented feture section   ----------------- */}
+                {/* <Section id="project-highlights">
                   <SectionTitle>Featured</SectionTitle>
                   <ImageCarousel className="mt-[-20px]" images={projectHighlightImages} autoPlay interval={4000} showIndicators />
-                </Section>
+                </Section> */}
                 <Section id="volunteer">
                   <SectionTitle>Activities & Contributions</SectionTitle>
                   <Timeline>
                     {volunteerExperiences.map(
-                      ({ period, name, role, description }) => (
+                      ({ period, name, award, role, description }) => (
                         <TimelineItem period={period} key={`${name}-${role}-${period.join("-")}`}>
                           <Volunteer
                             name={name}
+                            award={award}
                             role={role}
                             description={description}
                           />
@@ -850,9 +853,9 @@ export default function HomePage() {
                       <Social href="https://github.com/DHARAKA-METH" label="GitHub">
                         <SiGithub />
                       </Social>
-                      {/* <Social href="https://x.com/DM_DESHAN" label="X">
+                      <Social href="https://x.com/DM_DESHAN" label="X">
                         <SiX />
-                      </Social> */}
+                      </Social>
                       <Social href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" label="LinkedIn">
                         <FaLinkedin />
                       </Social>
@@ -965,10 +968,12 @@ function TimelineItem({
 
 function Volunteer({
   name,
+  award,
   role,
   description,
 }: {
   name: string;
+  award?: string;
   role: string;
   description: string;
 }) {
@@ -979,6 +984,9 @@ function Volunteer({
           className={`${displayFont} text-[14px] sm:text-[20px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
         >
           {name}
+          {award && (
+            <span className="text-[#96773a] dark:text-[#dfcf73]"> - {award}</span>
+          )}
         </h3>
         <p
           className={`${displayFont} mt-1.5 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
