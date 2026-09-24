@@ -740,18 +740,9 @@ export default function HomePage() {
                 <Section id="volunteer">
                   <SectionTitle>Activities & Contributions</SectionTitle>
                   <Timeline>
-                    {volunteerExperiences.map(
-                      ({ period, name, award, role, description }) => (
-                        <TimelineItem period={period} key={`${name}-${role}-${period.join("-")}`}>
-                          <Volunteer
-                            name={name}
-                            award={award}
-                            role={role}
-                            description={description}
-                          />
-                        </TimelineItem>
-                      ),
-                    )}
+                    {volunteerExperiences.map((organization) => (
+                      <VolunteerGroup key={organization.name} {...organization} />
+                    ))}
                   </Timeline>
                 </Section>
 
@@ -937,73 +928,60 @@ function Timeline({ children }: { children: ReactNode }) {
   );
 }
 
-function TimelineItem({
-  period,
-  children,
-}: {
+type VolunteerExperience = {
   period: string[];
-  children: ReactNode;
+  name?: string;
+  role: string;
+  description: string;
+  website?: string;
+};
+
+function VolunteerGroup({
+  name,
+  award,
+  experiences,
+}: {
+  name: string;
+  award?: string;
+  experiences: VolunteerExperience[];
 }) {
   return (
     <div
-      className="relative grid gap-3 pb-12 pl-7 last:pb-0 before:absolute before:top-[7px] before:left-0 before:size-[9px] before:rounded-full before:bg-[#20221F] before:ring-4 before:ring-[#FAFAF7] dark:before:bg-[#F2F3EE] dark:before:ring-[#10110F] sm:grid-cols-[108px_1fr] sm:gap-7"
+      className="relative pb-12 pl-7 last:pb-0 before:absolute before:top-[7px] before:left-0 before:size-[9px] before:rounded-full before:bg-[#20221F] before:ring-4 before:ring-[#FAFAF7] dark:before:bg-[#F2F3EE] dark:before:ring-[#10110F]"
       data-reveal-item
     >
-      <p
-        className={`${displayFont} pt-px text-[14px] leading-5 text-[#898E86] dark:text-[#7D8279]`}
-      >
-        {period[0]}
-        {period[1] && (
-          <>
-            <span className="mx-1.5 text-[#B5B8B0] dark:text-[#55594F]">→</span>
-            <br className="hidden sm:block" />
-            {period[1]}
-          </>
-        )}
-      </p>
-      <div>{children}</div>
+      <h3 className={`${displayFont} text-[21px] leading-7 font-bold tracking-[-0.035em] text-[#292C28] sm:text-[24px] dark:text-[#E8EAE5]`}>
+        {name}
+      </h3>
+      {award && (
+        <p className={`${displayFont} mt-2 inline-flex rounded-full bg-[#F4E7C0] px-2.5 py-1 text-[12px] font-bold text-[#74520A] dark:bg-[#453710] dark:text-[#F1D98A]`}>
+          {award}
+        </p>
+      )}
+      <div className="relative mt-5 ml-1 border-l border-[#D8DAD4] pl-6 dark:border-[#363932]">
+        {experiences.map((experience) => (
+          <article className="relative pb-8 last:pb-0 before:absolute before:top-1.5 before:-left-[30px] before:size-[7px] before:rounded-full before:bg-[#898E86] before:ring-4 before:ring-[#FAFAF7] dark:before:bg-[#7D8279] dark:before:ring-[#10110F]" key={`${experience.role}-${experience.period.join("-")}`}>
+            <Volunteer {...experience} />
+          </article>
+        ))}
+      </div>
     </div>
   );
 }
 
-function Volunteer({
-  name,
-  award,
-  role,
-  description,
-}: {
-  name: string;
-  award?: string;
-  role: string;
-  description: string;
-}) {
+function Volunteer({ period, name, role, description, website }: VolunteerExperience) {
   return (
-    <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-start sm:gap-8">
-      <div>
-        <h3
-          className={`${displayFont} text-[14px] sm:text-[20px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
-        >
-          {name}
-          {award && (
-            <span className="text-[#96773a] dark:text-[#dfcf73]"> - {award}</span>
-          )}
-        </h3>
-        <p
-          className={`${displayFont} mt-1.5 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
-        >
-          {role}
-        </p>
-        <p className="mt-3 max-w-[64ch] text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
-          {description}
-        </p>
-      </div>
-      {/* <a
-        className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-        href="#contact"
-      >
-        Certificate
-        <ArrowUpRight className="size-3.5 stroke-[1.75]" />
-      </a> */}
+    <div>
+      {name && <h4 className={`${displayFont} text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#40443E] sm:text-[20px] dark:text-[#C5C9C0]`}>{name}</h4>}
+      <p className={`${displayFont} mt-1 text-[13px] text-[#898E86] dark:text-[#7D8279]`}>{period.join(" - ")}</p>
+      <p className={`${displayFont} mt-2 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}>{role}</p>
+      <p className="mt-3 max-w-[64ch] text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{description}</p>
+      {website && (
+        <a className={`${displayFont} ${focusRing} mt-3 inline-flex items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={website} target="_blank" rel="noreferrer">
+          Visit website
+          <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+        </a>
+      )}
     </div>
   );
 }

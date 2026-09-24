@@ -1,29 +1,54 @@
 export const volunteerExperiences = [
-  
   {
-    period: ["Sep 2026 - Present"],
     name: "ICTS - Information and Communication Technology Society",
-    role: "IT Operation Committee Member",
-    description: "Contributed to the ICTS by supporting IT operations and assisting with the successful coordination of society events and activities.",
+    experiences: [
+      {
+        period: ["Sep 2026", "Present"],
+        role: "IT Operations Committee Member",
+        description:
+          "Currently support IT operations and contribute to society events, technical activities, and other operational initiatives as part of the committee.",
+      },
+      {
+        period: ["Dec 2025", "Apr 2026"],
+        name: "CryptX 2.0 Hackathon",
+        role: "Organizing Committee Member - Hackathon Crew",
+        description:
+          "Contributed to the planning and execution of a hackathon for school and university students, supporting the online HackerRank round and the on-site final event while collaborating with the organizing team.",
+      },
+    ],
   },
   {
-    period: ["Jun 2026", "sep 2026"],
-    name: "Career Skills Development Society - JESA 2026",
-    award: "Announced as Member of the Month for August",
-    role: "IT Member / Web Developer",
-    description: "Revamped and developed the JESA 2026 website, improving its design, responsiveness, and user experience."
+    name: "Career Skills Development Society",
+    award: "Recognized as Member of the Month for August 2026",
+    experiences: [
+      {
+        period: ["Jun 2026", "Present"],
+        name: "Touch the Peak 2026",
+        role: "IT Member / Web Developer",
+        website: "https://touchthepeak.com/",
+        description:
+          "Contribute to the development and maintenance of the Touch the Peak 2026 website by resolving bugs, implementing new features, and improving existing functionality while collaborating with the development team using GitHub.",
+      },
+      {
+        period: ["Jun 2026", "Sep 2026"],
+        name: "JESA 2026",
+        role: "IT Member / Web Developer",
+        website: "https://jesa.lk/",
+        description:
+          "Contributed to the JESA 2026 website revamp by redesigning and implementing the registration process based on project requirements, adding form validation with Zod and automated registration emails using Resend while collaborating with the development team through GitHub.",
+      },
+    ],
   },
-
   {
-    period: ["Dec 2025", "Apr 2026"],
-    name: "ICTS - CryptX 2.0 Hackathon - 2026",
-    role: "Hackathon Crew Member - Organizing Committee",
-    description: "Supported the organizing committee with the planning and delivery of hackathon activities.",
-  },
-  {
-    period: ["Dec 2025", "Apr 2026"],
     name: "IEEE CS Student Branch Chapter - University of Sri Jayewardenepura",
-    role: "Programming Committee Member - Beauty of Cloud 2.0",
-    description: "Contributed to the programming committee for Beauty of Cloud 2.0.",
+    experiences: [
+      {
+        period: ["Dec 2025", "Apr 2026"],
+        name: "Beauty of Cloud 2.0",
+        role: "Programming Committee Member",
+        description:
+          "Supported IT operations and technical activities for Beauty of Cloud 2.0 as a member of the Programming Committee, collaborating with the team on event preparation and execution.",
+      },
+    ],
   },
 ];

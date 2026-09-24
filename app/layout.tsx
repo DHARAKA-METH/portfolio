@@ -11,19 +11,6 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const themeScript = `
-  (() => {
-    try {
-      const savedTheme = localStorage.getItem("portfolio-theme");
-      const theme = savedTheme === "light" || savedTheme === "dark"
-        ? savedTheme
-        : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      document.documentElement.classList.toggle("dark", theme === "dark");
-      document.documentElement.style.colorScheme = theme;
-    } catch {}
-  })();
-`;
-
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
@@ -37,6 +24,7 @@ export const metadata: Metadata = {
   creator: "Dharaka Meth",
   publisher: "Dharaka Meth",
   keywords: [
+    "Dharaka",
     "Dharaka Meth",
     "Backend Developer",
     "Linux",
@@ -120,9 +108,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
       <body className="flex min-h-full flex-col bg-[#FAFAF7] transition-colors duration-300 dark:bg-[#10110F]">
         <JsonLd data={structuredData} />
         <ThemeProvider>
