@@ -809,7 +809,7 @@ export default function HomePage() {
                         conversations about Software engineering .
                       </p>
                     </div>
-                    <div className="flex flex-wrap items-center gap-x-5 gap-y-3 whitespace-nowrap">
+                    <div className="flex flex-wrap items-center justify-center  gap-x-5 gap-y-3 whitespace-nowrap">
                       <a
                         className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
                         href="https://github.com/DHARAKA-METH"
@@ -839,7 +839,7 @@ export default function HomePage() {
                     </div>
                   </div>
 
-                  <div className="mt-8 flex items-center justify-between gap-5">
+                  <div className="mt-8 flex items-center justify-center gap-5 sm:justify-between">
                     <div className="flex flex-wrap gap-4 text-[#62675F] dark:text-[#A6ABA1]">
                       <Social href="https://github.com/DHARAKA-METH" label="GitHub">
                         <SiGithub />
@@ -863,11 +863,11 @@ export default function HomePage() {
                   </div>
 
                   <div
-                    className={`${displayFont} mt-7 flex flex-col justify-between gap-3 text-[14px] text-[#898E86] sm:flex-row dark:text-[#7D8279]`}
+                    className={`${displayFont} mt-7 flex flex-col items-center justify-center sm:justify-between gap-3 text-[14px] text-[#898E86] sm:flex-row dark:text-[#7D8279]`}
                   >
                     <p>© 2026 Dharaka Meth. All rights reserved.</p>
                     <button
-                      className={`${focusRing} inline-flex w-fit items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
+                      className={`${focusRing} cursor-pointer inline-flex w-fit items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
                       type="button"
                       onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" })}
                     >

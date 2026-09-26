@@ -54,4 +54,15 @@ export const blogs = [
     image: "https://media.licdn.com/dms/image/v2/D5612AQH0OD7slHw9Ow/article-cover_image-shrink_720_1280/B56aAQ3QBcIEBQ-/0/1786989317729?e=2147483647&v=beta&t=Y9ANh9Am-8QVj8IY7ff9XQKErE-R9_QGzxsYvrz_Oh4",
     accent: "from-[#3E4B58] to-[#657687]",
   },
+  {
+    title: "Database Migration කියන්නේ මොකක්ද? Spring Boot සහ Flyway එක්ක සරලව තේරුම් ගමු",
+    excerpt: "A practical Sinhala introduction to database migrations with Spring Boot and Flyway, covering versioned SQL files, schema history, and Hibernate validation.",
+    publishedAt: "2026-09-26",
+    date: "Sep 26, 2026",
+    tags: ["Spring Boot", "Flyway", "Database Migration"],
+    platform: "LinkedIn",
+    url: "https://www.linkedin.com/pulse/database-migration-%E0%B6%9A%E0%B6%BA%E0%B6%B1%E0%B6%B1-%E0%B6%B8%E0%B6%9A%E0%B6%9A%E0%B6%AF-spring-boot-%E0%B7%83%E0%B7%84-flyway-%E0%B6%91%E0%B6%9A%E0%B6%9A-koonkaduwage-az2dc",
+    image: "https://media.licdn.com/dms/image/v2/D5612AQFPUJ978Bhc2Q/article-cover_image-shrink_720_1280/B56aDccLFoKQAQ-/0/1790404774944?e=2147483647&v=beta&t=3hzkpgXpEtb9cvMXKOSfuBu6U5Aecql4fnQ6eKuiFo8",
+    accent: "from-[#245B72] to-[#3D8699]",
+  },
 ];
