@@ -382,6 +382,50 @@ export default function ProjectSectionPage() {
                     )}
                     {project.note && <p>{project.note}</p>}
                   </div>
+                  {project.apiEndpoints && (
+                    <section className="mt-8" aria-labelledby={`${project.slug}-api-endpoints`}>
+                      <h3 id={`${project.slug}-api-endpoints`} className={`${displayFont} text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
+                        API Endpoints
+                      </h3>
+                      <p className="mt-2 text-[14px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">
+                        Paths below are relative to their respective routers.
+                      </p>
+                      <div className="mt-3 grid gap-x-4 gap-y-2 sm:grid-cols-2">
+                        {project.apiEndpoints.map((section) => (
+                          <div key={section.title}>
+                            <h4 className={`${displayFont} text-[14px] font-semibold text-[#40443E] dark:text-[#C5C9C0]`}>
+                              {section.title}
+                            </h4>
+                            <ul className="mt-1 space-y-1">
+                              {section.endpoints.map((endpoint, index) => (
+                                <li className="text-[13px] leading-5 text-[#62675F] dark:text-[#A6ABA1]" key={`${endpoint.method}-${endpoint.path}-${index}`}>
+                                  <code className="mr-1.5 rounded bg-[#ECEEE6] px-1.5 py-0.5 text-[12px] font-semibold text-[#40443E] dark:bg-[#20251B] dark:text-[#D7DBD2]">
+                                    {endpoint.method} {endpoint.path}
+                                  </code>
+                                  {endpoint.description}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    </section>
+                  )}
+                  {project.fileStructure && (
+                    <section className="mt-8" aria-labelledby={`${project.slug}-file-structure`}>
+                      <h3 id={`${project.slug}-file-structure`} className={`${displayFont} text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
+                        Project Structure
+                      </h3>
+                      <p className="mt-2 text-[14px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">
+                        Tracked source files and directories in the repository.
+                      </p>
+                      <div className="mt-4 overflow-x-auto rounded-xl bg-[#ECEEE6] p-4 dark:bg-[#171A15] sm:p-5">
+                        <pre className="min-w-max font-mono text-[12px] leading-5 text-[#40443E] sm:text-[13px] dark:text-[#C5C9C0]">
+                          <code>{project.fileStructure}</code>
+                        </pre>
+                      </div>
+                    </section>
+                  )}
                   <div className="mt-5 flex flex-wrap gap-2">
                     {project.technologies.map((technology) => {
                       const TechnologyIcon = technologyIcons[technology as keyof typeof technologyIcons];
