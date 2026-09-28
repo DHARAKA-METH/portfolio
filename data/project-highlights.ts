@@ -15,7 +15,7 @@ export const projectHighlights: ProjectHighlight[] = [
     description: "A microservices platform for reporting and coordinating stray dog rescue cases.",
     technologies: ["Spring Boot", "Next.js", "Spring Cloud Gateway", "JWT", "MySQL", "Docker", "NGINX", "Cloudinary"],
     imageUrl: "/images/rescuepaws-architecture-adjusted-1920x1440.png",
-    href: "/projectSection/#rescuepaws",
+    href: "/projects#rescuepaws",
   },
     {
     id: "mindspace",
@@ -23,7 +23,7 @@ export const projectHighlights: ProjectHighlight[] = [
     description: "A student wellness platform for mood tracking, AI guidance, resources, and counselor support.",
     technologies: ["React Native", "Expo", "Firebase", "TypeScript"],
     imageUrl: "/images/mindspace-architecture-1920x1440.png",
-    href: "/projectSection/#mindspace",
+    href: "/projects#mindspace",
   },
 
   {
@@ -32,7 +32,7 @@ export const projectHighlights: ProjectHighlight[] = [
     description: "An IoT pet-tracking app with GPS, safe zones, live updates, and alerts.",
     technologies: ["Flutter", "Dart", "MQTT", "Firebase"],
     imageUrl: "/images/kazu-architecture-1920x1440.png",
-    href: "/projectSection#kazu",
+    href: "/projects#kazu",
   },
   {
     id: "member-of-the-month",

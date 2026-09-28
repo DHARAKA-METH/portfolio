@@ -311,7 +311,7 @@ export default function ProjectSectionPage() {
         data={{
           "@context": "https://schema.org",
           "@type": "ItemList",
-          "@id": `${site.url}/projectSection#projects`,
+          "@id": `${site.url}/projects#projects`,
           name: "Dharaka Meth software projects",
           itemListElement: projects.map((project, position) => ({
             "@type": "ListItem",
@@ -320,7 +320,7 @@ export default function ProjectSectionPage() {
               "@type": "SoftwareApplication",
               name: project.title,
               description: project.description,
-              url: `${site.url}/projectSection#${project.slug}`,
+              url: `${site.url}/projects#${project.slug}`,
               sameAs: project.url,
               image: [...project.imageUrls, ...project.extraImageUrls],
               applicationCategory:
@@ -444,7 +444,7 @@ export default function ProjectSectionPage() {
                       {project.linkLabel}
                       <ArrowUpRight className="size-3.5 stroke-[1.75]" />
                     </a>
-                    {project.demoUrl && (
+                    {"demoUrl" in project && project.demoUrl && (
                       <a className={`${displayFont} inline-flex min-h-11 items-center gap-2 rounded-md text-[14px] font-medium text-[#62675F] underline-offset-4 transition-colors hover:text-[#20221F] hover:underline focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={project.demoUrl} target="_blank" rel="noreferrer">
                         <SiYoutube className="size-3.5" />
                         Demo video

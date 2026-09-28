@@ -549,7 +549,7 @@ export default function HomePage() {
                     >
                       <ShinyButton
                         className={`${displayFont} ${focusRing} text-[16px]`}
-                        href="/projectSection"
+                        href="/projects"
                       >
                         My works
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
@@ -557,7 +557,7 @@ export default function HomePage() {
                       <span className="hidden select-none text-[#898E86] md:inline dark:text-[#7D8279]" aria-hidden="true">|</span>
                       {/* <ShinyButton
                         className={`${displayFont} ${focusRing} text-[16px] transition-colors hover:bg-[#F2F2EC] dark:hover:bg-[#232520]`}
-                        href="/Blogs"
+                        href="/blogs"
                         hover={false}
                         shine={false}
                       >
@@ -661,7 +661,7 @@ export default function HomePage() {
                     <SectionTitle>Featured projects</SectionTitle>
                     <Link
                       className={`${displayFont} ${focusRing} mb-8 inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-md px-3.5 text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] sm:mb-10 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                      href="/projectSection"
+                      href="/projects"
                     >
                       View more
                       <ArrowUpRight className="size-3.5 stroke-[1.75]" />
@@ -770,7 +770,7 @@ export default function HomePage() {
                         Notes on engineering concepts, tools, and the things I&apos;m learning.
                       </p>
                     </div>
-                    <Link className={`${displayFont} ${focusRing} mb-8 inline-flex shrink-0 items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] sm:mb-10 dark:text-[#A6ABA1]`} href="/Blogs">
+                    <Link className={`${displayFont} ${focusRing} mb-8 inline-flex shrink-0 items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] sm:mb-10 dark:text-[#A6ABA1]`} href="/blogs">
                       Read all
                       <ArrowUpRight className="size-3.5 stroke-[1.75]" />
                     </Link>

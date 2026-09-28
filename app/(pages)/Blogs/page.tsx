@@ -69,8 +69,8 @@ export default function BlogsPage() {
         data={{
           "@context": "https://schema.org",
           "@type": "Blog",
-          "@id": `${site.url}/Blogs#blog`,
-          url: `${site.url}/Blogs`,
+          "@id": `${site.url}/blogs#blog`,
+          url: `${site.url}/blogs`,
           name: "Dharaka Meth's technical writing",
           description:
             "Technical articles by Dharaka Meth about software engineering, backend development, and developer tools.",
