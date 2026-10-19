@@ -1,5 +1,30 @@
 export const projects = [
   {
+    slug: "traceusage",
+    title: "TraceUsage - API Usage Monitoring Platform",
+    period: ["2026", "Present"],
+    role: "Full-Stack Developer",
+    screenType: "desktop",
+    description:
+      "TraceUsage helps teams understand how REST APIs are used by monitoring endpoint traffic and frontend response-field access, so maintenance decisions are based on observed usage rather than assumptions.",
+    details:
+      "Built reusable Spring Boot and TypeScript SDKs to capture normalized endpoint activity and frontend field access without changing individual API controllers. Events flow through Apache Kafka for asynchronous processing, then PostgreSQL stores deduplicated, hourly aggregated usage data for analysis.",
+    features:
+      "Endpoint traffic and status monitoring · Response-field access tracking · Usage analytics dashboard · OpenAPI-aware field coverage · Lifecycle review signals",
+    mark: "TU",
+    accent: "from-[#4338CA] to-[#2563EB]",
+    imageUrls: [
+      "/projectimg/TraceUsageimg3.jpeg",
+      "/projectimg/TraceUsageimg1.jpeg",
+      "/projectimg/TraceUsageimg2.jpeg",
+      "/projectimg/TraceUsageimg4.jpeg",
+    ],
+    extraImageUrls: ["/projectimg/TraceUsageArchitecture.jpeg"],
+    technologies: ["Java", "Spring Boot", "Next.js", "TypeScript", "Apache Kafka", "PostgreSQL", "Docker", "REST APIs"],
+    url: "https://github.com/DHARAKA-METH/TraceUsage",
+    linkLabel: "View on GitHub",
+  },
+  {
     slug: "mindspace",
     title: "MindSpace - Student Wellness Application",
     period: ["Jul 2026", "Aug 2026"],

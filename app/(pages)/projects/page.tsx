@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import {
   SiCloudinary,
+  SiApachekafka,
   SiDart,
   SiDocker,
   SiExpo,
@@ -37,6 +38,7 @@ import {
   SiNextdotjs,
   SiNginx,
   SiNodedotjs,
+  SiPostgresql,
   SiReact,
   SiSharp,
   SiSpringboot,
@@ -45,6 +47,7 @@ import {
   SiUpstash,
   SiYoutube,
 } from "react-icons/si";
+import { FaJava } from "react-icons/fa6";
 import { AnimatePresence, useReducedMotion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -57,6 +60,7 @@ const displayFont =
   "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
 
 const technologyIcons = {
+  Java: FaJava,
   "Next.js": SiNextdotjs,
   TypeScript: SiTypescript,
   Firebase: SiFirebase,
@@ -78,6 +82,8 @@ const technologyIcons = {
   JWT: KeyRound,
   MySQL: SiMysql,
   Docker: SiDocker,
+  "Apache Kafka": SiApachekafka,
+  PostgreSQL: SiPostgresql,
   NGINX: SiNginx,
   Cloudinary: SiCloudinary,
   Microservices: Boxes,
@@ -94,6 +100,7 @@ const technologyIcons = {
 } as const;
 
 const technologyIconColors: Record<keyof typeof technologyIcons, string> = {
+  Java: "text-[#F89820]",
   "Next.js": "text-[#111111] dark:text-[#F2F3EE]",
   TypeScript: "text-[#3178C6]",
   Firebase: "text-[#FFCA28]",
@@ -115,6 +122,8 @@ const technologyIconColors: Record<keyof typeof technologyIcons, string> = {
   JWT: "text-[#CA8A04]",
   MySQL: "text-[#4479A1]",
   Docker: "text-[#2496ED]",
+  "Apache Kafka": "text-[#111111] dark:text-[#F2F3EE]",
+  PostgreSQL: "text-[#4169E1]",
   NGINX: "text-[#009639]",
   Cloudinary: "text-[#3448C5]",
   Microservices: "text-[#EA580C]",
@@ -475,6 +484,28 @@ export default function ProjectSectionPage() {
                   </div>
                 </div>
 
+                {project.extraImageUrls.length > 0 && (
+                  <section className="mt-10 lg:mt-14">
+                    <h3 className={`${displayFont} mb-5 text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
+                      Architecture &amp; supporting visuals
+                    </h3>
+                    <div data-project-gallery className="mx-auto grid max-w-[860px] grid-cols-1 gap-5 lg:relative lg:left-1/2 lg:w-[min(100vw-4rem,960px)] lg:max-w-none lg:-translate-x-1/2">
+                      {project.extraImageUrls.map((imageUrl, index) => {
+                        const imageRevealed = revealedImageUrls.has(imageUrl);
+
+                        return (
+                          <div data-project-image data-image-url={imageUrl} className="group rounded-2xl" key={`${imageUrl}-${index}`}>
+                            <div className="relative aspect-[8/3] w-full overflow-hidden rounded-2xl">
+                              <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageRevealed ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
+                              <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.01] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 960px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+                )}
+
                 {project.imageUrls.length > 0 && (
                   <div data-project-gallery className={`mt-7 grid gap-4 sm:gap-5 ${project.screenType === "mobile" ? project.imageUrls.length === 4 ? "grid-cols-2 lg:grid-cols-4" : "grid-cols-2" : "grid-cols-1 sm:grid-cols-2"}`}>
                     {project.imageUrls.map((imageUrl, index) => {
@@ -492,27 +523,6 @@ export default function ProjectSectionPage() {
                   </div>
                 )}
 
-                {project.extraImageUrls.length > 0 && (
-                  <section className="mt-10 lg:mt-14">
-                    <h3 className={`${displayFont} mb-5 text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
-                      Architecture &amp; supporting visuals
-                    </h3>
-                    <div data-project-gallery className="mx-auto grid max-w-[860px] grid-cols-1 gap-5">
-                      {project.extraImageUrls.map((imageUrl, index) => {
-                        const imageRevealed = revealedImageUrls.has(imageUrl);
-
-                        return (
-                          <div data-project-image data-image-url={imageUrl} className="group rounded-2xl" key={`${imageUrl}-${index}`}>
-                            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl">
-                              <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageRevealed ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
-                              <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.01] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 860px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </section>
-                )}
               </article>
               );
             })}

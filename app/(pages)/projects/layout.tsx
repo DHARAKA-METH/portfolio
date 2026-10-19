@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Projects",
   description:
-    "Software projects by Dharaka Meth, including MindSpace, RescuePaws, and Kazu.",
+    "Software projects by Dharaka Meth, including TraceUsage, MindSpace, RescuePaws, and Kazu.",
   alternates: { canonical: "/projects" },
 };
 
