@@ -9,6 +9,7 @@ import {
   BadgeCheck,
   Boxes,
   Braces,
+  ChevronDown,
   Cpu,
   Database,
   DatabaseBackup,
@@ -132,6 +133,7 @@ const technologyIconColors: Record<keyof typeof technologyIcons, string> = {
 export default function ProjectSectionPage() {
   const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [expandedProjectSlug, setExpandedProjectSlug] = useState<string | null>(null);
   const directionRef = useRef(1);
   const showcaseRef = useRef<HTMLDivElement>(null);
   const projectCount = projects.length;
@@ -159,6 +161,7 @@ export default function ProjectSectionPage() {
     if (nextIndex === activeIndex) return;
 
     directionRef.current = index > activeIndex ? 1 : -1;
+    setExpandedProjectSlug(null);
     setActiveIndex(nextIndex);
     window.history.pushState(null, "", `#${encodeURIComponent(projects[nextIndex].slug)}`);
 
@@ -287,6 +290,7 @@ export default function ProjectSectionPage() {
 
       const foundIndex = projects.findIndex((project) => project.slug === slug);
       const nextIndex = foundIndex >= 0 ? foundIndex : 0;
+      setExpandedProjectSlug(null);
       setActiveIndex((currentIndex) => {
         if (nextIndex !== currentIndex) {
           directionRef.current = nextIndex > currentIndex ? 1 : -1;
@@ -359,7 +363,11 @@ export default function ProjectSectionPage() {
                 : "No projects available"}
             </p>
 
-            {projects.slice(activeIndex, activeIndex + 1).map((project) => (
+            {projects.slice(activeIndex, activeIndex + 1).map((project) => {
+              const isDescriptionExpanded = expandedProjectSlug === project.slug;
+              const descriptionId = `${project.slug}-description`;
+
+              return (
               <article data-project-reveal className="min-w-0 scroll-mt-8 pt-5 pb-8 sm:pt-8 lg:pt-12" id={project.slug} key={project.slug}>
                 <div className="w-full">
                   <p className={`${displayFont} text-[14px] text-[#62675F] dark:text-[#9EA594]`}>
@@ -371,18 +379,31 @@ export default function ProjectSectionPage() {
                   <p className={`${displayFont} mt-2 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}>
                     {project.role}
                   </p>
-                  <div className="mt-5 space-y-4 text-[15px] leading-7 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">
-                    <p>{project.description}</p>
-                    {project.details && <p>{project.details}</p>}
-                    {project.features && (
+                  <div className="mt-5 space-y-4 text-[15px] leading-7 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]" id={descriptionId}>
+                    <p className={isDescriptionExpanded ? "" : "line-clamp-2"}>{project.description}</p>
+                    {isDescriptionExpanded && project.details && <p>{project.details}</p>}
+                    {isDescriptionExpanded && project.features && (
                       <p>
                         <span className="font-semibold text-[#40443E] dark:text-[#C5C9C0]">Features: </span>
                         {project.features}
                       </p>
                     )}
-                    {project.note && <p>{project.note}</p>}
+                    {isDescriptionExpanded && project.note && <p>{project.note}</p>}
                   </div>
-                  {project.apiEndpoints && (
+                  <button
+                    aria-controls={descriptionId}
+                    aria-expanded={isDescriptionExpanded}
+                    className={`${displayFont} mt-3 inline-flex cursor-pointer items-center gap-1 rounded-sm text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    type="button"
+                    onClick={() => setExpandedProjectSlug(isDescriptionExpanded ? null : project.slug)}
+                  >
+                    {isDescriptionExpanded ? "Show less" : "Read more"}
+                    <ChevronDown
+                      aria-hidden="true"
+                      className={`size-3.5 stroke-2 transition-transform ${isDescriptionExpanded ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                  {isDescriptionExpanded && project.apiEndpoints && (
                     <section className="mt-8" aria-labelledby={`${project.slug}-api-endpoints`}>
                       <h3 id={`${project.slug}-api-endpoints`} className={`${displayFont} text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
                         API Endpoints
@@ -411,7 +432,7 @@ export default function ProjectSectionPage() {
                       </div>
                     </section>
                   )}
-                  {project.fileStructure && (
+                  {isDescriptionExpanded && project.fileStructure && (
                     <section className="mt-8" aria-labelledby={`${project.slug}-file-structure`}>
                       <h3 id={`${project.slug}-file-structure`} className={`${displayFont} text-[18px] font-bold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>
                         Project Structure
@@ -493,7 +514,8 @@ export default function ProjectSectionPage() {
                   </section>
                 )}
               </article>
-            ))}
+              );
+            })}
 
             {projectCount > 0 && (
               <nav aria-label="Project navigation" className="flex items-center justify-between gap-3 border-t border-[#E5E6E1] pt-5 lg:fixed lg:top-1/2 lg:left-[calc(80%+1.5rem)] lg:z-20 lg:w-24 lg:-translate-y-1/2 lg:flex-col lg:gap-5 lg:border-0 lg:pt-0 dark:border-[#282B26]">

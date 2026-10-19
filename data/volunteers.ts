@@ -19,7 +19,7 @@ export const volunteerExperiences = [
   },
   {
     name: "Career Skills Development Society",
-    award: "Recognized as Member of the Month for August 2026",
+    award: "Member of the Month for August 2026",
     experiences: [
       {
         period: ["Jun 2026", "Present"],

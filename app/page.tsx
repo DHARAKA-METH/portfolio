@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
@@ -11,6 +11,7 @@ import {
   ArrowUpRight,
   Boxes,
   Check,
+  ChevronDown,
   Cloud,
   Copy,
   Database,
@@ -970,18 +971,42 @@ function VolunteerGroup({
 }
 
 function Volunteer({ period, name, role, description, website }: VolunteerExperience) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const descriptionId = useId();
+
   return (
     <div>
       {name && <h4 className={`${displayFont} text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#40443E] sm:text-[20px] dark:text-[#C5C9C0]`}>{name}</h4>}
       <p className={`${displayFont} mt-1 text-[13px] text-[#898E86] dark:text-[#7D8279]`}>{period.join(" - ")}</p>
       <p className={`${displayFont} mt-2 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}>{role}</p>
-      <p className="mt-3 max-w-[64ch] text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{description}</p>
-      {website && (
-        <a className={`${displayFont} ${focusRing} mt-3 inline-flex items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={website} target="_blank" rel="noreferrer">
-          Visit website
-          <ArrowUpRight className="size-3.5 stroke-[1.75]" />
-        </a>
-      )}
+      <p
+        className={`mt-3 max-w-[64ch] text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1] ${isExpanded ? "" : "line-clamp-2"}`}
+        id={descriptionId}
+      >
+        {description}
+      </p>
+      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <button
+          aria-controls={descriptionId}
+          aria-expanded={isExpanded}
+          aria-label={`${isExpanded ? "Show less" : "Read more"} about ${name ?? role}`}
+          className={`${displayFont} ${focusRing} inline-flex cursor-pointer items-center gap-1 rounded-sm text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+          type="button"
+          onClick={() => setIsExpanded((expanded) => !expanded)}
+        >
+          {isExpanded ? "Show less" : "Read more"}
+          <ChevronDown
+            aria-hidden="true"
+            className={`size-3.5 stroke-2 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+          />
+        </button>
+        {website && (
+          <a className={`${displayFont} ${focusRing} inline-flex items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={website} target="_blank" rel="noreferrer">
+            Visit website
+            <ArrowUpRight className="size-3.5 stroke-[1.75]" />
+          </a>
+        )}
+      </div>
     </div>
   );
 }
@@ -1029,4 +1054,3 @@ function Social({
     </a>
   );
 }
-
