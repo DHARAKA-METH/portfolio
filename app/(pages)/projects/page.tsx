@@ -492,10 +492,11 @@ export default function ProjectSectionPage() {
                     <div data-project-gallery className="mx-auto grid max-w-[860px] grid-cols-1 gap-5 lg:relative lg:left-1/2 lg:w-[min(100vw-4rem,960px)] lg:max-w-none lg:-translate-x-1/2">
                       {project.extraImageUrls.map((imageUrl, index) => {
                         const imageRevealed = revealedImageUrls.has(imageUrl);
+                        const isWideDiagram = imageUrl.includes("TraceUsage_Architecture");
 
                         return (
                           <div data-project-image data-image-url={imageUrl} className="group rounded-2xl" key={`${imageUrl}-${index}`}>
-                            <div className="relative aspect-[8/3] w-full overflow-hidden rounded-2xl">
+                            <div className={`relative w-full overflow-hidden rounded-2xl ${isWideDiagram ? "aspect-[8/3]" : "aspect-[4/3]"}`}>
                               <div className={`absolute inset-0 bg-[#E5E6E1] transition-opacity duration-200 motion-reduce:animate-none motion-reduce:transition-none dark:bg-[#282B26] ${imageRevealed ? "opacity-0" : "animate-pulse"}`} aria-hidden="true" />
                               <Image className={`object-contain object-center transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${imageRevealed ? "scale-100 opacity-100" : "scale-[1.015] opacity-0"} group-hover:scale-[1.01] motion-reduce:group-hover:scale-100`} src={imageUrl} alt={`${project.title} supporting visual ${index + 1}`} fill sizes="(min-width: 1024px) 960px, 100vw" style={prefersReducedMotion ? undefined : { transitionDelay: `${index * 60}ms` }} onLoad={() => markImageLoaded(imageUrl)} onError={() => markImageLoaded(imageUrl)} />
                             </div>
