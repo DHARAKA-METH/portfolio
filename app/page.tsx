@@ -18,6 +18,7 @@ import {
   Download,
   KeyRound,
   Mail,
+  Image as ImageIcon,
   Terminal,
   Waypoints,
 } from "lucide-react";
@@ -117,6 +118,29 @@ const projectHighlightImages = projectHighlights.map((highlight) => ({
   linkLabel: highlight.external ? "View on LinkedIn" : "View project",
 }));
 
+const realWorldContributions = [
+  {
+    id: "jesa",
+    title: "JESA 2026",
+    role: "IT Member / Web Developer",
+    period: "Jun 2026 – Sep 2026",
+    description:
+      "Helped revamp the registration experience, adding form validation with Zod and automated registration emails with Resend.",
+    website: "https://jesa.lk/",
+    domain: "jesa.lk",
+  },
+  {
+    id: "touch-the-peak",
+    title: "Touch the Peak 2026",
+    role: "IT Member / Web Developer",
+    period: "Jun 2026 – Present",
+    description:
+      "Help maintain the event website by fixing bugs and building new features with the development team using GitHub.",
+    website: "https://touchthepeak.com/",
+    domain: "touchthepeak.com",
+  },
+];
+
 const introduction =
   "I'm Dharaka, a developer exploring new technologies and turning ideas into meaningful digital experiences. I'm passionate about continuously learning, building, and growing through technology. Currently an undergraduate at the University of Sri Jayewardenepura, pursuing my journey in technology and software engineering.";
 
@@ -189,7 +213,11 @@ export default function HomePage() {
   const [showLoader, setShowLoader] = useState(true);
   const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
+  const [activeContributionId, setActiveContributionId] = useState(realWorldContributions[0].id);
   const pageRef = useRef<HTMLElement>(null);
+  const activeContribution = realWorldContributions.find(
+    (contribution) => contribution.id === activeContributionId,
+  ) ?? realWorldContributions[0];
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText("deshandm699@gmail.com");
@@ -281,8 +309,8 @@ export default function HomePage() {
 
       openingTimeline.fromTo(
         '[data-opening="profile"]',
-        { autoAlpha: 0, rotate: -5, scale: 0.82 },
-        { autoAlpha: 1, rotate: 0, scale: 1, duration: 0.7 },
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.7 },
         "-=0.25",
       );
       openingTimeline.fromTo(
@@ -531,14 +559,14 @@ export default function HomePage() {
                   className="relative flex min-h-0 flex-1 scroll-mt-0 items-center justify-center py-16 pb-28 sm:py-20 sm:pb-32"
                   id="hero"
                 >
-                  <div className="w-full max-w-[780px] text-center">
-                    <div className="flex items-center justify-center gap-5">
-                      <div className="shrink-0" data-opening="profile">
-                        <Image className="size-[120px] rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10" src="/profile.png" alt="Portrait of Dharaka Meth" width={120} height={120} priority />
+                  <div className="w-full max-w-[780px] text-center lg:grid lg:max-w-[1040px] lg:grid-cols-[300px_minmax(0,1fr)] lg:items-center lg:gap-x-16 lg:text-left">
+                    <div className="flex items-center justify-center gap-5 lg:contents">
+                      <div className="shrink-0 lg:col-start-1 lg:row-span-4 lg:row-start-1 lg:justify-self-center" data-opening="profile">
+                        <Image className="size-[120px] rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10 lg:size-[280px] lg:rounded-2xl lg:shadow-[0_24px_60px_rgba(32,34,31,0.18)] dark:lg:shadow-[0_24px_60px_rgba(0,0,0,0.4)]" src="/profile.png" alt="Portrait of Dharaka Meth" width={1122} height={1402} sizes="(min-width: 1024px) 280px, 120px" priority unoptimized />
                       </div>
-                      <div className="min-w-0 text-left" data-opening="identity">
+                      <div className="min-w-0 text-left lg:col-start-2 lg:row-start-1" data-opening="identity">
                         <h1
-                          className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] text-[26px] leading-[1.2] font-medium tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE]"
+                          className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] text-[26px] leading-[1.2] font-medium tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE] lg:text-[48px] lg:leading-[1.05] lg:font-semibold lg:tracking-[-0.055em]"
                         >
                           Dharaka Meth
                         </h1>
@@ -551,7 +579,7 @@ export default function HomePage() {
                     </div>
 
                     <p
-                      className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] mx-auto mt-4 max-w-[62ch] whitespace-normal text-pretty text-[16px] leading-6 font-medium tracking-[-0.04em] text-[#929292] [word-spacing:normal]"
+                      className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] mx-auto mt-4 max-w-[62ch] whitespace-normal text-pretty text-[16px] leading-6 font-medium tracking-[-0.04em] text-[#929292] [word-spacing:normal] lg:col-start-2 lg:row-start-2 lg:mx-0 lg:mt-5"
                       aria-label={introduction}
                       data-opening="intro"
                     >
@@ -565,7 +593,7 @@ export default function HomePage() {
                     </p>
 
                     <div
-                      className="mt-7 flex flex-wrap items-center justify-center gap-3"
+                      className="mt-7 flex flex-wrap items-center justify-center gap-3 lg:col-start-2 lg:row-start-3 lg:justify-start"
                       data-opening="actions"
                     >
                       <ShinyButton
@@ -605,7 +633,7 @@ export default function HomePage() {
                     </div>
 
                     <div
-                      className={`${displayFont} mt-7 flex flex-wrap justify-center gap-x-6 gap-y-3 text-[15px] text-[#62675F] dark:text-[#A6ABA1]`}
+                      className={`${displayFont} mt-7 flex flex-wrap justify-center gap-x-6 gap-y-3 text-[15px] text-[#62675F] dark:text-[#A6ABA1] lg:col-start-2 lg:row-start-4 lg:justify-start`}
                       data-opening="meta"
                     >
                       {/* <TextLink href="https://github.com/DHARAKA-METH" external>
@@ -619,7 +647,7 @@ export default function HomePage() {
                   </div>
 
                   <div
-                    className={`${displayFont} ${focusRing} group absolute  top-[72%] sm:top-[75%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                    className={`${displayFont} ${focusRing} group absolute  top-[72%] sm:top-[75%]  left-1/2 inline-flex -translate-x-1/2 flex-col items-center gap-2 rounded-xl px-4 py-20 text-[18px] font-bold tracking-[0.02em] text-[#62675F] transition-colors hover:text-[#20221F] sm:bottom-7 dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE] lg:top-auto lg:bottom-2 lg:py-0`}
 
                     aria-label="Scroll to experience"
                     data-opening="scroll-cue"
@@ -846,14 +874,150 @@ export default function HomePage() {
                   </div>
                 </section>
 
-                <Section id="volunteer">
-                  <SectionTitle>Activities & Contributions</SectionTitle>
-                  <Timeline>
+                <section
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen scroll-mt-16 items-center bg-[#FAFAF7] py-16 dark:bg-[#10110F] sm:py-20"
+                  id="real-world-contributions"
+                  data-gsap-section
+                >
+                  <div className="mx-auto grid w-full max-w-[1240px] items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:px-12">
+                    <div>
+                      <div className="mb-7" data-section-title>
+                        <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                          Team projects · 2026
+                        </p>
+                        <h2 className={`${displayFont} text-[32px] leading-[1.1] font-semibold tracking-[-0.06em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
+                          Real-World Contributions
+                        </h2>
+                        <p className="mt-4 max-w-[50ch] text-[15px] leading-7 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">
+                          Working with student teams to improve event websites and make their registration experiences work better.
+                        </p>
+                      </div>
+
+                      <div className="space-y-3" aria-label="Choose a contribution">
+                        {realWorldContributions.map((contribution) => {
+                          const isActive = contribution.id === activeContribution.id;
+                          return (
+                            <div
+                              className={`rounded-xl border p-4 transition-colors sm:p-5 ${isActive ? "border-[#A6AAA0] bg-white shadow-[0_10px_30px_rgba(32,34,31,0.06)] dark:border-[#60655B] dark:bg-[#1A1C18]" : "border-[#E2E3DD] bg-transparent hover:border-[#BFC2BA] hover:bg-white/60 dark:border-[#2A2D27] dark:hover:border-[#50544A] dark:hover:bg-[#181A17]"}`}
+                              key={contribution.id}
+                              data-reveal-item
+                            >
+                              <button
+                                className={`${focusRing} flex w-full flex-wrap items-start justify-between gap-3 rounded-lg text-left`}
+                                type="button"
+                                onClick={() => setActiveContributionId(contribution.id)}
+                                aria-pressed={isActive}
+                              >
+                                <span>
+                                  <span className={`${displayFont} block text-[19px] font-semibold tracking-[-0.035em] text-[#20221F] sm:text-[21px] dark:text-[#F2F3EE]`}>
+                                    {contribution.title}
+                                  </span>
+                                  <span className="mt-1 block text-[14px] text-[#62675F] dark:text-[#A6ABA1]">{contribution.role}</span>
+                                </span>
+                                <span className={`${displayFont} whitespace-nowrap text-[12px] text-[#898E86] dark:text-[#7D8279]`}>
+                                  {contribution.period}
+                                </span>
+                              </button>
+                              {isActive && (
+                                <div className="mt-3">
+                                  <p className="max-w-[54ch] text-[14px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">
+                                    {contribution.description}
+                                  </p>
+                                  <a
+                                    className={`${focusRing} mt-3 inline-flex items-center gap-1.5 rounded-sm text-[14px] font-semibold text-[#40443E] transition-colors hover:text-[#20221F] dark:text-[#C5C9C0] dark:hover:text-[#F2F3EE]`}
+                                    href={contribution.website}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                  >
+                                    Visit {contribution.domain}
+                                    <ArrowUpRight className="size-3.5" />
+                                  </a>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    <div data-reveal-item>
+                      <div
+                        className="relative aspect-[1.28] overflow-hidden rounded-2xl border border-[#D8DAD4] bg-[#EEEFEA] p-3 shadow-[0_24px_70px_rgba(32,34,31,0.10)] sm:rounded-[24px] sm:p-4 dark:border-[#363932] dark:bg-[#1A1C18] dark:shadow-[0_24px_70px_rgba(0,0,0,0.30)]"
+                        data-project-image
+                        role="img"
+                        aria-label={`Website screenshot placeholder for ${activeContribution.title}`}
+                      >
+                        <div className="flex h-full flex-col overflow-hidden rounded-xl border border-[#D8DAD4] bg-[#FAFAF7] dark:border-[#363932] dark:bg-[#10110F]">
+                          <div className="flex h-10 shrink-0 items-center gap-1.5 border-b border-[#E7E8E2] px-3 dark:border-[#292C27] sm:h-12 sm:px-4">
+                            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
+                            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
+                            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
+                            <span className="ml-2 min-w-0 flex-1 truncate rounded-md bg-[#F0F1EC] px-3 py-1 text-[11px] text-[#898E86] dark:bg-[#1A1C18] dark:text-[#A6ABA1]">
+                              {activeContribution.domain}
+                            </span>
+                          </div>
+                          <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_50%_35%,rgba(194,65,12,0.08),transparent_58%)] px-5 text-center dark:bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,138,101,0.08),transparent_58%)]">
+                            <div className="max-w-[270px]">
+                              <span className="mx-auto grid size-12 place-items-center rounded-xl border border-[#D8DAD4] bg-white text-[#898E86] dark:border-[#363932] dark:bg-[#181A17] dark:text-[#A6ABA1]">
+                                <ImageIcon className="size-5" aria-hidden="true" />
+                              </span>
+                              <p className={`${displayFont} mt-4 text-[15px] font-semibold text-[#40443E] dark:text-[#C5C9C0]`}>
+                                {activeContribution.title} website preview
+                              </p>
+                              <p className="mt-1.5 text-[13px] leading-5 text-[#898E86] dark:text-[#7D8279]">
+                                Website screenshot coming soon
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <p className="mt-3 text-right text-[12px] text-[#898E86] dark:text-[#7D8279]">
+                        Website preview · {activeContribution.domain}
+                      </p>
+                    </div>
+                  </div>
+                </section>
+
+                <section
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen scroll-mt-16 items-center bg-[#F4F4EF] py-14 dark:bg-[#151713] sm:py-20"
+                  id="volunteer"
+                  data-gsap-section
+                >
+                  <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+                    <div className="mb-9 sm:mb-12" data-section-title>
+                      <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C2410C] dark:text-[#FF8A65]`}>Beyond the build</p>
+                      <h2 className={`${displayFont} text-[30px] leading-tight font-semibold tracking-[-0.055em] text-[#20221F] sm:text-[38px] dark:text-[#F2F3EE]`}>Activities &amp; Contributions</h2>
+                      <p className="mt-3 max-w-[56ch] text-[15px] leading-6 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">Working with student communities to bring events, technology, and ideas to life.</p>
+                    </div>
+                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-5">
                     {volunteerExperiences.map((organization) => (
-                      <VolunteerGroup key={organization.name} {...organization} />
+                      <article
+                        className="rounded-2xl border border-[#D8DAD4] bg-white/70 p-5 shadow-[0_14px_36px_rgba(32,34,31,0.05)] transition-colors hover:border-[#BFC2BA] sm:p-6 xl:p-7 dark:border-[#363932] dark:bg-[#181A17]/70 dark:hover:border-[#50544A]"
+                        data-reveal-item
+                        key={organization.name}
+                      >
+                        <div className="flex flex-wrap items-start justify-between gap-3">
+                          <h3 className={`${displayFont} max-w-[34ch] text-[18px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] sm:text-[20px] dark:text-[#E8EAE5]`}>
+                            {organization.name}
+                          </h3>
+                          {organization.award && (
+                            <span className={`${displayFont} inline-flex shrink-0 rounded-full bg-[#F4E7C0] px-2.5 py-1 text-[11px] font-bold text-[#74520A] dark:bg-[#453710] dark:text-[#F1D98A]`}>
+                              {organization.award}
+                            </span>
+                          )}
+                        </div>
+                        <div className="mt-4 divide-y divide-[#E7E8E2] dark:divide-[#292C27]">
+                          {organization.experiences.map((experience) => (
+                            <div className="py-4 first:pt-0 last:pb-0" key={`${experience.role}-${experience.period.join("-")}`}>
+                              <Volunteer {...experience} />
+                            </div>
+                          ))}
+                        </div>
+                      </article>
                     ))}
-                  </Timeline>
-                </Section>
+                  </div>
+                  </div>
+                </section>
 
                 <Section id="skills">
                   <SectionTitle>Stack .</SectionTitle>
@@ -1029,14 +1193,6 @@ function SectionTitle({ children }: { children: ReactNode }) {
   );
 }
 
-function Timeline({ children }: { children: ReactNode }) {
-  return (
-    <div className="relative before:absolute before:top-2 before:bottom-3 before:left-[4px] before:w-px before:bg-[#D8DAD4] dark:before:bg-[#363932]">
-      {children}
-    </div>
-  );
-}
-
 type VolunteerExperience = {
   period: string[];
   name?: string;
@@ -1044,39 +1200,6 @@ type VolunteerExperience = {
   description: string;
   website?: string;
 };
-
-function VolunteerGroup({
-  name,
-  award,
-  experiences,
-}: {
-  name: string;
-  award?: string;
-  experiences: VolunteerExperience[];
-}) {
-  return (
-    <div
-      className="relative pb-12 pl-7 last:pb-0 before:absolute before:top-[7px] before:left-0 before:size-[9px] before:rounded-full before:bg-[#20221F] before:ring-4 before:ring-[#FAFAF7] dark:before:bg-[#F2F3EE] dark:before:ring-[#10110F]"
-      data-reveal-item
-    >
-      <h3 className={`${displayFont} text-[21px] leading-7 font-bold tracking-[-0.035em] text-[#292C28] sm:text-[24px] dark:text-[#E8EAE5]`}>
-        {name}
-      </h3>
-      {award && (
-        <p className={`${displayFont} mt-2 inline-flex rounded-full bg-[#F4E7C0] px-2.5 py-1 text-[12px] font-bold text-[#74520A] dark:bg-[#453710] dark:text-[#F1D98A]`}>
-          {award}
-        </p>
-      )}
-      <div className="relative mt-5 ml-1 border-l border-[#D8DAD4] pl-6 dark:border-[#363932]">
-        {experiences.map((experience) => (
-          <article className="relative pb-8 last:pb-0 before:absolute before:top-1.5 before:-left-[30px] before:size-[7px] before:rounded-full before:bg-[#898E86] before:ring-4 before:ring-[#FAFAF7] dark:before:bg-[#7D8279] dark:before:ring-[#10110F]" key={`${experience.role}-${experience.period.join("-")}`}>
-            <Volunteer {...experience} />
-          </article>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function Volunteer({ period, name, role, description, website }: VolunteerExperience) {
   const [isExpanded, setIsExpanded] = useState(false);
