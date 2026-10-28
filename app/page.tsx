@@ -215,6 +215,42 @@ function TechChips({ items }: { items: string[] }) {
   );
 }
 
+function ContributionPreview({ contribution }: { contribution: (typeof realWorldContributions)[number] }) {
+  return (
+    <div data-reveal-item>
+      <div
+        className="relative aspect-[1.2] overflow-hidden rounded-[20px] border border-[#D8DAD4] bg-[#EEEFEA] p-3 shadow-[0_24px_70px_rgba(32,34,31,0.10)] sm:p-4 dark:border-[#363932] dark:bg-[#1A1C18] dark:shadow-[0_24px_70px_rgba(0,0,0,0.30)]"
+        data-project-image
+        role="img"
+        aria-label={`Website screenshot placeholder for ${contribution.title}`}
+      >
+        <div className="flex h-full flex-col overflow-hidden rounded-xl border border-[#D8DAD4] bg-[#FAFAF7] dark:border-[#363932] dark:bg-[#10110F]">
+          <div className="flex h-10 shrink-0 items-center gap-1.5 border-b border-[#E7E8E2] px-3 dark:border-[#292C27] sm:h-12 sm:px-4">
+            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
+            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
+            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
+            <span className="ml-2 min-w-0 flex-1 truncate rounded-md bg-[#F0F1EC] px-3 py-1 text-[11px] text-[#898E86] dark:bg-[#1A1C18] dark:text-[#A6ABA1]">
+              {contribution.domain}
+            </span>
+          </div>
+          <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_50%_35%,rgba(194,65,12,0.08),transparent_58%)] px-5 text-center dark:bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,138,101,0.08),transparent_58%)]">
+            <div className="max-w-[270px]">
+              <span className="mx-auto grid size-12 place-items-center rounded-xl border border-[#D8DAD4] bg-white text-[#898E86] dark:border-[#363932] dark:bg-[#181A17] dark:text-[#A6ABA1]">
+                <ImageIcon className="size-5" aria-hidden="true" />
+              </span>
+              <p className={`${displayFont} mt-4 text-[15px] font-semibold text-[#40443E] dark:text-[#C5C9C0]`}>
+                {contribution.title} website preview
+              </p>
+              <p className="mt-1.5 text-[13px] leading-5 text-[#898E86] dark:text-[#7D8279]">Website screenshot coming soon</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p className="mt-3 text-right text-[12px] text-[#898E86] dark:text-[#7D8279]">Website preview · {contribution.domain}</p>
+    </div>
+  );
+}
+
 export default function HomePage() {
   const prefersReducedMotion = useReducedMotion();
   const [gsapLoaded, setGsapLoaded] = useState(false);
@@ -223,11 +259,7 @@ export default function HomePage() {
   const [showLoader, setShowLoader] = useState(true);
   const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
-  const [activeContributionId, setActiveContributionId] = useState(realWorldContributions[0].id);
   const pageRef = useRef<HTMLElement>(null);
-  const activeContribution = realWorldContributions.find(
-    (contribution) => contribution.id === activeContributionId,
-  ) ?? realWorldContributions[0];
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText("deshandm699@gmail.com");
@@ -450,8 +482,7 @@ export default function HomePage() {
             );
           });
 
-        const projectImage = section.querySelector<HTMLElement>("[data-project-image]");
-        if (projectImage) {
+        section.querySelectorAll<HTMLElement>("[data-project-image]").forEach((projectImage) => {
           gsap.fromTo(
             projectImage,
             { autoAlpha: 0, clipPath: "inset(0 0 100% 0 round 20px)", y: 28 },
@@ -468,7 +499,7 @@ export default function HomePage() {
               },
             },
           );
-        }
+        });
       });
 
       const slideSections = Array.from(
@@ -500,7 +531,9 @@ export default function HomePage() {
 
           const contentHeight = content.scrollHeight;
           const overflow = Math.max(0, contentHeight - panelHeight);
-          section.style.marginBottom = `${overflow}px`;
+          const baseMarginBottom =
+            Number.parseFloat(window.getComputedStyle(section).marginBottom) || 0;
+          section.style.marginBottom = `${baseMarginBottom}px`;
 
           const timeline = gsap.timeline({
             scrollTrigger: {
@@ -508,7 +541,7 @@ export default function HomePage() {
               start: "bottom bottom",
               end: () => `+=${Math.max(section.clientHeight, content.scrollHeight)}`,
               pin: section,
-              pinSpacing: false,
+              pinSpacing: true,
               scrub: true,
               invalidateOnRefresh: true,
             },
@@ -678,7 +711,7 @@ export default function HomePage() {
                       data-opening="intro"
                     >
                       <span className="">
-                        I&apos;m dharaka, a developer exploring new technologies and turning ideas into meaningful digital experiences.
+                        I&apos;m Dharaka, a developer exploring new technologies and turning ideas into meaningful digital experiences.
                         I&apos;m passionate about continuously learning, building, and growing through technology.
                       </span>
                       <span className="mt-5 block">
@@ -694,7 +727,7 @@ export default function HomePage() {
                         className={`${displayFont} ${focusRing} text-[16px]`}
                         href="/projects"
                       >
-                        My works
+                        View my work
                         <ArrowUpRight className="size-4 stroke-[1.75]" />
                       </ShinyButton>
                       <span className="hidden select-none text-[#898E86] md:inline dark:text-[#7D8279]" aria-hidden="true">|</span>
@@ -881,192 +914,173 @@ export default function HomePage() {
                   <ImageCarousel className="mt-[-20px]" images={projectHighlightImages} autoPlay interval={4000} showIndicators />
                 </Section> */}
                 <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-20 dark:border-[#292C27] dark:bg-[#171915] sm:py-24"
-                  id="projects-showcase"
-                  data-gsap-section
-                >
-                  <div className="mx-auto grid w-full max-w-[1240px] gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-end lg:px-12">
-                    <div data-section-title>
-                      <h2 className={`${displayFont} max-w-[900px] text-[clamp(2.75rem,7.2vw,7.5rem)] leading-[0.98] font-semibold tracking-[-0.075em] text-[#20221F] dark:text-[#F2F3EE]`}>
-                        Full-stack software, built from the ground up.
-                      </h2>
-                      <p className="mt-6 max-w-[58ch] text-[16px] leading-7 text-[#62675F] sm:text-[18px] dark:text-[#A6ABA1]">
-                        A collection of things I have built while exploring backend engineering, thoughtful interfaces, and the systems behind them.
-                      </p>
-                    </div>
-                    <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 self-start rounded-lg border border-[#D8DAD4] px-4 text-[14px] font-semibold text-[#40443E] transition hover:border-[#898E86] dark:border-[#363932] dark:text-[#C5C9C0] lg:self-end`} href="/projects">
-                      Browse all projects <ArrowUpRight className="size-4" />
-                    </a>
-                  </div>
-                </section>
-
-
-                <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center bg-[#FAFAF7] py-16 dark:bg-[#10110F] sm:py-20"
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-32 flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
                   id="real-world-contributions"
                   data-gsap-section
                   data-scroll-slide
                 >
-                  <div className="mx-auto grid w-full max-w-[1240px] items-start gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:px-12" data-slide-content>
-                    <div>
-                      <div className="mb-7" data-section-title>
-                        <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                          Team projects · 2026
-                        </p>
-                        <h2 className={`${displayFont} text-[32px] leading-[1.1] font-semibold tracking-[-0.06em] text-[#20221F] sm:text-[42px] dark:text-[#F2F3EE]`}>
-                          Real-World Contributions
-                        </h2>
-                        <p className="mt-4 max-w-[50ch] text-[15px] leading-7 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">
-                          Working with student teams to improve event websites and make their registration experiences work better.
-                        </p>
+                  <div className="w-full pb-32" data-slide-content>
+                  <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
+                    <div className="mb-8" data-section-title>
+                      <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                        Team projects · 2026
+                      </p>
+                      <h2 className={`${displayFont} text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                        Real-World Contributions
+                      </h2>
+                      <p className="mt-4 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
+                        Working with student teams to improve event websites and make their registration experiences work better.
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                    <article className="grid items-center gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+                      <div data-reveal-item>
+                        <div className="mb-5 flex items-center justify-between gap-4">
+                          <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                            Contribution 01 / 02
+                          </p>
+                          <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[0].period}</span>
+                        </div>
+                        <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[0].role}</p>
+                        <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                          {realWorldContributions[0].title}
+                        </h3>
+                        <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{realWorldContributions[0].description}</p>
+                        <a
+                          className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
+                          href={realWorldContributions[0].website}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Visit {realWorldContributions[0].domain} <ArrowUpRight className="size-4" />
+                        </a>
                       </div>
 
-                      <div className="space-y-3" aria-label="Choose a contribution">
-                        {realWorldContributions.map((contribution) => {
-                          const isActive = contribution.id === activeContribution.id;
+                      <ContributionPreview contribution={realWorldContributions[0]} />
+                    </article>
+                  </div>
+
+                  <div className="mx-auto mt-10 grid w-full max-w-[1240px] items-center gap-10 border-t border-[#D8DAD4] px-5 pt-10 sm:px-8 dark:border-[#363932] lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-12">
+                    <div data-reveal-item>
+                      <div className="mb-6 flex items-center justify-between gap-4" data-section-title>
+                        <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                          Contribution 02 / 02
+                        </p>
+                        <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[1].period}</span>
+                      </div>
+                      <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[1].role}</p>
+                      <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                        {realWorldContributions[1].title}
+                      </h3>
+                      <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{realWorldContributions[1].description}</p>
+                      <a
+                        className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
+                        href={realWorldContributions[1].website}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Visit {realWorldContributions[1].domain} <ArrowUpRight className="size-4" />
+                      </a>
+                    </div>
+                    <ContributionPreview contribution={realWorldContributions[1]} />
+                  </div>
+                    </div>
+
+                  </div>
+                </section>
+
+
+
+
+
+
+
+                <section
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-32 flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
+                  id="projects-showcase"
+                  data-gsap-section
+                  data-scroll-slide
+                >
+                  <div className="w-full pb-32" data-slide-content>
+                    <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
+                      <div className="grid gap-8 pb-12 sm:pb-16 lg:grid-cols-[1fr_auto] lg:items-end" data-section-title>
+                        <div>
+                          <p className={`${displayFont} mb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>Selected work · {projects.length} projects</p>
+                          <h2 className={`${displayFont} max-w-[900px] text-[clamp(2.75rem,7.2vw,7.5rem)] leading-[0.98] font-semibold tracking-[-0.075em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                            Full-stack software, built from the ground up.
+                          </h2>
+                          <p className="mt-6 max-w-[58ch] text-[16px] leading-7 text-[#62675F] sm:text-[18px] dark:text-[#A6ABA1]">
+                            A collection of things I have built while exploring backend engineering, thoughtful interfaces, and the systems behind them.
+                          </p>
+                        </div>
+                        <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 self-start rounded-lg border border-[#D8DAD4] px-4 text-[14px] font-semibold text-[#40443E] transition hover:border-[#898E86] dark:border-[#363932] dark:text-[#C5C9C0] lg:self-end`} href="/projects">
+                          Browse all projects <ArrowUpRight className="size-4" />
+                        </a>
+                      </div>
+
+                      <div className="flex flex-col">
+                        {projects.map((project, index) => {
+                          const projectImage = project.imageUrls[0] ?? project.extraImageUrls[0] ?? ("image" in project ? project.image : undefined);
+                          const projectName = project.title.split(" - ")[0];
+
                           return (
-                            <div
-                              className={`rounded-xl border p-4 transition-colors sm:p-5 ${isActive ? "border-[#A6AAA0] bg-white shadow-[0_10px_30px_rgba(32,34,31,0.06)] dark:border-[#60655B] dark:bg-[#1A1C18]" : "border-[#E2E3DD] bg-transparent hover:border-[#BFC2BA] hover:bg-white/60 dark:border-[#2A2D27] dark:hover:border-[#50544A] dark:hover:bg-[#181A17]"}`}
-                              key={contribution.id}
-                              data-reveal-item
+                            <article
+                              className={`grid items-center gap-8 py-10 first:pt-0 sm:py-14 ${index > 0 ? "border-t border-[#D8DAD4] dark:border-[#363932]" : ""} lg:grid-cols-[0.85fr_1.15fr] lg:gap-16`}
+                              id={`project-${project.slug}`}
+                              key={project.slug}
                             >
-                              <button
-                                className={`${focusRing} flex w-full flex-wrap items-start justify-between gap-3 rounded-lg text-left`}
-                                type="button"
-                                onClick={() => setActiveContributionId(contribution.id)}
-                                aria-pressed={isActive}
-                              >
-                                <span>
-                                  <span className={`${displayFont} block text-[19px] font-semibold tracking-[-0.035em] text-[#20221F] sm:text-[21px] dark:text-[#F2F3EE]`}>
-                                    {contribution.title}
-                                  </span>
-                                  <span className="mt-1 block text-[14px] text-[#62675F] dark:text-[#A6ABA1]">{contribution.role}</span>
-                                </span>
-                                <span className={`${displayFont} whitespace-nowrap text-[12px] text-[#898E86] dark:text-[#7D8279]`}>
-                                  {contribution.period}
-                                </span>
-                              </button>
-                              {isActive && (
-                                <div className="mt-3">
-                                  <p className="max-w-[54ch] text-[14px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">
-                                    {contribution.description}
+                              <div data-reveal-item>
+                                <div className="mb-6 flex items-center justify-between gap-4">
+                                  <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                                    Project {String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
                                   </p>
-                                  <a
-                                    className={`${focusRing} mt-3 inline-flex items-center gap-1.5 rounded-sm text-[14px] font-semibold text-[#40443E] transition-colors hover:text-[#20221F] dark:text-[#C5C9C0] dark:hover:text-[#F2F3EE]`}
-                                    href={contribution.website}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                  >
-                                    Visit {contribution.domain}
-                                    <ArrowUpRight className="size-3.5" />
-                                  </a>
+                                  <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{project.period.join(" — ")}</span>
                                 </div>
-                              )}
-                            </div>
+                                <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{project.role}</p>
+                                <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                                  {projectName}
+                                </h3>
+                                <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{project.description}</p>
+                                <div className="mt-6"><TechChips items={project.technologies.slice(0, 6)} /></div>
+                                <a
+                                  className={`${displayFont} ${focusRing} mt-7 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
+                                  href={`/projects#${project.slug}`}
+                                >
+                                  Explore project <ArrowUpRight className="size-4" />
+                                </a>
+                              </div>
+
+                              <Link className={`${focusRing} group block`} href={`/projects#${project.slug}`} aria-label={`Explore ${projectName}`}>
+                                <div className="relative aspect-[1.2] overflow-hidden rounded-[20px] border border-[#D8DAD4] bg-[#E8E9E4] shadow-[0_24px_70px_rgba(32,34,31,0.10)] dark:border-[#363932] dark:bg-[#20221F] dark:shadow-[0_24px_70px_rgba(0,0,0,0.3)]" data-project-image>
+                                  {projectImage ? (
+                                    <Image className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.025]" src={projectImage} alt={`${projectName} project preview`} fill sizes="(min-width: 1024px) 58vw, 100vw" />
+                                  ) : (
+                                    <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${project.accent} text-white`}>
+                                      <span className={`${displayFont} text-6xl font-bold tracking-[-0.08em] sm:text-8xl`}>{project.mark}</span>
+                                      <span className="mt-4 text-xs font-medium uppercase tracking-[0.2em] text-white/75">Project preview</span>
+                                    </div>
+                                  )}
+                                  <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent px-5 pb-4 pt-12 text-white sm:px-6">
+                                    <span className="text-[13px] font-medium tracking-wide">{projectName}</span>
+                                    <ArrowUpRight className="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                                  </div>
+                                </div>
+                              </Link>
+                            </article>
                           );
                         })}
                       </div>
                     </div>
-
-                    <div data-reveal-item>
-                      <div
-                        className="relative aspect-[1.28] overflow-hidden rounded-2xl border border-[#D8DAD4] bg-[#EEEFEA] p-3 shadow-[0_24px_70px_rgba(32,34,31,0.10)] sm:rounded-[24px] sm:p-4 dark:border-[#363932] dark:bg-[#1A1C18] dark:shadow-[0_24px_70px_rgba(0,0,0,0.30)]"
-                        data-project-image
-                        role="img"
-                        aria-label={`Website screenshot placeholder for ${activeContribution.title}`}
-                      >
-                        <div className="flex h-full flex-col overflow-hidden rounded-xl border border-[#D8DAD4] bg-[#FAFAF7] dark:border-[#363932] dark:bg-[#10110F]">
-                          <div className="flex h-10 shrink-0 items-center gap-1.5 border-b border-[#E7E8E2] px-3 dark:border-[#292C27] sm:h-12 sm:px-4">
-                            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
-                            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
-                            <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
-                            <span className="ml-2 min-w-0 flex-1 truncate rounded-md bg-[#F0F1EC] px-3 py-1 text-[11px] text-[#898E86] dark:bg-[#1A1C18] dark:text-[#A6ABA1]">
-                              {activeContribution.domain}
-                            </span>
-                          </div>
-                          <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_50%_35%,rgba(194,65,12,0.08),transparent_58%)] px-5 text-center dark:bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,138,101,0.08),transparent_58%)]">
-                            <div className="max-w-[270px]">
-                              <span className="mx-auto grid size-12 place-items-center rounded-xl border border-[#D8DAD4] bg-white text-[#898E86] dark:border-[#363932] dark:bg-[#181A17] dark:text-[#A6ABA1]">
-                                <ImageIcon className="size-5" aria-hidden="true" />
-                              </span>
-                              <p className={`${displayFont} mt-4 text-[15px] font-semibold text-[#40443E] dark:text-[#C5C9C0]`}>
-                                {activeContribution.title} website preview
-                              </p>
-                              <p className="mt-1.5 text-[13px] leading-5 text-[#898E86] dark:text-[#7D8279]">
-                                Website screenshot coming soon
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="mt-3 text-right text-[12px] text-[#898E86] dark:text-[#7D8279]">
-                        Website preview · {activeContribution.domain}
-                      </p>
-                    </div>
                   </div>
                 </section>
-
-                {projects.map((project, index) => {
-                  const projectImage = project.imageUrls[0] ?? project.extraImageUrls[0] ?? ("image" in project ? project.image : undefined);
-                  const projectName = project.title.split(" - ")[0];
-
-                  return (
-                    <section
-                      className={`relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center border-b border-[#E7E8E2] py-16 sm:py-20 ${index % 2 === 0 ? "bg-[#FAFAF7] dark:bg-[#10110F]" : "bg-[#F3F3EE] dark:bg-[#171915]"}`}
-                      id={`project-${project.slug}`}
-                      key={project.slug}
-                      data-gsap-section
-                    >
-                      <div className="mx-auto grid w-full max-w-[1240px] items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-12">
-                        <div>
-                          <div className="mb-6 flex items-center justify-between gap-4" data-section-title>
-                            <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                              Project {String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
-                            </p>
-                            <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{project.period.join(" — ")}</span>
-                          </div>
-                          <div data-reveal-item>
-                            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{project.role}</p>
-                            <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
-                              {projectName}
-                            </h3>
-                            <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{project.description}</p>
-                            <div className="mt-6"><TechChips items={project.technologies.slice(0, 6)} /></div>
-                            <a
-                              className={`${displayFont} ${focusRing} mt-7 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
-                              href={`/projects#${project.slug}`}
-                            >
-                              Explore project <ArrowUpRight className="size-4" />
-                            </a>
-                          </div>
-                        </div>
-
-                        <Link className={`${focusRing} group block`} href={`/projects#${project.slug}`} aria-label={`Explore ${projectName}`}>
-                          <div className="relative aspect-[1.2] overflow-hidden rounded-[20px] border border-[#D8DAD4] bg-[#E8E9E4] shadow-[0_24px_70px_rgba(32,34,31,0.10)] dark:border-[#363932] dark:bg-[#20221F] dark:shadow-[0_24px_70px_rgba(0,0,0,0.3)]" data-project-image>
-                            {projectImage ? (
-                              <Image className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.025]" src={projectImage} alt={`${projectName} project preview`} fill sizes="(min-width: 1024px) 58vw, 100vw" />
-                            ) : (
-                              <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${project.accent} text-white`}>
-                                <span className={`${displayFont} text-6xl font-bold tracking-[-0.08em] sm:text-8xl`}>{project.mark}</span>
-                                <span className="mt-4 text-xs font-medium uppercase tracking-[0.2em] text-white/75">Project preview</span>
-                              </div>
-                            )}
-                            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent px-5 pb-4 pt-12 text-white sm:px-6">
-                              <span className="text-[13px] font-medium tracking-wide">{projectName}</span>
-                              <ArrowUpRight className="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                            </div>
-                          </div>
-                        </Link>
-                      </div>
-                    </section>
-                  );
-                })}
 
                 <section
                   className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen scroll-mt-16 items-center bg-[#F4F4EF] py-14 dark:bg-[#151713] sm:py-20"
                   id="volunteer"
                   data-gsap-section
+                  data-scroll-slide
                 >
+                  <div className="w-full" data-slide-content>
                   <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
                     <div className="mb-9 sm:mb-12" data-section-title>
                       <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C2410C] dark:text-[#FF8A65]`}>Beyond the build</p>
@@ -1101,10 +1115,12 @@ export default function HomePage() {
                       ))}
                     </div>
                   </div>
+
+                  </div>
                 </section>
 
                 <Section id="skills" scrollSlide>
-                  <SectionTitle>Stack .</SectionTitle>
+                  <SectionTitle>Tech stack</SectionTitle>
                   <div className="flex flex-col gap-9">
                     {skills.map((skill) => (
                       <div key={skill.title} data-reveal-item>
@@ -1163,7 +1179,7 @@ export default function HomePage() {
                       </p>
                       <p className="mt-2 max-w-[58ch] text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
                         I am open to internship opportunities, collaborations, and
-                        conversations about Software engineering .
+                        conversations about software engineering.
                       </p>
                     </div>
                     <div className="flex flex-wrap items-center justify-center  gap-x-5 gap-y-3 whitespace-nowrap">
