@@ -131,22 +131,7 @@ function truncateText(text: string, limit: number) {
   return text.length > limit ? `${text.slice(0, limit).trimEnd()}...` : text;
 }
 
-type GsapTimeline = {
-  to: (
-    target: unknown,
-    variables: Record<string, unknown>,
-    position?: string | number,
-  ) => GsapTimeline;
-  fromTo: (
-    target: unknown,
-    fromVariables: Record<string, unknown>,
-    toVariables: Record<string, unknown>,
-    position?: string | number,
-  ) => GsapTimeline;
-  eventCallback: (type: string, callback: () => void) => GsapTimeline;
-  kill: () => void;
-  scrollTrigger?: { kill: () => void };
-};
+type GsapTimeline = ReturnType<typeof gsap.timeline>;
 
 type GsapWindow = Window & {
   gsap?: {
