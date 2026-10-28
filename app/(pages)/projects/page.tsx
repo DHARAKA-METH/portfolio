@@ -57,7 +57,7 @@ import { projects } from "@/data/projects";
 import { site } from "@/data/site";
 
 const displayFont =
-  "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
+  "[font-family:var(--font-avenue-mono)]";
 
 const technologyIcons = {
   Java: FaJava,

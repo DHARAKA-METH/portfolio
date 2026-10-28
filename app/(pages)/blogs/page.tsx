@@ -14,7 +14,7 @@ import { blogs } from "@/data/blogs";
 import { site } from "@/data/site";
 
 const displayFont =
-  "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
+  "[font-family:var(--font-avenue-mono)]";
 
 export default function BlogsPage() {
   const prefersReducedMotion = useReducedMotion();

@@ -2,6 +2,10 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+:root {
+  --font-avenue-mono: "Avenue Mono", "Courier New", ui-monospace, monospace;
+}
+
 html {
   color-scheme: light;
 }
@@ -11,7 +15,7 @@ html.dark {
 }
 
 body {
-  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-avenue-mono);
 }
 
 @theme {

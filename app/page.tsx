@@ -59,10 +59,10 @@ import { InternshipStatus } from "@/components/ui/InternshipStatus";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 
 const displayFont =
-  "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
+  "[font-family:var(--font-avenue-mono)]";
 
 const bodyFont =
-  "[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif]";
+  "[font-family:var(--font-avenue-mono)]";
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF7] dark:focus-visible:ring-[#FF8A65] dark:focus-visible:ring-offset-[#10110F]";
@@ -659,12 +659,12 @@ export default function HomePage() {
                       </div>
                       <div className="min-w-0 text-left lg:col-start-2 lg:row-start-1" data-opening="identity">
                         <h1
-                          className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] text-[26px] leading-[1.2] font-medium tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE] lg:text-[48px] lg:leading-[1.05] lg:font-semibold lg:tracking-[-0.055em]"
+                          className="[font-family:var(--font-avenue-mono)] text-[26px] leading-[1.2] font-medium tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE] lg:text-[48px] lg:leading-[1.05] lg:font-semibold lg:tracking-[-0.055em]"
                         >
                           Dharaka Meth
                         </h1>
                         <p
-                          className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] mt-2 text-[20px] leading-7 font-medium tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]"
+                          className="[font-family:var(--font-avenue-mono)] mt-2 text-[20px] leading-7 font-medium tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]"
                         >
                           Aspiring Backend Developer
                         </p>
@@ -672,7 +672,7 @@ export default function HomePage() {
                     </div>
 
                     <p
-                      className="[font-family:var(--font-geist-sans),ui-sans-serif,system-ui,sans-serif] mx-auto mt-4 max-w-[62ch] whitespace-normal text-pretty text-[16px] leading-6 font-medium tracking-[-0.04em] text-[#929292] [word-spacing:normal] lg:col-start-2 lg:row-start-2 lg:mx-0 lg:mt-5"
+                      className="[font-family:var(--font-avenue-mono)] mx-auto mt-4 max-w-[62ch] whitespace-normal text-pretty text-[16px] leading-6 font-medium tracking-[-0.04em] text-[#929292] [word-spacing:normal] lg:col-start-2 lg:row-start-2 lg:mx-0 lg:mt-5"
                       aria-label={introduction}
                       data-opening="intro"
                     >
@@ -887,9 +887,6 @@ export default function HomePage() {
                 >
                   <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 lg:px-10" data-slide-content>
                     <div className="mb-9 sm:mb-12" data-section-title>
-                      <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C2410C] dark:text-[#FF8A65]`}>
-                        Selected projects · 2025—2026
-                      </p>
                       <h2 className={`${displayFont} max-w-[760px] text-[34px] leading-[1.08] font-semibold tracking-[-0.065em] text-[#20221F] sm:text-[48px] dark:text-[#F2F3EE]`}>
                         Full-stack software, built from the ground up.
                       </h2>
