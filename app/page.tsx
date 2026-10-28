@@ -903,88 +903,6 @@ export default function HomePage() {
                 </Section> */}
                 <section
                   className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-32 flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
-                  id="real-world-contributions"
-                  data-gsap-section
-                  data-scroll-slide
-                >
-                  <div className="w-full pb-32" data-slide-content>
-                  <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
-                    <div className="mb-8" data-section-title>
-                      <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                        Team projects · 2026
-                      </p>
-                      <h2 className={`${displayFont} text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
-                        Real-World Contributions
-                      </h2>
-                      <p className="mt-4 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
-                        Working with student teams to improve event websites and make their registration experiences work better.
-                      </p>
-                    </div>
-                    <div className="flex flex-col">
-                    <article className="grid items-center gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-                      <div data-reveal-item>
-                        <div className="mb-5 flex items-center justify-between gap-4">
-                          <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                            Contribution 01 / 02
-                          </p>
-                          <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[0].period}</span>
-                        </div>
-                        <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[0].role}</p>
-                        <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
-                          {realWorldContributions[0].title}
-                        </h3>
-                        <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{realWorldContributions[0].description}</p>
-                        <a
-                          className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
-                          href={realWorldContributions[0].website}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Visit {realWorldContributions[0].domain} <ArrowUpRight className="size-4" />
-                        </a>
-                      </div>
-
-                      <ContributionPreview contribution={realWorldContributions[0]} />
-                    </article>
-                  </div>
-
-                  <div className="mx-auto mt-10 grid w-full max-w-[1240px] items-center gap-10 border-t border-[#D8DAD4] px-5 pt-10 sm:px-8 dark:border-[#363932] lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-12">
-                    <div data-reveal-item>
-                      <div className="mb-6 flex items-center justify-between gap-4" data-section-title>
-                        <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                          Contribution 02 / 02
-                        </p>
-                        <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[1].period}</span>
-                      </div>
-                      <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[1].role}</p>
-                      <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
-                        {realWorldContributions[1].title}
-                      </h3>
-                      <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{realWorldContributions[1].description}</p>
-                      <a
-                        className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
-                        href={realWorldContributions[1].website}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Visit {realWorldContributions[1].domain} <ArrowUpRight className="size-4" />
-                      </a>
-                    </div>
-                    <ContributionPreview contribution={realWorldContributions[1]} />
-                  </div>
-                    </div>
-
-                  </div>
-                </section>
-
-
-
-
-
-
-
-                <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-32 flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
                   id="projects-showcase"
                   data-gsap-section
                   data-scroll-slide
@@ -1059,6 +977,88 @@ export default function HomePage() {
                         })}
                       </div>
                     </div>
+                  </div>
+                </section>
+
+
+
+
+
+
+
+                <section
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-32 flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
+                  id="real-world-contributions"
+                  data-gsap-section
+                  data-scroll-slide
+                >
+                  <div className="w-full pb-32" data-slide-content>
+                  <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
+                    <div className="mb-8" data-section-title>
+                      <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                        Team projects · 2026
+                      </p>
+                      <h2 className={`${displayFont} text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                        Real-World Contributions
+                      </h2>
+                      <p className="mt-4 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
+                        Working with student teams to improve event websites and make their registration experiences work better.
+                      </p>
+                    </div>
+                    <div className="flex flex-col">
+                    <article className="grid items-center gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+                      <div data-reveal-item>
+                        <div className="mb-5 flex items-center justify-between gap-4">
+                          <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                            Contribution 01 / 02
+                          </p>
+                          <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[0].period}</span>
+                        </div>
+                        <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[0].role}</p>
+                        <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                          {realWorldContributions[0].title}
+                        </h3>
+                        <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{realWorldContributions[0].description}</p>
+                        <a
+                          className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
+                          href={realWorldContributions[0].website}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Visit {realWorldContributions[0].domain} <ArrowUpRight className="size-4" />
+                        </a>
+                      </div>
+
+                      <ContributionPreview contribution={realWorldContributions[0]} />
+                    </article>
+                  </div>
+
+                  <div className="mx-auto mt-10 grid w-full max-w-[1240px] items-center gap-10 border-t border-[#D8DAD4] px-5 pt-10 sm:px-8 dark:border-[#363932] lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-12">
+                    <div data-reveal-item>
+                      <div className="mb-6 flex items-center justify-between gap-4" data-section-title>
+                        <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                          Contribution 02 / 02
+                        </p>
+                        <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[1].period}</span>
+                      </div>
+                      <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[1].role}</p>
+                      <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                        {realWorldContributions[1].title}
+                      </h3>
+                      <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{realWorldContributions[1].description}</p>
+                      <a
+                        className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
+                        href={realWorldContributions[1].website}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        Visit {realWorldContributions[1].domain} <ArrowUpRight className="size-4" />
+                      </a>
+                    </div>
+                    <ContributionPreview contribution={realWorldContributions[1]} />
+                  </div>
+                    </div>
+
                   </div>
                 </section>
 
