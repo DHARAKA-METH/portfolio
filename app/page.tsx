@@ -904,10 +904,12 @@ export default function HomePage() {
                 >
                   <div className="w-full" data-slide-content>
                     <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
-                      <div className="grid gap-6 pb-10 mt-6 sm:gap-8 sm:pb-14 lg:grid-cols-[1fr_auto] lg:items-end" data-section-title>
+                      <div className="grid gap-8 pb-12 mt-6 mb-8 sm:gap-8 sm:pb-14 lg:grid-cols-[1fr_auto] lg:items-end" data-section-title>
                         <div>
                           <p className={`${monoFont} mb-6 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>Selected work · {selectedProjects.length} projects</p>
-                          <h2 className={`${displayFont} max-w-[900px] text-[clamp(2.75rem,7.2vw,7.5rem)] leading-[0.98] font-semibold tracking-[-0.075em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                          <h2
+                            className="[font-family:Avenue-Mono,var(--font-geist-mono),monospace] max-w-[900px] text-[clamp(2.75rem,7.2vw,7.5rem)] leading-[1.2] font-semibold tracking-[-0.075em] text-[#20221F] dark:text-[#F2F3EE]"
+                          >
                             Full-stack software, built from the ground up.
                           </h2>
                           <p className="mt-6 max-w-[56ch] text-pretty text-[16px] leading-9 text-[#62675F] sm:mt-7 sm:text-[18px] sm:leading-[1.9] dark:text-[#A6ABA1]">
@@ -988,70 +990,50 @@ export default function HomePage() {
                   data-scroll-slide
                 >
                   <div className="w-full" data-slide-content>
-                  <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
-                    <div className="mb-8" data-section-title>
-                      <p className={`${monoFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                        Team projects · 2026
-                      </p>
-                      <h2 className={`${displayFont} text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
-                        Real-World Contributions
-                      </h2>
-                      <p className="mt-4 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
-                        Working with student teams to improve event websites and make their registration experiences work better.
-                      </p>
-                    </div>
-                    <div className="flex flex-col">
-                    <article className="grid items-center gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
-                      <div data-reveal-item>
-                        <div className="mb-5 flex items-center justify-between gap-4">
-                          <p className={`${monoFont} text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                            Contribution 01 / 02
-                          </p>
-                          <span className={`${monoFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[0].period}</span>
-                        </div>
-                        <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[0].role}</p>
-                        <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
-                          {realWorldContributions[0].title}
-                        </h3>
-                        <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{realWorldContributions[0].description}</p>
-                        <a
-                          className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
-                          href={realWorldContributions[0].website}
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Visit {realWorldContributions[0].domain} <ArrowUpRight className="size-4" />
-                        </a>
-                      </div>
-
-                      <ContributionPreview contribution={realWorldContributions[0]} />
-                    </article>
-                  </div>
-
-                  <div className="mx-auto mt-10 grid w-full max-w-[1240px] items-center gap-10 border-t border-[#D8DAD4] px-5 pt-10 sm:px-8 dark:border-[#363932] lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-12">
-                    <div data-reveal-item>
-                      <div className="mb-6 flex items-center justify-between gap-4" data-section-title>
-                        <p className={`${monoFont} text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                          Contribution 02 / 02
+                    <div className="mx-auto w-full max-w-[1240px] px-5 pb-8 sm:px-8 sm:pb-10 lg:px-12">
+                      <div className="mb-10" data-section-title>
+                        <p className={`${monoFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                          Team projects · 2026
                         </p>
-                        <span className={`${monoFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[1].period}</span>
+                        <h2 className={`${displayFont} text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                          Real-World Contributions
+                        </h2>
+                        <p className="mt-4 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
+                         Contributing to real-world software projects by collaborating with student teams to build practical web solutions that support university events and their digital experiences.
+                        </p>
                       </div>
-                      <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[1].role}</p>
-                      <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
-                        {realWorldContributions[1].title}
-                      </h3>
-                      <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{realWorldContributions[1].description}</p>
-                      <a
-                        className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
-                        href={realWorldContributions[1].website}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Visit {realWorldContributions[1].domain} <ArrowUpRight className="size-4" />
-                      </a>
-                    </div>
-                    <ContributionPreview contribution={realWorldContributions[1]} />
-                  </div>
+                      <div className="flex flex-col divide-y divide-[#D8DAD4] dark:divide-[#363932]">
+                        {realWorldContributions.map((contribution, index) => (
+                          <article
+                            className="grid items-center gap-8 py-10 first:pt-0 last:pb-0 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16"
+                            key={contribution.id}
+                          >
+                            <div data-reveal-item>
+                              <div className="mb-5 flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+                                <p className={`${monoFont} text-xs font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                                  Contribution {String(index + 1).padStart(2, "0")} / {String(realWorldContributions.length).padStart(2, "0")}
+                                </p>
+                                <span className={`${monoFont} text-xs text-[#898E86] dark:text-[#7D8279]`}>{contribution.period}</span>
+                              </div>
+                              <p className="text-xs font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{contribution.role}</p>
+                              <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                                {contribution.title}
+                              </h3>
+                              <p className="mt-4 max-w-[58ch] text-sm leading-7 text-[#62675F] sm:mt-5 sm:text-base dark:text-[#A6ABA1]">{contribution.description}</p>
+                              <a
+                                className={`${displayFont} ${focusRing} mt-6 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
+                                href={contribution.website}
+                                target="_blank"
+                                rel="noreferrer"
+                              >
+                                Visit {contribution.domain} <ArrowUpRight className="size-4" />
+                              </a>
+                            </div>
+
+                            <ContributionPreview contribution={contribution} />
+                          </article>
+                        ))}
+                      </div>
                     </div>
 
                   </div>
@@ -1063,40 +1045,40 @@ export default function HomePage() {
                   data-gsap-section
                 >
                   <div className="w-full">
-                  <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-                    <div className="mb-6 sm:mb-8" data-section-title>
-                      <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C2410C] dark:text-[#FF8A65]`}>Beyond the build</p>
-                      <h2 className={`${displayFont} text-[30px] leading-tight font-semibold tracking-[-0.055em] text-[#20221F] sm:text-[38px] dark:text-[#F2F3EE]`}>Activities &amp; Contributions</h2>
-                      <p className="mt-3 max-w-[56ch] text-[15px] leading-6 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">Working with student communities to bring events, technology, and ideas to life.</p>
+                    <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
+                      <div className="mb-6 sm:mb-8" data-section-title>
+                        <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C2410C] dark:text-[#FF8A65]`}>Beyond the build</p>
+                        <h2 className={`${displayFont} text-[30px] leading-tight font-semibold tracking-[-0.055em] text-[#20221F] sm:text-[38px] dark:text-[#F2F3EE]`}>Activities &amp; Contributions</h2>
+                        <p className="mt-3 max-w-[56ch] text-[15px] leading-6 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">Working with student communities to bring events, technology, and ideas to life.</p>
+                      </div>
+                      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3 xl:gap-4">
+                        {volunteerExperiences.map((organization) => (
+                          <article
+                            className="rounded-2xl border border-[#D8DAD4] bg-white/70 p-4 shadow-[0_14px_36px_rgba(32,34,31,0.05)] transition-colors hover:border-[#BFC2BA] sm:p-5 xl:p-6 dark:border-[#363932] dark:bg-[#181A17]/70 dark:hover:border-[#50544A]"
+                            data-reveal-item
+                            key={organization.name}
+                          >
+                            <div className="flex flex-wrap items-start justify-between gap-3">
+                              <h3 className={`${displayFont} max-w-[34ch] text-[18px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] sm:text-[20px] dark:text-[#E8EAE5]`}>
+                                {organization.name}
+                              </h3>
+                              {organization.award && (
+                                <span className={`${displayFont} inline-flex shrink-0 rounded-full bg-[#F4E7C0] px-2.5 py-1 text-[11px] font-bold text-[#74520A] dark:bg-[#453710] dark:text-[#F1D98A]`}>
+                                  {organization.award}
+                                </span>
+                              )}
+                            </div>
+                            <div className="mt-3 divide-y divide-[#E7E8E2] dark:divide-[#292C27]">
+                              {organization.experiences.map((experience) => (
+                                <div className="py-3 first:pt-0 last:pb-0" key={`${experience.role}-${experience.period.join("-")}`}>
+                                  <Volunteer {...experience} />
+                                </div>
+                              ))}
+                            </div>
+                          </article>
+                        ))}
+                      </div>
                     </div>
-                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3 xl:gap-4">
-                      {volunteerExperiences.map((organization) => (
-                        <article
-                          className="rounded-2xl border border-[#D8DAD4] bg-white/70 p-4 shadow-[0_14px_36px_rgba(32,34,31,0.05)] transition-colors hover:border-[#BFC2BA] sm:p-5 xl:p-6 dark:border-[#363932] dark:bg-[#181A17]/70 dark:hover:border-[#50544A]"
-                          data-reveal-item
-                          key={organization.name}
-                        >
-                          <div className="flex flex-wrap items-start justify-between gap-3">
-                            <h3 className={`${displayFont} max-w-[34ch] text-[18px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] sm:text-[20px] dark:text-[#E8EAE5]`}>
-                              {organization.name}
-                            </h3>
-                            {organization.award && (
-                              <span className={`${displayFont} inline-flex shrink-0 rounded-full bg-[#F4E7C0] px-2.5 py-1 text-[11px] font-bold text-[#74520A] dark:bg-[#453710] dark:text-[#F1D98A]`}>
-                                {organization.award}
-                              </span>
-                            )}
-                          </div>
-                          <div className="mt-3 divide-y divide-[#E7E8E2] dark:divide-[#292C27]">
-                            {organization.experiences.map((experience) => (
-                              <div className="py-3 first:pt-0 last:pb-0" key={`${experience.role}-${experience.period.join("-")}`}>
-                                <Volunteer {...experience} />
-                              </div>
-                            ))}
-                          </div>
-                        </article>
-                      ))}
-                    </div>
-                  </div>
 
                   </div>
                 </section>
@@ -1148,7 +1130,7 @@ export default function HomePage() {
                 </Section>
 
                 <Section id="contact" scrollSlide>
-                  <footer className="flex min-h-[calc(100svh-4rem)] w-full flex-col justify-center border-t border-[#E5E6E1] pt-8 dark:border-[#282B26] sm:min-h-[calc(100svh-5rem)]">
+                  <footer className="flex min-h-[calc(100svh-4rem)] w-full flex-col justify-center border-t border-[#E5E6E1] pt-8 dark:border-[#282B26] sm:min-h-[calc(100svh-30rem)]">
                     <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-start">
                       <div>
                         <p
