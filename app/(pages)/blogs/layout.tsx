@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Blogs",
@@ -7,6 +8,6 @@ export const metadata: Metadata = {
   alternates: { canonical: "/blogs" },
 };
 
-export default function BlogsLayout({ children }: LayoutProps<"/blogs">) {
+export default function BlogsLayout({ children }: { children: ReactNode }) {
   return children;
 }

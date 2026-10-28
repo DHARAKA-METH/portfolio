@@ -4,6 +4,8 @@ import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Script from "next/script";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import {
   ArrowDown,
@@ -243,9 +245,9 @@ function ContributionPreview({ contribution }: { contribution: RealWorldContribu
 
 export default function HomePage() {
   const prefersReducedMotion = useReducedMotion();
-  const [gsapLoaded, setGsapLoaded] = useState(false);
-  const [scrollTriggerLoaded, setScrollTriggerLoaded] = useState(false);
+  const [gsapReady, setGsapReady] = useState(false);
   const [scrollSmootherReady, setScrollSmootherReady] = useState(false);
+  const [scrollSmootherFailed, setScrollSmootherFailed] = useState(false);
   const [showLoader, setShowLoader] = useState(true);
   const [heroEntranceComplete, setHeroEntranceComplete] = useState(false);
   const [emailCopied, setEmailCopied] = useState(false);
@@ -256,6 +258,14 @@ export default function HomePage() {
     setEmailCopied(true);
     window.setTimeout(() => setEmailCopied(false), 1800);
   };
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const gsapWindow = window as GsapWindow;
+    gsapWindow.gsap = gsap as unknown as GsapWindow["gsap"];
+    gsapWindow.ScrollTrigger = ScrollTrigger as unknown as GsapWindow["ScrollTrigger"];
+    setGsapReady(true);
+  }, []);
 
   useEffect(() => {
     const timer = window.setTimeout(
@@ -275,18 +285,11 @@ export default function HomePage() {
     }
 
     const gsapWindow = window as GsapWindow;
-    if (
-      !gsapWindow.gsap ||
-      !gsapWindow.ScrollTrigger ||
-      !gsapWindow.ScrollSmoother
-    ) {
+    if (!gsapWindow.ScrollSmoother) {
       return;
     }
 
-    gsapWindow.gsap.registerPlugin(
-      gsapWindow.ScrollTrigger,
-      gsapWindow.ScrollSmoother,
-    );
+    gsap.registerPlugin(ScrollTrigger, gsapWindow.ScrollSmoother);
     const smoother = gsapWindow.ScrollSmoother.create({
       wrapper: "#smooth-wrapper",
       content: "#smooth-content",
@@ -308,33 +311,16 @@ export default function HomePage() {
   useEffect(() => {
     if (
       showLoader ||
-      !gsapLoaded ||
-      !scrollTriggerLoaded ||
+      !gsapReady ||
       !pageRef.current ||
       prefersReducedMotion
     ) {
       return;
     }
 
-    const gsapWindow = window as GsapWindow;
-    const gsap = gsapWindow.gsap;
-    const ScrollTrigger = gsapWindow.ScrollTrigger;
-    if (!gsap || !ScrollTrigger) return;
-
     gsap.registerPlugin(ScrollTrigger);
 
     const context = gsap.context(() => {
-      const postHeroElements = pageRef.current?.querySelectorAll(
-        "[data-section-title], [data-reveal-item], [data-project-image]",
-      );
-
-      // Keep every section after the hero hidden until the opening timeline ends.
-      // GSAP applies this only when motion is enabled, so content stays visible if
-      // JavaScript or the animation library is unavailable.
-      if (postHeroElements?.length) {
-        gsap.set(postHeroElements, { autoAlpha: 0 });
-      }
-
       const openingTimeline = gsap.timeline({
         defaults: { ease: "power3.out" },
       });
@@ -407,39 +393,36 @@ export default function HomePage() {
       window.cancelAnimationFrame(refreshFrame);
       context.revert();
     };
-  }, [gsapLoaded, prefersReducedMotion, scrollTriggerLoaded, showLoader]);
+  }, [gsapReady, prefersReducedMotion, showLoader]);
 
   useEffect(() => {
     if (
       showLoader ||
       !heroEntranceComplete ||
-      !gsapLoaded ||
-      !scrollTriggerLoaded ||
+      !gsapReady ||
+      (!scrollSmootherReady && !scrollSmootherFailed) ||
       !pageRef.current ||
       prefersReducedMotion
     ) {
       return;
     }
 
-    const gsapWindow = window as GsapWindow;
-    const gsap = gsapWindow.gsap;
-    const ScrollTrigger = gsapWindow.ScrollTrigger;
     const sections = pageRef.current.querySelectorAll<HTMLElement>(
       "[data-gsap-section]",
     );
-    if (!gsap || !ScrollTrigger || !sections.length) return;
+    if (!sections.length) return;
 
     gsap.registerPlugin(ScrollTrigger);
     let cleanupSlideResize = () => { };
+    let isActive = true;
     const context = gsap.context(() => {
       sections.forEach((section) => {
         const title = section.querySelector("[data-section-title]");
         if (title) {
           gsap.fromTo(
             title,
-            { autoAlpha: 0, y: 22 },
+            { y: 22 },
             {
-              autoAlpha: 1,
               y: 0,
               duration: 0.72,
               ease: "power3.out",
@@ -457,9 +440,8 @@ export default function HomePage() {
           .forEach((item) => {
             gsap.fromTo(
               item,
-              { autoAlpha: 0, y: 32 },
+              { y: 32 },
               {
-                autoAlpha: 1,
                 y: 0,
                 duration: 0.76,
                 ease: "power3.out",
@@ -475,10 +457,8 @@ export default function HomePage() {
         section.querySelectorAll<HTMLElement>("[data-project-image]").forEach((projectImage) => {
           gsap.fromTo(
             projectImage,
-            { autoAlpha: 0, clipPath: "inset(0 0 100% 0 round 20px)", y: 28 },
+            { y: 28 },
             {
-              autoAlpha: 1,
-              clipPath: "inset(0 0 0% 0 round 20px)",
               y: 0,
               duration: 1,
               ease: "power3.out",
@@ -574,13 +554,18 @@ export default function HomePage() {
 
       let resizeFrame = 0;
       const handleSlideResize = () => {
+        if (!isActive) return;
         window.cancelAnimationFrame(resizeFrame);
         resizeFrame = window.requestAnimationFrame(rebuildSlideTimelines);
       };
       window.addEventListener("resize", handleSlideResize);
+      document.fonts?.addEventListener("loadingdone", handleSlideResize);
+      document.fonts?.ready.then(handleSlideResize);
       cleanupSlideResize = () => {
+        isActive = false;
         window.cancelAnimationFrame(resizeFrame);
         window.removeEventListener("resize", handleSlideResize);
+        document.fonts?.removeEventListener("loadingdone", handleSlideResize);
         slideTimelines.forEach(({ timeline, marginBottom }, section) => {
           timeline.scrollTrigger?.kill();
           timeline.kill();
@@ -599,10 +584,11 @@ export default function HomePage() {
       context.revert();
     };
   }, [
-    gsapLoaded,
+    gsapReady,
     heroEntranceComplete,
     prefersReducedMotion,
-    scrollTriggerLoaded,
+    scrollSmootherFailed,
+    scrollSmootherReady,
     showLoader,
   ]);
 
@@ -631,28 +617,13 @@ export default function HomePage() {
           ease: [0.22, 1, 0.36, 1],
         }}
       >
-        <Script
-          id="gsap-core"
-          src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/gsap.min.js"
-          strategy="afterInteractive"
-          onReady={() => setGsapLoaded(true)}
-        />
-        {gsapLoaded && (
-          <>
-            <Script
-              id="gsap-scroll-trigger"
-              src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollTrigger.min.js"
-              strategy="afterInteractive"
-              onReady={() => setScrollTriggerLoaded(true)}
-            />
-          </>
-        )}
-        {scrollTriggerLoaded && (
+        {gsapReady && (
           <Script
             id="gsap-scroll-smoother"
             src="https://cdn.jsdelivr.net/npm/gsap@3.15/dist/ScrollSmoother.min.js"
             strategy="afterInteractive"
             onReady={() => setScrollSmootherReady(true)}
+            onError={() => setScrollSmootherFailed(true)}
           />
         )}
         <div
