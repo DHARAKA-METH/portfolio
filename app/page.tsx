@@ -27,10 +27,11 @@ import { ShinyButton } from "@/registry/magicui/shiny-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { JsonLd } from "@/components/seo/json-ld";
 import { blogs } from "@/data/blogs";
-import { projects } from "@/data/projects";
+import { selectedProjects } from "@/data/selected-projects";
 import { projectHighlights } from "@/data/project-highlights";
 import { skills } from "@/data/skills";
 import { volunteerExperiences } from "@/data/volunteers";
+import { realWorldContributions, type RealWorldContribution } from "@/data/real-world-contributions";
 import { site } from "@/data/site";
 import {
   SiGithub,
@@ -119,29 +120,6 @@ const projectHighlightImages = projectHighlights.map((highlight) => ({
   linkLabel: highlight.external ? "View on LinkedIn" : "View project",
 }));
 
-const realWorldContributions = [
-  {
-    id: "jesa",
-    title: "JESA 2026",
-    role: "IT Member / Web Developer",
-    period: "Jun 2026 – Sep 2026",
-    description:
-      "Helped revamp the registration experience, adding form validation with Zod and automated registration emails with Resend.",
-    website: "https://jesa.lk/",
-    domain: "jesa.lk",
-  },
-  {
-    id: "touch-the-peak",
-    title: "Touch the Peak 2026",
-    role: "IT Member / Web Developer",
-    period: "Jun 2026 – Present",
-    description:
-      "Help maintain the event website by fixing bugs and building new features with the development team using GitHub.",
-    website: "https://touchthepeak.com/",
-    domain: "touchthepeak.com",
-  },
-];
-
 const introduction =
   "I'm Dharaka, a developer exploring new technologies and turning ideas into meaningful digital experiences. I'm passionate about continuously learning, building, and growing through technology. Currently an undergraduate at the University of Sri Jayewardenepura, pursuing my journey in technology and software engineering.";
 
@@ -215,16 +193,14 @@ function TechChips({ items }: { items: string[] }) {
   );
 }
 
-function ContributionPreview({ contribution }: { contribution: (typeof realWorldContributions)[number] }) {
+function ContributionPreview({ contribution }: { contribution: RealWorldContribution }) {
   return (
     <div data-reveal-item>
       <div
-        className="relative aspect-[1.2] overflow-hidden rounded-[20px] border border-[#D8DAD4] bg-[#EEEFEA] p-3 shadow-[0_24px_70px_rgba(32,34,31,0.10)] sm:p-4 dark:border-[#363932] dark:bg-[#1A1C18] dark:shadow-[0_24px_70px_rgba(0,0,0,0.30)]"
+        className={`relative overflow-hidden rounded-[20px] border border-[#D8DAD4] bg-[#EEEFEA] p-3 shadow-[0_24px_70px_rgba(32,34,31,0.10)] sm:p-4 dark:border-[#363932] dark:bg-[#1A1C18] dark:shadow-[0_24px_70px_rgba(0,0,0,0.30)] ${contribution.image ? "" : "aspect-[1.2]"}`}
         data-project-image
-        role="img"
-        aria-label={`Website screenshot placeholder for ${contribution.title}`}
       >
-        <div className="flex h-full flex-col overflow-hidden rounded-xl border border-[#D8DAD4] bg-[#FAFAF7] dark:border-[#363932] dark:bg-[#10110F]">
+        <div className={`flex flex-col overflow-hidden rounded-xl border border-[#D8DAD4] bg-[#FAFAF7] dark:border-[#363932] dark:bg-[#10110F] ${contribution.image ? "" : "h-full"}`}>
           <div className="flex h-10 shrink-0 items-center gap-1.5 border-b border-[#E7E8E2] px-3 dark:border-[#292C27] sm:h-12 sm:px-4">
             <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
             <span className="size-2 rounded-full bg-[#C9CBC4] dark:bg-[#55594F]" />
@@ -233,16 +209,28 @@ function ContributionPreview({ contribution }: { contribution: (typeof realWorld
               {contribution.domain}
             </span>
           </div>
-          <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-[radial-gradient(ellipse_at_50%_35%,rgba(194,65,12,0.08),transparent_58%)] px-5 text-center dark:bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,138,101,0.08),transparent_58%)]">
-            <div className="max-w-[270px]">
-              <span className="mx-auto grid size-12 place-items-center rounded-xl border border-[#D8DAD4] bg-white text-[#898E86] dark:border-[#363932] dark:bg-[#181A17] dark:text-[#A6ABA1]">
-                <ImageIcon className="size-5" aria-hidden="true" />
-              </span>
-              <p className={`${displayFont} mt-4 text-[15px] font-semibold text-[#40443E] dark:text-[#C5C9C0]`}>
-                {contribution.title} website preview
-              </p>
-              <p className="mt-1.5 text-[13px] leading-5 text-[#898E86] dark:text-[#7D8279]">Website screenshot coming soon</p>
-            </div>
+          <div className={`relative flex min-h-0 flex-1 items-center justify-center overflow-hidden ${contribution.image ? "p-0" : "bg-[radial-gradient(ellipse_at_50%_35%,rgba(194,65,12,0.08),transparent_58%)] px-5 text-center dark:bg-[radial-gradient(ellipse_at_50%_35%,rgba(255,138,101,0.08),transparent_58%)]"}`}>
+            {contribution.image ? (
+              <div className="relative aspect-[16/10] w-full overflow-hidden">
+                <Image
+                  className="object-cover"
+                  src={contribution.image}
+                  alt={`${contribution.title} website preview`}
+                  fill
+                  sizes="(min-width: 1024px) 58vw, 100vw"
+                />
+              </div>
+            ) : (
+              <div className="max-w-[270px]">
+                <span className="mx-auto grid size-12 place-items-center rounded-xl border border-[#D8DAD4] bg-white text-[#898E86] dark:border-[#363932] dark:bg-[#181A17] dark:text-[#A6ABA1]">
+                  <ImageIcon className="size-5" aria-hidden="true" />
+                </span>
+                <p className={`${displayFont} mt-4 text-[15px] font-semibold text-[#40443E] dark:text-[#C5C9C0]`}>
+                  {contribution.title} website preview
+                </p>
+                <p className="mt-1.5 text-[13px] leading-5 text-[#898E86] dark:text-[#7D8279]">Website screenshot coming soon</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -1005,7 +993,7 @@ export default function HomePage() {
                     <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
                       <div className="grid gap-8 pb-12 sm:pb-16 lg:grid-cols-[1fr_auto] lg:items-end" data-section-title>
                         <div>
-                          <p className={`${displayFont} mb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>Selected work · {projects.length} projects</p>
+                          <p className={`${displayFont} mb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>Selected work · {selectedProjects.length} projects</p>
                           <h2 className={`${displayFont} max-w-[900px] text-[clamp(2.75rem,7.2vw,7.5rem)] leading-[0.98] font-semibold tracking-[-0.075em] text-[#20221F] dark:text-[#F2F3EE]`}>
                             Full-stack software, built from the ground up.
                           </h2>
@@ -1019,8 +1007,8 @@ export default function HomePage() {
                       </div>
 
                       <div className="flex flex-col">
-                        {projects.map((project, index) => {
-                          const projectImage = project.imageUrls[0] ?? project.extraImageUrls[0] ?? ("image" in project ? project.image : undefined);
+                        {selectedProjects.map((project, index) => {
+                          const projectImage = project.image;
                           const projectName = project.title.split(" - ")[0];
 
                           return (
@@ -1032,7 +1020,7 @@ export default function HomePage() {
                               <div data-reveal-item>
                                 <div className="mb-6 flex items-center justify-between gap-4">
                                   <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
-                                    Project {String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+                                    Project {String(index + 1).padStart(2, "0")} / {String(selectedProjects.length).padStart(2, "0")}
                                   </p>
                                   <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{project.period.join(" — ")}</span>
                                 </div>
