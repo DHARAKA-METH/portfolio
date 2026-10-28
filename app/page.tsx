@@ -148,6 +148,23 @@ function truncateText(text: string, limit: number) {
   return text.length > limit ? `${text.slice(0, limit).trimEnd()}...` : text;
 }
 
+type GsapTimeline = {
+  to: (
+    target: unknown,
+    variables: Record<string, unknown>,
+    position?: string | number,
+  ) => GsapTimeline;
+  fromTo: (
+    target: unknown,
+    fromVariables: Record<string, unknown>,
+    toVariables: Record<string, unknown>,
+    position?: string | number,
+  ) => GsapTimeline;
+  eventCallback: (type: string, callback: () => void) => GsapTimeline;
+  kill: () => void;
+  scrollTrigger?: { kill: () => void };
+};
+
 type GsapWindow = Window & {
   gsap?: {
     registerPlugin: (...plugins: unknown[]) => void;
@@ -164,15 +181,7 @@ type GsapWindow = Window & {
       target: unknown,
       variables: Record<string, unknown>,
     ) => { kill: () => void };
-    timeline: (options?: Record<string, unknown>) => {
-      fromTo: (
-        target: unknown,
-        fromVariables: Record<string, unknown>,
-        toVariables: Record<string, unknown>,
-        position?: string | number,
-      ) => unknown;
-      eventCallback: (type: string, callback: () => void) => unknown;
-    };
+    timeline: (options?: Record<string, unknown>) => GsapTimeline;
     to: (
       target: unknown,
       variables: Record<string, unknown>,
@@ -398,6 +407,7 @@ export default function HomePage() {
     if (!gsap || !ScrollTrigger || !sections.length) return;
 
     gsap.registerPlugin(ScrollTrigger);
+    let cleanupSlideResize = () => {};
     const context = gsap.context(() => {
       sections.forEach((section) => {
         const title = section.querySelector("[data-section-title]");
@@ -460,6 +470,88 @@ export default function HomePage() {
         }
       });
 
+      const slideSections = Array.from(
+        pageRef.current?.querySelectorAll<HTMLElement>("[data-scroll-slide]") ?? [],
+      );
+      const slideTimelines = new Map<
+        HTMLElement,
+        { timeline: GsapTimeline; marginBottom: string }
+      >();
+
+      const rebuildSlideTimelines = () => {
+        slideSections.forEach((section) => {
+          const content = section.querySelector<HTMLElement>("[data-slide-content]");
+          if (!content) return;
+
+          const previous = slideTimelines.get(section);
+          previous?.timeline.scrollTrigger?.kill();
+          previous?.timeline.kill();
+          if (previous) section.style.marginBottom = previous.marginBottom;
+
+          const originalMarginBottom = previous?.marginBottom ?? section.style.marginBottom;
+          gsap.set(section, {
+            height: "100svh",
+            overflow: "hidden",
+            alignItems: "flex-start",
+          });
+          const panelHeight = section.clientHeight;
+          if (!panelHeight) return;
+
+          const contentHeight = content.scrollHeight;
+          const overflow = Math.max(0, contentHeight - panelHeight);
+          section.style.marginBottom = `${overflow}px`;
+
+          const timeline = gsap.timeline({
+            scrollTrigger: {
+              trigger: section,
+              start: "bottom bottom",
+              end: () => `+=${Math.max(section.clientHeight, content.scrollHeight)}`,
+              pin: section,
+              pinSpacing: false,
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          if (overflow > 0) {
+            timeline.to(content, {
+              y: -overflow,
+              duration: overflow / panelHeight,
+              ease: "none",
+            });
+          }
+
+          timeline
+            .to(section, { scale: 0.7, opacity: 0.5, duration: 0.9, ease: "none" })
+            .to(section, { opacity: 0, duration: 0.1, ease: "none" });
+
+          slideTimelines.set(section, {
+            timeline,
+            marginBottom: originalMarginBottom,
+          });
+        });
+
+        ScrollTrigger.refresh();
+      };
+
+      rebuildSlideTimelines();
+
+      let resizeFrame = 0;
+      const handleSlideResize = () => {
+        window.cancelAnimationFrame(resizeFrame);
+        resizeFrame = window.requestAnimationFrame(rebuildSlideTimelines);
+      };
+      window.addEventListener("resize", handleSlideResize);
+      cleanupSlideResize = () => {
+        window.cancelAnimationFrame(resizeFrame);
+        window.removeEventListener("resize", handleSlideResize);
+        slideTimelines.forEach(({ timeline, marginBottom }, section) => {
+          timeline.scrollTrigger?.kill();
+          timeline.kill();
+          section.style.marginBottom = marginBottom;
+        });
+      };
+
       pageRef.current
         ?.querySelectorAll<HTMLElement>("[data-reveal-footer]")
         .forEach((item) => {
@@ -486,6 +578,7 @@ export default function HomePage() {
     );
     return () => {
       window.cancelAnimationFrame(refreshFrame);
+      cleanupSlideResize();
       context.revert();
     };
   }, [
@@ -787,11 +880,12 @@ export default function HomePage() {
                   <ImageCarousel className="mt-[-20px]" images={projectHighlightImages} autoPlay interval={4000} showIndicators />
                 </Section> */}
                 <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen scroll-mt-16 items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
                   id="projects-showcase"
                   data-gsap-section
+                  data-scroll-slide
                 >
-                  <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 lg:px-10">
+                  <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 lg:px-10" data-slide-content>
                     <div className="mb-9 sm:mb-12" data-section-title>
                       <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C2410C] dark:text-[#FF8A65]`}>
                         Selected projects · 2025—2026
@@ -875,11 +969,12 @@ export default function HomePage() {
                 </section>
 
                 <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen scroll-mt-16 items-center bg-[#FAFAF7] py-16 dark:bg-[#10110F] sm:py-20"
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center bg-[#FAFAF7] py-16 dark:bg-[#10110F] sm:py-20"
                   id="real-world-contributions"
                   data-gsap-section
+                  data-scroll-slide
                 >
-                  <div className="mx-auto grid w-full max-w-[1240px] items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:px-12">
+                  <div className="mx-auto grid w-full max-w-[1240px] items-start gap-10 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16 lg:px-12" data-slide-content>
                     <div>
                       <div className="mb-7" data-section-title>
                         <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
@@ -1019,7 +1114,7 @@ export default function HomePage() {
                   </div>
                 </section>
 
-                <Section id="skills">
+                <Section id="skills" scrollSlide>
                   <SectionTitle>Stack .</SectionTitle>
                   <div className="flex flex-col gap-9">
                     {skills.map((skill) => (
@@ -1035,7 +1130,7 @@ export default function HomePage() {
                   </div>
                 </Section>
 
-                <Section id="latest-writing">
+                <Section id="latest-writing" scrollSlide>
                   <div className="flex items-end justify-between gap-5">
                     <div>
                       <SectionTitle>Latest writing</SectionTitle>
@@ -1163,20 +1258,23 @@ function Section({
   id,
   children,
   smoothEffect = false,
+  scrollSlide = false,
 }: {
   id: string;
   children: ReactNode;
   smoothEffect?: boolean;
+  scrollSlide?: boolean;
 }) {
   return (
     <section
-      className="scroll-mt-16 py-14 sm:py-20"
+      className={`scroll-mt-16 py-14 sm:py-20 ${scrollSlide ? "flex min-h-[100svh] items-center bg-[#FAFAF7] dark:bg-[#10110F]" : ""}`}
       id={id}
       data-gsap-section
+      data-scroll-slide={scrollSlide || undefined}
       data-speed={smoothEffect ? "0.94" : undefined}
       data-lag={smoothEffect ? "0.08" : undefined}
     >
-      {children}
+      {scrollSlide ? <div className="w-full" data-slide-content>{children}</div> : children}
     </section>
   );
 }
