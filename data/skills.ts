@@ -7,8 +7,6 @@ export const skills = [
       "Node.js",
       "Express.js",
       "REST APIs",
-      "Microservices",
-      "JWT",
     ],
   },
   {
@@ -17,11 +15,11 @@ export const skills = [
   },
   {
     title: "DevOps & Cloud",
-    items: ["AWS","Docker", "NGINX", "GitHub Actions", "Firebase", "Linux"],
+    items: ["AWS","Docker","Linux"],
   },
   {
     title: "Frontend",
-    items: ["JavaScript", "TypeScript", "React", "Next.js", "Tailwind CSS"],
+    items: ["JavaScript", "TypeScript", "React", "Next.js"],
   },
   {
     title: "Mobile Development",

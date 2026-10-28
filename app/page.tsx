@@ -1084,129 +1084,133 @@ export default function HomePage() {
                 </section>
 
                 <Section id="skills" scrollSlide>
-                  <SectionTitle>Tech stack</SectionTitle>
-                  <div className="flex flex-col gap-6">
-                    {skills.map((skill) => (
-                      <div key={skill.title} data-reveal-item>
-                        <h3
-                          className={`${displayFont} mb-2 text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#292C28] dark:text-[#E8EAE5]`}
-                        >
-                          {skill.title}
-                        </h3>
-                        <TechChips items={skill.items} />
-                      </div>
-                    ))}
+                  <div className="mx-auto flex min-h-[calc(100svh-4rem)] w-full max-w-[1120px] flex-col justify-center gap-10 sm:min-h-[calc(100svh-5rem)] sm:gap-12 lg:grid lg:grid-cols-[0.8fr_1.2fr] lg:items-center lg:gap-16">
+                    <div data-section-title>
+                      <p className={`${monoFont} mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#898E86] dark:text-[#A6ABA1]`}>Technologies · 01 / 02</p>
+                      <h2 className={`${displayFont} max-w-[12ch] text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.065em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                        Tools I use to build useful software.
+                      </h2>
+                      <p className="mt-5 max-w-[42ch] text-sm leading-7 text-[#62675F] sm:text-base dark:text-[#A6ABA1]">
+                        A focused toolkit for backend development, thoughtful interfaces, and shipping reliable projects.
+                      </p>
+                    </div>
+                    <div className="grid gap-x-8 gap-y-7 sm:grid-cols-2 sm:gap-y-8">
+                      {skills.map((skill) => (
+                        <div className="border-t border-[#D8DAD4] pt-4 dark:border-[#363932]" key={skill.title} data-reveal-item>
+                          <h3 className={`${displayFont} mb-3 text-sm font-semibold tracking-[-0.02em] text-[#292C28] sm:text-base dark:text-[#E8EAE5]`}>
+                            {skill.title}
+                          </h3>
+                          <TechChips items={skill.items} />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </Section>
 
                 <Section id="latest-writing" scrollSlide>
-                  <div className="flex items-end justify-between gap-3">
-                    <div>
-                      <SectionTitle>Latest writing</SectionTitle>
-                      <p className="mt-2 mb-5 max-w-[56ch] text-[16px] leading-7 text-[#62675F] sm:mb-6 dark:text-[#A6ABA1]">
-                        Notes on engineering concepts, tools, and the things I&apos;m learning.
+                  <div className="mx-auto flex min-h-[calc(100svh-4rem)] w-full max-w-[1120px] flex-col justify-center sm:min-h-[calc(100svh-5rem)]">
+                    <div className="mb-8 grid gap-5 sm:mb-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-end lg:gap-16" data-section-title>
+                      <div>
+                        <p className={`${monoFont} mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#898E86] dark:text-[#A6ABA1]`}>Writing · 02 / 02</p>
+                        <h2 className={`${displayFont} max-w-[12ch] text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.065em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                          Notes from building and learning.
+                        </h2>
+                      </div>
+                      <p className="max-w-[48ch] text-sm leading-7 text-[#62675F] sm:text-base dark:text-[#A6ABA1]">
+                        Ideas, discoveries, and practical lessons from my software engineering journey.
                       </p>
                     </div>
-                    <Link className={`${displayFont} ${focusRing} mb-5 inline-flex shrink-0 items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] sm:mb-6 dark:text-[#A6ABA1]`} href="/blogs">
-                      Read all
-                      <ArrowUpRight className="size-3.5 stroke-[1.75]" />
-                    </Link>
-                  </div>
-                  <div className="flex flex-col gap-5">
-                    {[...blogs].sort((first, second) => second.publishedAt.localeCompare(first.publishedAt)).slice(0, 2).map((blog) => (
-                      <a className={`${focusRing} flex items-start justify-between gap-3 rounded-sm`} data-reveal-item href={blog.url} key={blog.title} target="_blank" rel="noreferrer">
-                        <div className="min-w-0">
-                          <p className={`${displayFont} text-[13px] text-[#898E86] dark:text-[#7D8279]`}>{blog.date} · {blog.platform}</p>
-                          <h3 className={`${displayFont} mt-2 text-[20px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}>{truncateText(blog.title, 70)}</h3>
-                          <p className="mt-2 max-w-[70ch] text-[15px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">{truncateText(blog.excerpt, 150)}</p>
-                          <span className={`${displayFont} mt-4 inline-flex items-center gap-1.5 text-[14px] font-bold text-[#62675F] dark:text-[#A6ABA1]`}>
-                            Read article
-                            <ArrowUpRight className="size-3.5 stroke-[1.75]" />
-                          </span>
-                        </div>
-                      </a>
-                    ))}
+                    <div className="divide-y divide-[#D8DAD4] border-t border-[#D8DAD4] dark:divide-[#363932] dark:border-[#363932]">
+                      {[...blogs].sort((first, second) => second.publishedAt.localeCompare(first.publishedAt)).slice(0, 2).map((blog, index) => (
+                        <a
+                          className={`${focusRing} group grid grid-cols-[24px_minmax(0,1fr)_auto] items-start gap-3 py-5 sm:grid-cols-[36px_minmax(0,1fr)_auto] sm:gap-5 sm:py-6`}
+                          data-reveal-item
+                          href={blog.url}
+                          key={blog.title}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          <span className={`${monoFont} pt-0.5 text-xs text-[#898E86] dark:text-[#7D8279]`}>{String(index + 1).padStart(2, "0")}</span>
+                          <div className="min-w-0">
+                            <p className={`${monoFont} text-xs tracking-wide text-[#898E86] dark:text-[#7D8279]`}>{blog.platform} · {blog.date}</p>
+                            <h3 className={`${displayFont} mt-2 text-lg leading-6 font-semibold tracking-[-0.035em] text-[#292C28] transition-colors group-hover:text-[#C2410C] sm:text-xl dark:text-[#E8EAE5] dark:group-hover:text-[#FF8A65]`}>{truncateText(blog.title, 70)}</h3>
+                            <p className="mt-2 max-w-[70ch] text-sm leading-6 text-[#62675F] sm:text-[15px] dark:text-[#A6ABA1]">{truncateText(blog.excerpt, 150)}</p>
+                          </div>
+                          <ArrowUpRight className="mt-1 size-4 text-[#898E86] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:text-[#A6ABA1]" />
+                        </a>
+                      ))}
+                    </div>
+                    <div className="mt-6 flex justify-end sm:mt-8">
+                      <Link className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 rounded-lg border border-[#D8DAD4] px-4 text-sm font-medium text-[#40443E] transition-colors hover:border-[#898E86] hover:bg-[#ECEEE6] dark:border-[#363932] dark:text-[#C5C9C0] dark:hover:bg-[#232520]`} href="/blogs">
+                        Read all writing <ArrowUpRight className="size-4" />
+                      </Link>
+                    </div>
                   </div>
                 </Section>
 
                 <Section id="contact" scrollSlide>
-                  <footer className="flex min-h-[calc(100svh-4rem)] w-full flex-col justify-center border-t border-[#E5E6E1] pt-8 dark:border-[#282B26] sm:min-h-[calc(100svh-30rem)]">
-                    <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-start">
-                      <div>
-                        <p
-                          className={`${displayFont} text-[20px] font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
-                        >
+                  <footer className="flex min-h-[calc(100svh-4rem)] w-full flex-col justify-between border-t border-[#E5E6E1] py-8 pb-16 dark:border-[#282B26] sm:min-h-[calc(100svh-5rem)] sm:py-10 sm:pb-16">
+                    <div className="grid flex-1 content-center gap-10 py-6 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-16">
+                      <div data-section-title>
+                        <p className={`${monoFont} mb-4 text-xs font-semibold uppercase tracking-[0.16em] text-[#898E86] dark:text-[#A6ABA1]`}>Get in touch · Contact</p>
+                        <h2 className={`${displayFont} max-w-[11ch] text-[clamp(2.75rem,6vw,5.5rem)] leading-[0.98] font-semibold tracking-[-0.065em] text-[#20221F] dark:text-[#F2F3EE]`}>
                           Let&apos;s build something useful.
+                        </h2>
+                        <p className="mt-5 max-w-[48ch] text-sm leading-7 text-[#62675F] sm:text-base dark:text-[#A6ABA1]">
+                          I&apos;m open to software engineering internships, collaborations, and conversations about building useful software.
                         </p>
-                        <p className="mt-2 max-w-[58ch] text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
-                          I am open to internship opportunities, collaborations, and
-                          conversations about software engineering.
-                        </p>
+                        <div className={`${displayFont} mt-5 text-xs text-[#62675F] sm:text-sm dark:text-[#A6ABA1]`}>
+                          <InternshipStatus />
+                        </div>
                       </div>
-                      <div className="flex flex-wrap items-center justify-center  gap-x-5 gap-y-3 whitespace-nowrap">
-                        <a
-                          className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                          href="https://github.com/DHARAKA-METH"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          View GitHub
-                          <ArrowUpRight className="size-4 stroke-[1.75]" />
-                        </a>
-                        <a
-                          className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                          href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215"
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          Connect on LinkedIn
-                          <ArrowUpRight className="size-4 stroke-[1.75]" />
-                        </a>
+
+                      <div className="rounded-2xl border border-[#D8DAD4] bg-white/70 p-5 shadow-[0_18px_48px_rgba(32,34,31,0.06)] sm:p-7 dark:border-[#363932] dark:bg-[#181A17]/70 dark:shadow-[0_18px_48px_rgba(0,0,0,0.24)]" data-reveal-item>
+                        <p className={`${displayFont} text-lg font-semibold tracking-[-0.03em] text-[#292C28] dark:text-[#E8EAE5]`}>Have an opportunity or idea?</p>
+                        <p className="mt-2 text-sm leading-6 text-[#62675F] dark:text-[#A6ABA1]">Send me a note and I&apos;ll get back to you.</p>
+
+                        <div className="mt-5 flex flex-wrap gap-2">
+                          <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-sm font-medium text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`} href="mailto:deshandm699@gmail.com">
+                            <Mail className="size-4" /> Email me <ArrowUpRight className="size-4" />
+                          </a>
+                          <button className={`${focusRing} inline-flex min-h-11 items-center gap-2 rounded-lg border border-[#D8DAD4] px-3 text-sm font-medium text-[#40443E] transition-colors hover:border-[#898E86] hover:bg-[#ECEEE6] dark:border-[#363932] dark:text-[#C5C9C0] dark:hover:bg-[#232520]`} type="button" onClick={copyEmail} aria-label={emailCopied ? "Email address copied" : "Copy email address"} title={emailCopied ? "Email copied" : "Copy email address"}>
+                            {emailCopied ? <Check className="size-4 text-[#C2410C]" /> : <Copy className="size-4" />}
+                            {emailCopied ? "Copied" : "Copy email"}
+                          </button>
+                        </div>
+
+                        <div className="mt-6 border-t border-[#E7E8E2] pt-4 dark:border-[#292C27]">
+                          <a className={`${displayFont} ${focusRing} flex min-h-10 items-center justify-between gap-4 text-sm font-medium text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href="https://github.com/DHARAKA-METH" target="_blank" rel="noreferrer">
+                            View GitHub <ArrowUpRight className="size-4" />
+                          </a>
+                          <a className={`${displayFont} ${focusRing} flex min-h-10 items-center justify-between gap-4 text-sm font-medium text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" target="_blank" rel="noreferrer">
+                            Connect on LinkedIn <ArrowUpRight className="size-4" />
+                          </a>
+                        </div>
+
                         <ShinyButton
-                          className={`${displayFont} ${focusRing} min-h-4 cursor-pointer rounded-full px-3 text-[13px] whitespace-nowrap`}
+                          className={`${displayFont} ${focusRing} mt-5 min-h-11 w-full cursor-pointer rounded-lg px-4 text-sm font-medium whitespace-nowrap`}
                           type="button"
                           onClick={() => window.alert("CV download coming soon.")}
                         >
-                          <Download className="size-4 stroke-[1.75]" />
-                          Download CV
+                          <Download className="size-4 stroke-[1.75]" /> Download CV
                         </ShinyButton>
                       </div>
                     </div>
 
-                    <div className="mt-8 flex items-center justify-center gap-5 sm:justify-between">
-                      <div className="flex flex-wrap gap-4 text-[#62675F] dark:text-[#A6ABA1]">
-                        <Social href="https://github.com/DHARAKA-METH" label="GitHub">
-                          <SiGithub />
-                        </Social>
-                        <Social href="https://x.com/DM_DESHAN" label="X">
-                          <SiX />
-                        </Social>
-                        <Social href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" label="LinkedIn">
-                          <FaLinkedin />
-                        </Social>
-                        {/* <Social href="https://youtube.com" label="YouTube">
-                          <SiYoutube />
-                        </Social> */}
-                        {/* <Social href="https://tiktok.com" label="TikTok">
-                          <SiTiktok />
-                        </Social> */}
-                        <Social href="https://www.instagram.com/dharaka__" label="Instagram">
-                          <SiInstagram />
-                        </Social>
+                    <div className="mt-8 flex flex-col items-center justify-between gap-5 border-t border-[#E5E6E1] pt-5 text-[#898E86] sm:flex-row dark:border-[#282B26] dark:text-[#7D8279]">
+                      <div className="flex flex-wrap items-center justify-center gap-2 text-[#62675F] dark:text-[#A6ABA1]">
+                        <Social href="https://github.com/DHARAKA-METH" label="GitHub"><SiGithub /></Social>
+                        <Social href="https://x.com/DM_DESHAN" label="X"><SiX /></Social>
+                        <Social href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" label="LinkedIn"><FaLinkedin /></Social>
+                        <Social href="https://www.instagram.com/dharaka__" label="Instagram"><SiInstagram /></Social>
                       </div>
-                    </div>
-
-                    <div
-                      className={`${displayFont} mt-7 flex flex-col items-center justify-center sm:justify-between gap-3 text-[14px] text-[#898E86] sm:flex-row dark:text-[#7D8279]`}
-                    >
-                      <p>© 2026 Dharaka Meth. All rights reserved.</p>
+                      <p className={`${displayFont} text-center text-xs sm:text-left sm:text-sm`}>© 2026 Dharaka Meth. All rights reserved.</p>
                       <button
-                        className={`${focusRing} cursor-pointer inline-flex w-fit items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
+                        className={`${focusRing} inline-flex min-h-10 items-center gap-1.5 rounded-sm text-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
                         type="button"
                         onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" })}
                       >
-                        Back to top
-                        <ArrowUp className="size-3.5 stroke-[1.75]" />
+                        Back to top <ArrowUp className="size-3.5 stroke-[1.75]" />
                       </button>
                     </div>
                   </footer>
@@ -1234,14 +1238,14 @@ function Section({
 }) {
   return (
     <section
-      className={`scroll-mt-16 py-8 sm:py-10 ${scrollSlide ? "flex min-h-[100svh] items-center bg-[#FAFAF7] dark:bg-[#10110F]" : ""}`}
+      className={`scroll-mt-16 py-8 sm:py-10 ${scrollSlide ? "relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center bg-[#FAFAF7] dark:bg-[#10110F]" : ""}`}
       id={id}
       data-gsap-section
       data-scroll-slide={scrollSlide || undefined}
       data-speed={smoothEffect ? "0.94" : undefined}
       data-lag={smoothEffect ? "0.08" : undefined}
     >
-      {scrollSlide ? <div className="w-full" data-slide-content>{children}</div> : children}
+      {scrollSlide ? <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 lg:px-10" data-slide-content>{children}</div> : children}
     </section>
   );
 }
@@ -1340,7 +1344,7 @@ function Social({
 }) {
   return (
     <a
-      className={`${focusRing} grid size-8 place-items-center rounded-md transition duration-200 hover:-translate-y-0.5 hover:bg-[#F2F2EC] hover:text-[#20221F] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE] [&_svg]:size-[18px]`}
+      className={`${focusRing} grid size-11 place-items-center rounded-md transition duration-200 hover:-translate-y-0.5 hover:bg-[#F2F2EC] hover:text-[#20221F] dark:hover:bg-[#232520] dark:hover:text-[#F2F3EE] [&_svg]:size-[18px]`}
       href={href}
       aria-label={label}
       target="_blank"
