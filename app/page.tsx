@@ -27,6 +27,7 @@ import { ShinyButton } from "@/registry/magicui/shiny-button";
 import { PortfolioLoader } from "@/components/ui/portfolio-loader";
 import { JsonLd } from "@/components/seo/json-ld";
 import { blogs } from "@/data/blogs";
+import { projects } from "@/data/projects";
 import { projectHighlights } from "@/data/project-highlights";
 import { skills } from "@/data/skills";
 import { volunteerExperiences } from "@/data/volunteers";
@@ -407,7 +408,7 @@ export default function HomePage() {
     if (!gsap || !ScrollTrigger || !sections.length) return;
 
     gsap.registerPlugin(ScrollTrigger);
-    let cleanupSlideResize = () => {};
+    let cleanupSlideResize = () => { };
     const context = gsap.context(() => {
       sections.forEach((section) => {
         const title = section.querySelector("[data-section-title]");
@@ -735,7 +736,7 @@ export default function HomePage() {
                       <TextLink href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" external>
                         LinkedIn
                       </TextLink> */}
-               <InternshipStatus />
+                      <InternshipStatus />
                     </div>
                   </div>
 
@@ -874,96 +875,31 @@ export default function HomePage() {
                   </Timeline>
                 </Section> */}
 
-                 {/* commented feture section   ----------------- */}
+                {/* commented feture section   ----------------- */}
                 {/* <Section id="project-highlights">
                   <SectionTitle>Featured</SectionTitle>
                   <ImageCarousel className="mt-[-20px]" images={projectHighlightImages} autoPlay interval={4000} showIndicators />
                 </Section> */}
                 <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-20 dark:border-[#292C27] dark:bg-[#171915] sm:py-24"
                   id="projects-showcase"
                   data-gsap-section
-                  data-scroll-slide
                 >
-                  <div className="mx-auto w-full max-w-[1120px] px-5 sm:px-8 lg:px-10" data-slide-content>
-                    <div className="mb-9 sm:mb-12" data-section-title>
-                      <h2 className={`${displayFont} max-w-[760px] text-[34px] leading-[1.08] font-semibold tracking-[-0.065em] text-[#20221F] sm:text-[48px] dark:text-[#F2F3EE]`}>
+                  <div className="mx-auto grid w-full max-w-[1240px] gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_auto] lg:items-end lg:px-12">
+                    <div data-section-title>
+                      <h2 className={`${displayFont} max-w-[900px] text-[clamp(2.75rem,7.2vw,7.5rem)] leading-[0.98] font-semibold tracking-[-0.075em] text-[#20221F] dark:text-[#F2F3EE]`}>
                         Full-stack software, built from the ground up.
                       </h2>
-                      <p className="mt-4 max-w-[58ch] text-[16px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">
-                        I connect useful interfaces with dependable backends, APIs, and infrastructure to solve real problems.
+                      <p className="mt-6 max-w-[58ch] text-[16px] leading-7 text-[#62675F] sm:text-[18px] dark:text-[#A6ABA1]">
+                        A collection of things I have built while exploring backend engineering, thoughtful interfaces, and the systems behind them.
                       </p>
                     </div>
-
-                    <article className="grid items-center gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:gap-12">
-                      <div data-reveal-item>
-                        <p className={`${displayFont} text-[13px] font-medium tracking-[0.08em] text-[#898E86] dark:text-[#7D8279]`}>01 / FEATURED BUILD · IN PROGRESS</p>
-                        <h3 className={`${displayFont} mt-4 text-[30px] leading-tight font-bold tracking-[-0.055em] text-[#20221F] sm:text-[38px] dark:text-[#F2F3EE]`}>
-                          TraceUsage
-                        </h3>
-                        <p className="mt-2 text-[17px] font-medium text-[#62675F] dark:text-[#A6ABA1]">API usage monitoring platform</p>
-                        <p className="mt-4 max-w-[48ch] text-[15px] leading-7 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">
-                          See which API endpoints and response fields are actually used, so teams can make safer maintenance decisions with real usage data.
-                        </p>
-                        <div className="mt-5 flex flex-wrap gap-2">
-                          {["Spring Boot", "Next.js", "Kafka", "PostgreSQL", "Docker"].map((technology) => (
-                            <span className="rounded-md border border-[#D8DAD4] px-2.5 py-1.5 text-[13px] text-[#40443E] dark:border-[#363932] dark:text-[#C5C9C0]" key={technology}>{technology}</span>
-                          ))}
-                        </div>
-                        <a className={`${displayFont} ${focusRing} mt-7 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`} href="/projects#traceusage">
-                          Explore project <ArrowUpRight className="size-4" />
-                        </a>
-                      </div>
-
-                      <Link className={`${focusRing} group block`} href="/projects#traceusage" aria-label="Explore the TraceUsage project">
-                        <div className="relative aspect-[1.38] overflow-hidden rounded-[20px] border border-[#D8DAD4] bg-[#E8E9E4] shadow-[0_24px_70px_rgba(32,34,31,0.12)] dark:border-[#363932] dark:bg-[#20221F] dark:shadow-[0_24px_70px_rgba(0,0,0,0.32)]" data-project-image>
-                          <Image
-                            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.025]"
-                            src="/projectimg/TraceUsage_Overview_3x.webp"
-                            alt="TraceUsage API usage monitoring dashboard"
-                            fill
-                            sizes="(min-width: 1024px) 58vw, 100vw"
-                            priority={false}
-                          />
-                          <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent px-5 pb-4 pt-12 text-white sm:px-6">
-                            <span className="text-[13px] font-medium tracking-wide">Usage insights at a glance</span>
-                            <ArrowUpRight className="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                          </div>
-                        </div>
-                      </Link>
-                    </article>
-
-                    <div className="mt-10 grid gap-5 border-t border-[#D8DAD4] pt-7 sm:grid-cols-2 dark:border-[#363932]">
-                      <Link className={`${focusRing} group overflow-hidden rounded-2xl border border-[#D8DAD4] bg-[#FAFAF7] transition-colors hover:border-[#BFC2BA] dark:border-[#363932] dark:bg-[#10110F] dark:hover:border-[#50544A]`} href="/projects#mindspace" data-reveal-item>
-                        <div className="relative aspect-[2.05] overflow-hidden bg-[#E9E8EF] dark:bg-[#24232B]">
-                          <Image className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]" src="/images/mindspace-architecture-1920x1440.png" alt="MindSpace student wellness application architecture" fill sizes="(min-width: 640px) 50vw, 100vw" />
-                        </div>
-                        <div className="flex items-start justify-between gap-4 p-4 sm:p-5">
-                          <div>
-                            <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-[#898E86] dark:text-[#7D8279]">Mobile · Wellness</p>
-                            <h3 className={`${displayFont} mt-1 text-[20px] font-semibold tracking-[-0.04em] text-[#20221F] dark:text-[#F2F3EE]`}>MindSpace</h3>
-                            <p className="mt-1.5 max-w-[45ch] text-[14px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">A student wellness app for mood tracking, AI guidance, and counselor support.</p>
-                          </div>
-                          <ArrowUpRight className="mt-1 size-5 shrink-0 text-[#62675F] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:text-[#A6ABA1]" />
-                        </div>
-                      </Link>
-
-                      <Link className={`${focusRing} group overflow-hidden rounded-2xl border border-[#D8DAD4] bg-[#FAFAF7] transition-colors hover:border-[#BFC2BA] dark:border-[#363932] dark:bg-[#10110F] dark:hover:border-[#50544A]`} href="/projects#kazu" data-reveal-item>
-                        <div className="relative aspect-[2.05] overflow-hidden bg-[#E6EDF1] dark:bg-[#202930]">
-                          <Image className="object-cover object-center transition-transform duration-500 group-hover:scale-[1.03]" src="/images/kazu-device-1920x1440.png" alt="KaZU GPS pet tracking device" fill sizes="(min-width: 640px) 50vw, 100vw" />
-                        </div>
-                        <div className="flex items-start justify-between gap-4 p-4 sm:p-5">
-                          <div>
-                            <p className="text-[12px] font-medium uppercase tracking-[0.12em] text-[#898E86] dark:text-[#7D8279]">Mobile · IoT</p>
-                            <h3 className={`${displayFont} mt-1 text-[20px] font-semibold tracking-[-0.04em] text-[#20221F] dark:text-[#F2F3EE]`}>KaZU</h3>
-                            <p className="mt-1.5 max-w-[45ch] text-[14px] leading-6 text-[#62675F] dark:text-[#A6ABA1]">A GPS pet-tracking system with live location, safe zones, and alerts.</p>
-                          </div>
-                          <ArrowUpRight className="mt-1 size-5 shrink-0 text-[#62675F] transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 dark:text-[#A6ABA1]" />
-                        </div>
-                      </Link>
-                    </div>
+                    <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 self-start rounded-lg border border-[#D8DAD4] px-4 text-[14px] font-semibold text-[#40443E] transition hover:border-[#898E86] dark:border-[#363932] dark:text-[#C5C9C0] lg:self-end`} href="/projects">
+                      Browse all projects <ArrowUpRight className="size-4" />
+                    </a>
                   </div>
                 </section>
+
 
                 <section
                   className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center bg-[#FAFAF7] py-16 dark:bg-[#10110F] sm:py-20"
@@ -1070,6 +1006,62 @@ export default function HomePage() {
                   </div>
                 </section>
 
+                {projects.map((project, index) => {
+                  const projectImage = project.imageUrls[0] ?? project.extraImageUrls[0] ?? ("image" in project ? project.image : undefined);
+                  const projectName = project.title.split(" - ")[0];
+
+                  return (
+                    <section
+                      className={`relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center border-b border-[#E7E8E2] py-16 sm:py-20 ${index % 2 === 0 ? "bg-[#FAFAF7] dark:bg-[#10110F]" : "bg-[#F3F3EE] dark:bg-[#171915]"}`}
+                      id={`project-${project.slug}`}
+                      key={project.slug}
+                      data-gsap-section
+                    >
+                      <div className="mx-auto grid w-full max-w-[1240px] items-center gap-10 px-5 sm:px-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-12">
+                        <div>
+                          <div className="mb-6 flex items-center justify-between gap-4" data-section-title>
+                            <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                              Project {String(index + 1).padStart(2, "0")} / {String(projects.length).padStart(2, "0")}
+                            </p>
+                            <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{project.period.join(" — ")}</span>
+                          </div>
+                          <div data-reveal-item>
+                            <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{project.role}</p>
+                            <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
+                              {projectName}
+                            </h3>
+                            <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{project.description}</p>
+                            <div className="mt-6"><TechChips items={project.technologies.slice(0, 6)} /></div>
+                            <a
+                              className={`${displayFont} ${focusRing} mt-7 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
+                              href={`/projects#${project.slug}`}
+                            >
+                              Explore project <ArrowUpRight className="size-4" />
+                            </a>
+                          </div>
+                        </div>
+
+                        <Link className={`${focusRing} group block`} href={`/projects#${project.slug}`} aria-label={`Explore ${projectName}`}>
+                          <div className="relative aspect-[1.2] overflow-hidden rounded-[20px] border border-[#D8DAD4] bg-[#E8E9E4] shadow-[0_24px_70px_rgba(32,34,31,0.10)] dark:border-[#363932] dark:bg-[#20221F] dark:shadow-[0_24px_70px_rgba(0,0,0,0.3)]" data-project-image>
+                            {projectImage ? (
+                              <Image className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.025]" src={projectImage} alt={`${projectName} project preview`} fill sizes="(min-width: 1024px) 58vw, 100vw" />
+                            ) : (
+                              <div className={`absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-br ${project.accent} text-white`}>
+                                <span className={`${displayFont} text-6xl font-bold tracking-[-0.08em] sm:text-8xl`}>{project.mark}</span>
+                                <span className="mt-4 text-xs font-medium uppercase tracking-[0.2em] text-white/75">Project preview</span>
+                              </div>
+                            )}
+                            <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-black/70 to-transparent px-5 pb-4 pt-12 text-white sm:px-6">
+                              <span className="text-[13px] font-medium tracking-wide">{projectName}</span>
+                              <ArrowUpRight className="size-5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    </section>
+                  );
+                })}
+
                 <section
                   className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen scroll-mt-16 items-center bg-[#F4F4EF] py-14 dark:bg-[#151713] sm:py-20"
                   id="volunteer"
@@ -1082,32 +1074,32 @@ export default function HomePage() {
                       <p className="mt-3 max-w-[56ch] text-[15px] leading-6 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">Working with student communities to bring events, technology, and ideas to life.</p>
                     </div>
                     <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-5">
-                    {volunteerExperiences.map((organization) => (
-                      <article
-                        className="rounded-2xl border border-[#D8DAD4] bg-white/70 p-5 shadow-[0_14px_36px_rgba(32,34,31,0.05)] transition-colors hover:border-[#BFC2BA] sm:p-6 xl:p-7 dark:border-[#363932] dark:bg-[#181A17]/70 dark:hover:border-[#50544A]"
-                        data-reveal-item
-                        key={organization.name}
-                      >
-                        <div className="flex flex-wrap items-start justify-between gap-3">
-                          <h3 className={`${displayFont} max-w-[34ch] text-[18px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] sm:text-[20px] dark:text-[#E8EAE5]`}>
-                            {organization.name}
-                          </h3>
-                          {organization.award && (
-                            <span className={`${displayFont} inline-flex shrink-0 rounded-full bg-[#F4E7C0] px-2.5 py-1 text-[11px] font-bold text-[#74520A] dark:bg-[#453710] dark:text-[#F1D98A]`}>
-                              {organization.award}
-                            </span>
-                          )}
-                        </div>
-                        <div className="mt-4 divide-y divide-[#E7E8E2] dark:divide-[#292C27]">
-                          {organization.experiences.map((experience) => (
-                            <div className="py-4 first:pt-0 last:pb-0" key={`${experience.role}-${experience.period.join("-")}`}>
-                              <Volunteer {...experience} />
-                            </div>
-                          ))}
-                        </div>
-                      </article>
-                    ))}
-                  </div>
+                      {volunteerExperiences.map((organization) => (
+                        <article
+                          className="rounded-2xl border border-[#D8DAD4] bg-white/70 p-5 shadow-[0_14px_36px_rgba(32,34,31,0.05)] transition-colors hover:border-[#BFC2BA] sm:p-6 xl:p-7 dark:border-[#363932] dark:bg-[#181A17]/70 dark:hover:border-[#50544A]"
+                          data-reveal-item
+                          key={organization.name}
+                        >
+                          <div className="flex flex-wrap items-start justify-between gap-3">
+                            <h3 className={`${displayFont} max-w-[34ch] text-[18px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] sm:text-[20px] dark:text-[#E8EAE5]`}>
+                              {organization.name}
+                            </h3>
+                            {organization.award && (
+                              <span className={`${displayFont} inline-flex shrink-0 rounded-full bg-[#F4E7C0] px-2.5 py-1 text-[11px] font-bold text-[#74520A] dark:bg-[#453710] dark:text-[#F1D98A]`}>
+                                {organization.award}
+                              </span>
+                            )}
+                          </div>
+                          <div className="mt-4 divide-y divide-[#E7E8E2] dark:divide-[#292C27]">
+                            {organization.experiences.map((experience) => (
+                              <div className="py-4 first:pt-0 last:pb-0" key={`${experience.role}-${experience.period.join("-")}`}>
+                                <Volunteer {...experience} />
+                              </div>
+                            ))}
+                          </div>
+                        </article>
+                      ))}
+                    </div>
                   </div>
                 </section>
 
