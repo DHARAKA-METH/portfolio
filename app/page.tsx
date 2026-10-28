@@ -325,7 +325,7 @@ export default function HomePage() {
 
     const context = gsap.context(() => {
       const postHeroElements = pageRef.current?.querySelectorAll(
-        "[data-section-title], [data-reveal-item], [data-reveal-footer], [data-project-image]",
+        "[data-section-title], [data-reveal-item], [data-project-image]",
       );
 
       // Keep every section after the hero hidden until the opening timeline ends.
@@ -509,6 +509,8 @@ export default function HomePage() {
           previous?.timeline.scrollTrigger?.kill();
           previous?.timeline.kill();
           if (previous) section.style.marginBottom = previous.marginBottom;
+          gsap.set(content, { y: 0 });
+          gsap.set(section, { scale: 1, opacity: 1 });
 
           const originalMarginBottom = previous?.marginBottom ?? section.style.marginBottom;
           gsap.set(section, {
@@ -521,32 +523,42 @@ export default function HomePage() {
 
           const contentHeight = content.scrollHeight;
           const overflow = Math.max(0, contentHeight - panelHeight);
+          const fakeScrollRatio =
+            overflow > 0 ? overflow / (overflow + panelHeight) : 0;
+
           const baseMarginBottom =
             Number.parseFloat(window.getComputedStyle(section).marginBottom) || 0;
-          section.style.marginBottom = `${baseMarginBottom}px`;
+          section.style.marginBottom = `${baseMarginBottom + overflow}px`;
 
           const timeline = gsap.timeline({
             scrollTrigger: {
               trigger: section,
               start: "bottom bottom",
-              end: () => `+=${Math.max(section.clientHeight, content.scrollHeight)}`,
+              end: () =>
+                fakeScrollRatio > 0
+                  ? `+=${content.scrollHeight}`
+                  : "bottom top",
               pin: section,
-              pinSpacing: true,
+              pinSpacing: false,
               scrub: true,
               invalidateOnRefresh: true,
             },
           });
 
-          if (overflow > 0) {
+          if (fakeScrollRatio > 0) {
             timeline.to(content, {
               y: -overflow,
-              duration: overflow / panelHeight,
+              duration: 1 / (1 - fakeScrollRatio) - 1,
               ease: "none",
             });
           }
 
           timeline
-            .to(section, { scale: 0.7, opacity: 0.5, duration: 0.9, ease: "none" })
+            .fromTo(
+              section,
+              { scale: 1, opacity: 1 },
+              { scale: 0.7, opacity: 0.5, duration: 0.9, ease: "none" },
+            )
             .to(section, { opacity: 0, duration: 0.1, ease: "none" });
 
           slideTimelines.set(section, {
@@ -576,25 +588,6 @@ export default function HomePage() {
         });
       };
 
-      pageRef.current
-        ?.querySelectorAll<HTMLElement>("[data-reveal-footer]")
-        .forEach((item) => {
-          gsap.fromTo(
-            item,
-            { autoAlpha: 0, y: 24 },
-            {
-              autoAlpha: 1,
-              y: 0,
-              duration: 0.7,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: item,
-                start: "top 92%",
-                once: true,
-              },
-            },
-          );
-        });
     }, pageRef.current);
 
     const refreshFrame = window.requestAnimationFrame(() =>
@@ -904,25 +897,25 @@ export default function HomePage() {
                   <ImageCarousel className="mt-[-20px]" images={projectHighlightImages} autoPlay interval={4000} showIndicators />
                 </Section> */}
                 <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-32 flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] dark:border-[#292C27] dark:bg-[#171915]"
                   id="projects-showcase"
                   data-gsap-section
                   data-scroll-slide
                 >
-                  <div className="w-full pb-32" data-slide-content>
+                  <div className="w-full" data-slide-content>
                     <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
-                      <div className="grid gap-8 pb-12 sm:pb-16 lg:grid-cols-[1fr_auto] lg:items-end" data-section-title>
+                      <div className="grid gap-6 pb-10 mt-6 sm:gap-8 sm:pb-14 lg:grid-cols-[1fr_auto] lg:items-end" data-section-title>
                         <div>
-                          <p className={`${monoFont} mb-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>Selected work · {selectedProjects.length} projects</p>
+                          <p className={`${monoFont} mb-6 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>Selected work · {selectedProjects.length} projects</p>
                           <h2 className={`${displayFont} max-w-[900px] text-[clamp(2.75rem,7.2vw,7.5rem)] leading-[0.98] font-semibold tracking-[-0.075em] text-[#20221F] dark:text-[#F2F3EE]`}>
                             Full-stack software, built from the ground up.
                           </h2>
-                          <p className="mt-6 max-w-[58ch] text-[16px] leading-7 text-[#62675F] sm:text-[18px] dark:text-[#A6ABA1]">
+                          <p className="mt-6 max-w-[56ch] text-pretty text-[16px] leading-9 text-[#62675F] sm:mt-7 sm:text-[18px] sm:leading-[1.9] dark:text-[#A6ABA1]">
                             A collection of things I have built while exploring backend engineering, thoughtful interfaces, and the systems behind them.
                           </p>
                         </div>
-                        <a className={`${displayFont} ${focusRing} inline-flex min-h-11 items-center gap-2 self-start rounded-lg border border-[#D8DAD4] px-4 text-[14px] font-semibold text-[#40443E] transition hover:border-[#898E86] dark:border-[#363932] dark:text-[#C5C9C0] lg:self-end`} href="/projects">
-                          Browse all projects <ArrowUpRight className="size-4" />
+                        <a className={`${displayFont} ${focusRing} group inline-flex min-h-11 items-center gap-2 self-start rounded-lg border border-[#D8DAD4] px-4 text-[14px] font-semibold text-[#40443E] transition-[transform,background-color,border-color] duration-200 hover:-translate-y-0.5 hover:border-[#898E86] hover:bg-[#ECEEE6] active:translate-y-0 motion-reduce:transition-none dark:border-[#363932] dark:text-[#C5C9C0] dark:hover:bg-[#232520] lg:self-end`} href="/projects">
+                          Browse all projects <ArrowUpRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 motion-reduce:transition-none" />
                         </a>
                       </div>
 
@@ -933,7 +926,7 @@ export default function HomePage() {
 
                           return (
                             <article
-                              className={`grid items-center gap-8 py-10 first:pt-0 sm:py-14 ${index > 0 ? "border-t border-[#D8DAD4] dark:border-[#363932]" : ""} lg:grid-cols-[0.85fr_1.15fr] lg:gap-16`}
+                              className={`grid items-center gap-8 py-10 first:pt-0 last:pb-0 sm:py-14 ${index > 0 ? "border-t border-[#D8DAD4] dark:border-[#363932]" : ""} lg:grid-cols-[0.85fr_1.15fr] lg:gap-16`}
                               id={`project-${project.slug}`}
                               key={project.slug}
                             >
@@ -989,12 +982,12 @@ export default function HomePage() {
 
 
                 <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] mb-32 flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] py-16 dark:border-[#292C27] dark:bg-[#171915] sm:py-20"
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen items-center border-y border-[#E7E8E2] bg-[#F3F3EE] dark:border-[#292C27] dark:bg-[#171915]"
                   id="real-world-contributions"
                   data-gsap-section
                   data-scroll-slide
                 >
-                  <div className="w-full pb-32" data-slide-content>
+                  <div className="w-full" data-slide-content>
                   <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
                     <div className="mb-8" data-section-title>
                       <p className={`${monoFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
@@ -1065,22 +1058,21 @@ export default function HomePage() {
                 </section>
 
                 <section
-                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex min-h-[100svh] w-screen scroll-mt-16 items-center bg-[#F4F4EF] py-14 dark:bg-[#151713] sm:py-20"
+                  className="relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] flex w-screen scroll-mt-16 items-center bg-[#F4F4EF] py-8 dark:bg-[#151713] sm:py-10"
                   id="volunteer"
                   data-gsap-section
-                  data-scroll-slide
                 >
-                  <div className="w-full" data-slide-content>
+                  <div className="w-full">
                   <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12">
-                    <div className="mb-9 sm:mb-12" data-section-title>
+                    <div className="mb-6 sm:mb-8" data-section-title>
                       <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#C2410C] dark:text-[#FF8A65]`}>Beyond the build</p>
                       <h2 className={`${displayFont} text-[30px] leading-tight font-semibold tracking-[-0.055em] text-[#20221F] sm:text-[38px] dark:text-[#F2F3EE]`}>Activities &amp; Contributions</h2>
                       <p className="mt-3 max-w-[56ch] text-[15px] leading-6 text-[#62675F] sm:text-[16px] dark:text-[#A6ABA1]">Working with student communities to bring events, technology, and ideas to life.</p>
                     </div>
-                    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3 xl:gap-5">
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3 xl:gap-4">
                       {volunteerExperiences.map((organization) => (
                         <article
-                          className="rounded-2xl border border-[#D8DAD4] bg-white/70 p-5 shadow-[0_14px_36px_rgba(32,34,31,0.05)] transition-colors hover:border-[#BFC2BA] sm:p-6 xl:p-7 dark:border-[#363932] dark:bg-[#181A17]/70 dark:hover:border-[#50544A]"
+                          className="rounded-2xl border border-[#D8DAD4] bg-white/70 p-4 shadow-[0_14px_36px_rgba(32,34,31,0.05)] transition-colors hover:border-[#BFC2BA] sm:p-5 xl:p-6 dark:border-[#363932] dark:bg-[#181A17]/70 dark:hover:border-[#50544A]"
                           data-reveal-item
                           key={organization.name}
                         >
@@ -1094,9 +1086,9 @@ export default function HomePage() {
                               </span>
                             )}
                           </div>
-                          <div className="mt-4 divide-y divide-[#E7E8E2] dark:divide-[#292C27]">
+                          <div className="mt-3 divide-y divide-[#E7E8E2] dark:divide-[#292C27]">
                             {organization.experiences.map((experience) => (
-                              <div className="py-4 first:pt-0 last:pb-0" key={`${experience.role}-${experience.period.join("-")}`}>
+                              <div className="py-3 first:pt-0 last:pb-0" key={`${experience.role}-${experience.period.join("-")}`}>
                                 <Volunteer {...experience} />
                               </div>
                             ))}
@@ -1111,11 +1103,11 @@ export default function HomePage() {
 
                 <Section id="skills" scrollSlide>
                   <SectionTitle>Tech stack</SectionTitle>
-                  <div className="flex flex-col gap-9">
+                  <div className="flex flex-col gap-6">
                     {skills.map((skill) => (
                       <div key={skill.title} data-reveal-item>
                         <h3
-                          className={`${displayFont} mb-3 text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#292C28] dark:text-[#E8EAE5]`}
+                          className={`${displayFont} mb-2 text-[18px] leading-6 font-bold tracking-[-0.025em] text-[#292C28] dark:text-[#E8EAE5]`}
                         >
                           {skill.title}
                         </h3>
@@ -1126,21 +1118,21 @@ export default function HomePage() {
                 </Section>
 
                 <Section id="latest-writing" scrollSlide>
-                  <div className="flex items-end justify-between gap-5">
+                  <div className="flex items-end justify-between gap-3">
                     <div>
                       <SectionTitle>Latest writing</SectionTitle>
-                      <p className="-mt-5 mb-8 max-w-[56ch] text-[16px] leading-7 text-[#62675F] sm:mb-10 dark:text-[#A6ABA1]">
+                      <p className="mt-2 mb-5 max-w-[56ch] text-[16px] leading-7 text-[#62675F] sm:mb-6 dark:text-[#A6ABA1]">
                         Notes on engineering concepts, tools, and the things I&apos;m learning.
                       </p>
                     </div>
-                    <Link className={`${displayFont} ${focusRing} mb-8 inline-flex shrink-0 items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] sm:mb-10 dark:text-[#A6ABA1]`} href="/blogs">
+                    <Link className={`${displayFont} ${focusRing} mb-5 inline-flex shrink-0 items-center gap-1.5 rounded-sm text-[14px] font-bold text-[#62675F] sm:mb-6 dark:text-[#A6ABA1]`} href="/blogs">
                       Read all
                       <ArrowUpRight className="size-3.5 stroke-[1.75]" />
                     </Link>
                   </div>
-                  <div className="flex flex-col gap-9">
+                  <div className="flex flex-col gap-5">
                     {[...blogs].sort((first, second) => second.publishedAt.localeCompare(first.publishedAt)).slice(0, 2).map((blog) => (
-                      <a className={`${focusRing} flex items-start justify-between gap-5 rounded-sm`} data-reveal-item href={blog.url} key={blog.title} target="_blank" rel="noreferrer">
+                      <a className={`${focusRing} flex items-start justify-between gap-3 rounded-sm`} data-reveal-item href={blog.url} key={blog.title} target="_blank" rel="noreferrer">
                         <div className="min-w-0">
                           <p className={`${displayFont} text-[13px] text-[#898E86] dark:text-[#7D8279]`}>{blog.date} · {blog.platform}</p>
                           <h3 className={`${displayFont} mt-2 text-[20px] leading-6 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}>{truncateText(blog.title, 70)}</h3>
@@ -1155,90 +1147,88 @@ export default function HomePage() {
                   </div>
                 </Section>
 
-                <footer
-                  className="mt-6 border-t border-[#E5E6E1] pt-8 dark:border-[#282B26]"
-                  id="contact"
-                  data-reveal-footer
-                >
-                  <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-start">
-                    <div>
-                      <p
-                        className={`${displayFont} text-[20px] font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
-                      >
-                        Let&apos;s build something useful.
-                      </p>
-                      <p className="mt-2 max-w-[58ch] text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
-                        I am open to internship opportunities, collaborations, and
-                        conversations about software engineering.
-                      </p>
+                <Section id="contact" scrollSlide>
+                  <footer className="flex min-h-[calc(100svh-4rem)] w-full flex-col justify-center border-t border-[#E5E6E1] pt-8 dark:border-[#282B26] sm:min-h-[calc(100svh-5rem)]">
+                    <div className="flex flex-col justify-between gap-8 sm:flex-row sm:items-start">
+                      <div>
+                        <p
+                          className={`${displayFont} text-[20px] font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}
+                        >
+                          Let&apos;s build something useful.
+                        </p>
+                        <p className="mt-2 max-w-[58ch] text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">
+                          I am open to internship opportunities, collaborations, and
+                          conversations about software engineering.
+                        </p>
+                      </div>
+                      <div className="flex flex-wrap items-center justify-center  gap-x-5 gap-y-3 whitespace-nowrap">
+                        <a
+                          className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                          href="https://github.com/DHARAKA-METH"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          View GitHub
+                          <ArrowUpRight className="size-4 stroke-[1.75]" />
+                        </a>
+                        <a
+                          className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
+                          href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215"
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Connect on LinkedIn
+                          <ArrowUpRight className="size-4 stroke-[1.75]" />
+                        </a>
+                        <ShinyButton
+                          className={`${displayFont} ${focusRing} min-h-4 cursor-pointer rounded-full px-3 text-[13px] whitespace-nowrap`}
+                          type="button"
+                          onClick={() => window.alert("CV download coming soon.")}
+                        >
+                          <Download className="size-4 stroke-[1.75]" />
+                          Download CV
+                        </ShinyButton>
+                      </div>
                     </div>
-                    <div className="flex flex-wrap items-center justify-center  gap-x-5 gap-y-3 whitespace-nowrap">
-                      <a
-                        className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                        href="https://github.com/DHARAKA-METH"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        View GitHub
-                        <ArrowUpRight className="size-4 stroke-[1.75]" />
-                      </a>
-                      <a
-                        className={`${displayFont} ${focusRing} inline-flex w-fit items-center gap-2 rounded-md text-[15px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`}
-                        href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215"
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        Connect on LinkedIn
-                        <ArrowUpRight className="size-4 stroke-[1.75]" />
-                      </a>
-                      <ShinyButton
-                        className={`${displayFont} ${focusRing} min-h-4 cursor-pointer rounded-full px-3 text-[13px] whitespace-nowrap`}
-                        type="button"
-                        onClick={() => window.alert("CV download coming soon.")}
-                      >
-                        <Download className="size-4 stroke-[1.75]" />
-                        Download CV
-                      </ShinyButton>
-                    </div>
-                  </div>
 
-                  <div className="mt-8 flex items-center justify-center gap-5 sm:justify-between">
-                    <div className="flex flex-wrap gap-4 text-[#62675F] dark:text-[#A6ABA1]">
-                      <Social href="https://github.com/DHARAKA-METH" label="GitHub">
-                        <SiGithub />
-                      </Social>
-                      <Social href="https://x.com/DM_DESHAN" label="X">
-                        <SiX />
-                      </Social>
-                      <Social href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" label="LinkedIn">
-                        <FaLinkedin />
-                      </Social>
-                      {/* <Social href="https://youtube.com" label="YouTube">
-                        <SiYoutube />
-                      </Social> */}
-                      {/* <Social href="https://tiktok.com" label="TikTok">
-                        <SiTiktok />
-                      </Social> */}
-                      <Social href="https://www.instagram.com/dharaka__" label="Instagram">
-                        <SiInstagram />
-                      </Social>
+                    <div className="mt-8 flex items-center justify-center gap-5 sm:justify-between">
+                      <div className="flex flex-wrap gap-4 text-[#62675F] dark:text-[#A6ABA1]">
+                        <Social href="https://github.com/DHARAKA-METH" label="GitHub">
+                          <SiGithub />
+                        </Social>
+                        <Social href="https://x.com/DM_DESHAN" label="X">
+                          <SiX />
+                        </Social>
+                        <Social href="https://www.linkedin.com/in/dharaka-meth-koonkaduwage-821ba4215" label="LinkedIn">
+                          <FaLinkedin />
+                        </Social>
+                        {/* <Social href="https://youtube.com" label="YouTube">
+                          <SiYoutube />
+                        </Social> */}
+                        {/* <Social href="https://tiktok.com" label="TikTok">
+                          <SiTiktok />
+                        </Social> */}
+                        <Social href="https://www.instagram.com/dharaka__" label="Instagram">
+                          <SiInstagram />
+                        </Social>
+                      </div>
                     </div>
-                  </div>
 
-                  <div
-                    className={`${displayFont} mt-7 flex flex-col items-center justify-center sm:justify-between gap-3 text-[14px] text-[#898E86] sm:flex-row dark:text-[#7D8279]`}
-                  >
-                    <p>© 2026 Dharaka Meth. All rights reserved.</p>
-                    <button
-                      className={`${focusRing} cursor-pointer inline-flex w-fit items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
-                      type="button"
-                      onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" })}
+                    <div
+                      className={`${displayFont} mt-7 flex flex-col items-center justify-center sm:justify-between gap-3 text-[14px] text-[#898E86] sm:flex-row dark:text-[#7D8279]`}
                     >
-                      Back to top
-                      <ArrowUp className="size-3.5 stroke-[1.75]" />
-                    </button>
-                  </div>
-                </footer>
+                      <p>© 2026 Dharaka Meth. All rights reserved.</p>
+                      <button
+                        className={`${focusRing} cursor-pointer inline-flex w-fit items-center gap-1.5 rounded-sm transition-colors hover:text-[#20221F] dark:hover:text-[#F2F3EE]`}
+                        type="button"
+                        onClick={() => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" })}
+                      >
+                        Back to top
+                        <ArrowUp className="size-3.5 stroke-[1.75]" />
+                      </button>
+                    </div>
+                  </footer>
+                </Section>
               </div>
             </div>
           </div>
@@ -1262,7 +1252,7 @@ function Section({
 }) {
   return (
     <section
-      className={`scroll-mt-16 py-14 sm:py-20 ${scrollSlide ? "flex min-h-[100svh] items-center bg-[#FAFAF7] dark:bg-[#10110F]" : ""}`}
+      className={`scroll-mt-16 py-8 sm:py-10 ${scrollSlide ? "flex min-h-[100svh] items-center bg-[#FAFAF7] dark:bg-[#10110F]" : ""}`}
       id={id}
       data-gsap-section
       data-scroll-slide={scrollSlide || undefined}
@@ -1276,7 +1266,7 @@ function Section({
 
 function SectionTitle({ children }: { children: ReactNode }) {
   return (
-    <div className="mb-8 sm:mb-10" data-section-title>
+    <div className="mb-5 sm:mb-6" data-section-title>
       <h2
         className={`${displayFont} text-[20px] sm:text-[24px]  leading-tight font-semibold tracking-[-0.055em] text-[#20221F] sm:text-[31px] dark:text-[#F2F3EE]`}
       >
