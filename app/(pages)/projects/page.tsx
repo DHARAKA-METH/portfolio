@@ -57,7 +57,9 @@ import { projects } from "@/data/projects";
 import { site } from "@/data/site";
 
 const displayFont =
-  "[font-family:var(--font-avenue-mono)]";
+  "[font-family:var(--font-geist-sans)]";
+
+const monoFont = "[font-family:var(--font-geist-mono)]";
 
 const technologyIcons = {
   Java: FaJava,
@@ -379,7 +381,7 @@ export default function ProjectSectionPage() {
               return (
               <article data-project-reveal className="min-w-0 scroll-mt-8 pt-5 pb-8 sm:pt-8 lg:pt-12" id={project.slug} key={project.slug}>
                 <div className="w-full">
-                  <p className={`${displayFont} text-[14px] text-[#62675F] dark:text-[#9EA594]`}>
+                  <p className={`${monoFont} text-[13px] text-[#62675F] dark:text-[#9EA594]`}>
                     {project.period.join(" - ")}
                   </p>
                   <h2 className={`${displayFont} mt-3 text-[24px] leading-[1.2] font-bold tracking-[-0.035em] text-balance text-[#292C28] sm:text-[30px] dark:text-[#E8EAE5]`}>
@@ -429,7 +431,7 @@ export default function ProjectSectionPage() {
                             <ul className="mt-1 space-y-1">
                               {section.endpoints.map((endpoint, index) => (
                                 <li className="text-[13px] leading-5 text-[#62675F] dark:text-[#A6ABA1]" key={`${endpoint.method}-${endpoint.path}-${index}`}>
-                                  <code className="mr-1.5 rounded bg-[#ECEEE6] px-1.5 py-0.5 text-[12px] font-semibold text-[#40443E] dark:bg-[#20251B] dark:text-[#D7DBD2]">
+                                  <code className={`${monoFont} mr-1.5 rounded bg-[#ECEEE6] px-1.5 py-0.5 text-[12px] font-semibold text-[#40443E] dark:bg-[#20251B] dark:text-[#D7DBD2]`}>
                                     {endpoint.method} {endpoint.path}
                                   </code>
                                   {endpoint.description}
@@ -450,7 +452,7 @@ export default function ProjectSectionPage() {
                         Tracked source files and directories in the repository.
                       </p>
                       <div className="mt-4 overflow-x-auto rounded-xl bg-[#ECEEE6] p-4 dark:bg-[#171A15] sm:p-5">
-                        <pre className="min-w-max font-mono text-[12px] leading-5 text-[#40443E] sm:text-[13px] dark:text-[#C5C9C0]">
+                        <pre className={`${monoFont} min-w-max text-[12px] leading-5 text-[#40443E] sm:text-[13px] dark:text-[#C5C9C0]`}>
                           <code>{project.fileStructure}</code>
                         </pre>
                       </div>
@@ -462,7 +464,7 @@ export default function ProjectSectionPage() {
                       const iconColor = technologyIconColors[technology as keyof typeof technologyIconColors];
 
                       return (
-                        <span className={`${displayFont} inline-flex items-center gap-1.5 rounded-lg border border-[#D8DAD4] bg-[#F5F6F1] px-2.5 py-1.5 text-[12px] text-[#40443E] dark:border-[#363932] dark:bg-[#171A15] dark:text-[#C5C9C0]`} key={technology}>
+                        <span className={`${monoFont} inline-flex items-center gap-1.5 rounded-lg border border-[#D8DAD4] bg-[#F5F6F1] px-2.5 py-1.5 text-[12px] text-[#40443E] dark:border-[#363932] dark:bg-[#171A15] dark:text-[#C5C9C0]`} key={technology}>
                           {TechnologyIcon && <TechnologyIcon className={`size-4 shrink-0 ${iconColor}`} aria-hidden="true" />}
                           {technology}
                         </span>
@@ -534,7 +536,7 @@ export default function ProjectSectionPage() {
                   <ArrowUp className="size-5" aria-hidden="true" />
                   Previous
                 </button>
-                <span className="whitespace-nowrap text-[12px] tracking-[0.12em] text-[#62675F] tabular-nums dark:text-[#A6ABA1]">
+                <span className={`${monoFont} whitespace-nowrap text-[12px] tracking-[0.12em] text-[#62675F] tabular-nums dark:text-[#A6ABA1]`}>
                   {String(activeIndex + 1).padStart(2, "0")} / {String(projectCount).padStart(2, "0")}
                 </span>
                 <button type="button" onClick={() => selectProject(activeIndex + 1)} className="group flex min-h-14 min-w-16 flex-col items-center justify-center gap-2 rounded-xl px-3 py-2 text-[12px] text-[#62675F] transition-colors hover:bg-[#ECEEE6] hover:text-[#20221F] focus-visible:outline-2 focus-visible:outline-offset-4 dark:text-[#A6ABA1] dark:hover:bg-[#20251B] dark:hover:text-[#F2F3EE]">

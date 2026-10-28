@@ -61,10 +61,12 @@ import { InternshipStatus } from "@/components/ui/InternshipStatus";
 import { ImageCarousel } from "@/components/ui/image-carousel";
 
 const displayFont =
-  "[font-family:var(--font-avenue-mono)]";
+  "[font-family:var(--font-geist-sans)]";
 
 const bodyFont =
-  "[font-family:var(--font-avenue-mono)]";
+  "[font-family:var(--font-geist-sans)]";
+
+const monoFont = "[font-family:var(--font-geist-mono)]";
 
 const focusRing =
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFAF7] dark:focus-visible:ring-[#FF8A65] dark:focus-visible:ring-offset-[#10110F]";
@@ -182,7 +184,7 @@ function TechChips({ items }: { items: string[] }) {
     <div className="flex flex-wrap gap-2">
       {items.map((item) => (
         <span
-          className={`${displayFont} inline-flex min-h-8 items-center gap-1.5 rounded-md border border-[#D8DAD4] px-2.5 py-1.5 text-[15px] leading-none font-normal tracking-[-0.01em] text-[#40443E] transition-colors hover:border-[#898E86] hover:text-[#20221F] dark:border-[#363932] dark:text-[#C5C9C0] dark:hover:border-[#7D8279] dark:hover:text-[#F2F3EE]`}
+          className={`${monoFont} inline-flex min-h-8 items-center gap-1.5 rounded-md border border-[#D8DAD4] px-2.5 py-1.5 text-[15px] leading-none font-normal tracking-[-0.01em] text-[#40443E] transition-colors hover:border-[#898E86] hover:text-[#20221F] dark:border-[#363932] dark:text-[#C5C9C0] dark:hover:border-[#7D8279] dark:hover:text-[#F2F3EE]`}
           key={item}
         >
           {techChipIcons[item]}
@@ -681,12 +683,12 @@ export default function HomePage() {
                       </div>
                       <div className="min-w-0 text-left lg:col-start-2 lg:row-start-1" data-opening="identity">
                         <h1
-                          className="[font-family:var(--font-avenue-mono)] text-[26px] leading-[1.2] font-medium tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE] lg:text-[48px] lg:leading-[1.05] lg:font-semibold lg:tracking-[-0.055em]"
+                          className="[font-family:var(--font-geist-sans)] text-[26px] leading-[1.2] font-medium tracking-[0.0125em] text-[#222222] dark:text-[#F2F3EE] lg:text-[48px] lg:leading-[1.05] lg:font-semibold lg:tracking-[-0.055em]"
                         >
                           Dharaka Meth
                         </h1>
                         <p
-                          className="[font-family:var(--font-avenue-mono)] mt-2 text-[20px] leading-7 font-medium tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]"
+                          className="[font-family:var(--font-geist-sans)] mt-2 text-[20px] leading-7 font-medium tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]"
                         >
                           Aspiring Backend Developer
                         </p>
@@ -694,7 +696,7 @@ export default function HomePage() {
                     </div>
 
                     <p
-                      className="[font-family:var(--font-avenue-mono)] mx-auto mt-4 max-w-[62ch] whitespace-normal text-pretty text-[16px] leading-6 font-medium tracking-[-0.04em] text-[#929292] [word-spacing:normal] lg:col-start-2 lg:row-start-2 lg:mx-0 lg:mt-5"
+                      className="[font-family:var(--font-geist-sans)] mx-auto mt-4 max-w-[62ch] whitespace-normal text-pretty text-[16px] leading-6 font-medium tracking-[-0.01em] text-[#929292] [word-spacing:normal] lg:col-start-2 lg:row-start-2 lg:mx-0 lg:mt-5"
                       aria-label={introduction}
                       data-opening="intro"
                     >
@@ -911,7 +913,7 @@ export default function HomePage() {
                     <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
                       <div className="grid gap-8 pb-12 sm:pb-16 lg:grid-cols-[1fr_auto] lg:items-end" data-section-title>
                         <div>
-                          <p className={`${displayFont} mb-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>Selected work · {selectedProjects.length} projects</p>
+                          <p className={`${monoFont} mb-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>Selected work · {selectedProjects.length} projects</p>
                           <h2 className={`${displayFont} max-w-[900px] text-[clamp(2.75rem,7.2vw,7.5rem)] leading-[0.98] font-semibold tracking-[-0.075em] text-[#20221F] dark:text-[#F2F3EE]`}>
                             Full-stack software, built from the ground up.
                           </h2>
@@ -937,10 +939,10 @@ export default function HomePage() {
                             >
                               <div data-reveal-item>
                                 <div className="mb-6 flex items-center justify-between gap-4">
-                                  <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                                  <p className={`${monoFont} text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
                                     Project {String(index + 1).padStart(2, "0")} / {String(selectedProjects.length).padStart(2, "0")}
                                   </p>
-                                  <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{project.period.join(" — ")}</span>
+                                  <span className={`${monoFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{project.period.join(" — ")}</span>
                                 </div>
                                 <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{project.role}</p>
                                 <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
@@ -995,7 +997,7 @@ export default function HomePage() {
                   <div className="w-full pb-32" data-slide-content>
                   <div className="mx-auto w-full max-w-[1240px] px-5 sm:px-8 lg:px-12">
                     <div className="mb-8" data-section-title>
-                      <p className={`${displayFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                      <p className={`${monoFont} mb-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
                         Team projects · 2026
                       </p>
                       <h2 className={`${displayFont} text-[clamp(2.25rem,5vw,4rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
@@ -1009,10 +1011,10 @@ export default function HomePage() {
                     <article className="grid items-center gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
                       <div data-reveal-item>
                         <div className="mb-5 flex items-center justify-between gap-4">
-                          <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                          <p className={`${monoFont} text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
                             Contribution 01 / 02
                           </p>
-                          <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[0].period}</span>
+                          <span className={`${monoFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[0].period}</span>
                         </div>
                         <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[0].role}</p>
                         <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
@@ -1036,10 +1038,10 @@ export default function HomePage() {
                   <div className="mx-auto mt-10 grid w-full max-w-[1240px] items-center gap-10 border-t border-[#D8DAD4] px-5 pt-10 sm:px-8 dark:border-[#363932] lg:grid-cols-[0.85fr_1.15fr] lg:gap-16 lg:px-12">
                     <div data-reveal-item>
                       <div className="mb-6 flex items-center justify-between gap-4" data-section-title>
-                        <p className={`${displayFont} text-[12px] font-semibold uppercase tracking-[0.18em] text-[#898E86] dark:text-[#A6ABA1]`}>
+                        <p className={`${monoFont} text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
                           Contribution 02 / 02
                         </p>
-                        <span className={`${displayFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[1].period}</span>
+                        <span className={`${monoFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{realWorldContributions[1].period}</span>
                       </div>
                       <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{realWorldContributions[1].role}</p>
                       <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>

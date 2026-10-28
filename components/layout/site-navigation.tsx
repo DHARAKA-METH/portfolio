@@ -6,7 +6,7 @@ import { BookOpen, Briefcase, Home, Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 
 const displayFont =
-  "[font-family:var(--font-avenue-mono)]";
+  "[font-family:var(--font-geist-sans)]";
 
 export function SiteNavigation() {
   const { theme, setTheme } = useTheme();

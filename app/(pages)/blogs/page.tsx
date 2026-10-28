@@ -14,7 +14,9 @@ import { blogs } from "@/data/blogs";
 import { site } from "@/data/site";
 
 const displayFont =
-  "[font-family:var(--font-avenue-mono)]";
+  "[font-family:var(--font-geist-sans)]";
+
+const monoFont = "[font-family:var(--font-geist-mono)]";
 
 export default function BlogsPage() {
   const prefersReducedMotion = useReducedMotion();
@@ -104,14 +106,14 @@ export default function BlogsPage() {
             <div className={`relative w-[220px] max-w-full aspect-[16/10] overflow-hidden rounded-xl bg-gradient-to-br ${blog.accent} p-5 text-white sm:w-auto`}>
               {blog.image && <Image className="object-cover transition-transform duration-300 group-hover:scale-[1.04]" src={blog.image} alt={`${blog.title} cover`} fill sizes="(min-width: 640px) 240px, 100vw" />}
               <div className="absolute inset-0 bg-black/35" aria-hidden="true" />
-              <span className={`${displayFont} relative text-[12px] tracking-[0.12em] text-white/75 uppercase`}>{blog.platform} article</span>
-              <span className={`${displayFont} absolute right-5 bottom-4 text-[15px] text-white/80`}>{blog.date}</span>
+              <span className={`${monoFont} relative text-[12px] tracking-[0.12em] text-white/75 uppercase`}>{blog.platform} article</span>
+              <span className={`${monoFont} absolute right-5 bottom-4 text-[13px] text-white/80`}>{blog.date}</span>
             </div>
             <div className="sm:pt-1">
               <h2 className={`${displayFont} text-[22px] leading-7 font-bold tracking-[-0.035em] text-[#292C28] dark:text-[#E8EAE5]`}>{blog.title}</h2>
               <p className="mt-3 max-w-[68ch] text-[16px] leading-7 text-[#62675F] dark:text-[#A6ABA1]">{blog.excerpt}</p>
               <div className="mt-4 flex flex-wrap gap-2">
-                {blog.tags.map((tag) => <span className={`${displayFont} rounded-md border border-[#D8DAD4] px-2 py-1 text-[12px] text-[#62675F] dark:border-[#363932] dark:text-[#A6ABA1]`} key={tag}>{tag}</span>)}
+                {blog.tags.map((tag) => <span className={`${monoFont} rounded-md border border-[#D8DAD4] px-2 py-1 text-[12px] text-[#62675F] dark:border-[#363932] dark:text-[#A6ABA1]`} key={tag}>{tag}</span>)}
               </div>
               <a className={`${displayFont} mt-5 inline-flex items-center gap-1.5 text-[14px] font-bold text-[#62675F] transition-colors hover:text-[#20221F] dark:text-[#A6ABA1] dark:hover:text-[#F2F3EE]`} href={blog.url} target="_blank" rel="noreferrer">
                 {blog.platform === "Medium" ? <SiMedium className="size-3.5" /> : <FaLinkedin className="size-3.5" />}
