@@ -625,10 +625,10 @@ export default function HomePage() {
                   className="relative flex min-h-0 flex-1 scroll-mt-0 items-center justify-center py-16 pb-28 sm:py-20 sm:pb-32"
                   id="hero"
                 >
-                  <div className="w-full max-w-[780px] text-center lg:grid lg:max-w-[1040px] lg:grid-cols-[300px_minmax(0,1fr)] lg:items-center lg:gap-x-16 lg:text-left">
+                  <div className="w-full max-w-[780px] text-center lg:grid lg:max-w-[1080px] lg:grid-cols-[400px_minmax(0,1fr)] lg:items-center lg:gap-x-16 lg:text-left">
                     <div className="flex items-center justify-center gap-5 lg:contents">
                       <div className="shrink-0 lg:col-start-1 lg:row-span-4 lg:row-start-1 lg:justify-self-center" data-opening="profile">
-                        <Image className="size-[120px] rounded-xl object-cover shadow-[0_10px_24px_rgba(32,34,31,0.16)] ring-1 ring-black/5 dark:shadow-[0_10px_24px_rgba(0,0,0,0.35)] dark:ring-white/10 lg:size-[280px] lg:rounded-2xl lg:shadow-[0_24px_60px_rgba(32,34,31,0.18)] dark:lg:shadow-[0_24px_60px_rgba(0,0,0,0.4)]" src="/profile.png" alt="Portrait of Dharaka Meth" width={1122} height={1402} sizes="(min-width: 1024px) 280px, 120px" priority unoptimized />
+                        <Image className="h-[168px] w-[128px] rounded-xl object-cover object-[center_18%] shadow-[0_12px_28px_rgba(32,34,31,0.18)] ring-1 ring-black/5 sm:h-[210px] sm:w-[160px] lg:h-[500px] lg:w-[380px] lg:rounded-2xl lg:shadow-[0_30px_78px_rgba(32,34,31,0.22)] dark:shadow-[0_12px_28px_rgba(0,0,0,0.4)] dark:ring-white/10 dark:lg:shadow-[0_30px_78px_rgba(0,0,0,0.45)]" src="/images/portrait.png" alt="Dharaka Meth wearing a black and orange polo shirt" width={1093} height={1438} sizes="(min-width: 1024px) 380px, (min-width: 640px) 160px, 128px" priority unoptimized />
                       </div>
                       <div className="min-w-0 text-left lg:col-start-2 lg:row-start-1" data-opening="identity">
                         <h1
@@ -639,7 +639,7 @@ export default function HomePage() {
                         <p
                           className="[font-family:var(--font-geist-sans)] mt-2 text-[20px] leading-7 font-medium tracking-[0.0125em] text-[#777777] dark:text-[#A6ABA1]"
                         >
-                          Aspiring Backend Developer
+                          Aspiring Software Engineer | Linux Enthusiast | Lifelong Learner
                         </p>
                       </div>
                     </div>
@@ -893,14 +893,14 @@ export default function HomePage() {
                                   <p className={`${monoFont} text-[12px] font-semibold uppercase tracking-[0.14em] text-[#898E86] dark:text-[#A6ABA1]`}>
                                     Project {String(index + 1).padStart(2, "0")} / {String(selectedProjects.length).padStart(2, "0")}
                                   </p>
-                                  <span className={`${monoFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{project.period.join(" — ")}</span>
+                                  {/* <span className={`${monoFont} text-[12px] text-[#898E86] dark:text-[#7D8279]`}>{project.period.join(" — ")}</span> */}
                                 </div>
                                 <p className="text-[13px] font-medium uppercase tracking-[0.12em] text-[#62675F] dark:text-[#A6ABA1]">{project.role}</p>
                                 <h3 className={`${displayFont} mt-3 text-[clamp(2rem,4.4vw,4.5rem)] leading-[1.02] font-semibold tracking-[-0.07em] text-[#20221F] dark:text-[#F2F3EE]`}>
                                   {projectName}
                                 </h3>
                                 <p className="mt-5 max-w-[58ch] text-[15px] leading-7 text-[#62675F] sm:text-[17px] dark:text-[#A6ABA1]">{project.description}</p>
-                                <div className="mt-6"><TechChips items={project.technologies.slice(0, 6)} /></div>
+                                <div className="mt-6 hidden lg:block"><TechChips items={project.technologies.slice(0, 6)} /></div>
                                 <a
                                   className={`${displayFont} ${focusRing} mt-7 inline-flex min-h-11 items-center gap-2 rounded-lg bg-[#20221F] px-4 text-[14px] font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#383B35] dark:bg-[#F2F3EE] dark:text-[#10110F] dark:hover:bg-white`}
                                   href={`/projects#${project.slug}`}

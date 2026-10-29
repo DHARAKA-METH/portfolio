@@ -21,7 +21,7 @@ export const selectedProjects: SelectedProject[] = [
     period: ["2026", "Present"],
     role: "Full-Stack Developer",
     description:
-      "An API observability platform that tracks endpoint traffic and frontend response-field usage, helping teams make maintenance decisions from real usage data.",
+      "An API and response-field usage monitoring system.",
     technologies: ["Java", "Spring Boot", "Next.js", "TypeScript", "Apache Kafka", "PostgreSQL", "Docker"],
     image: "/mainPage/TraceUsage_Fields_1440x1080.webp",
     mark: "TU",
@@ -33,7 +33,7 @@ export const selectedProjects: SelectedProject[] = [
     period: ["Jul 2026", "Aug 2026"],
     role: "Developer",
     description:
-      "A student wellness app for mood check-ins, personal wellness resources, AI-assisted guidance, and access to counselor chat and appointments.",
+      "A student wellness app for mood tracking and support.",
     technologies: ["React Native", "Expo", "TypeScript", "Firebase Auth", "Cloud Firestore", "Cloud Functions", "Hugging Face"],
     image: "https://res.cloudinary.com/dgpiqnweu/image/upload/v1788976231/1.0.png",
     mark: "MS",
@@ -45,7 +45,7 @@ export const selectedProjects: SelectedProject[] = [
     period: ["Oct 2025", "Dec 2025"],
     role: "Developer",
     description:
-      "A GPS-enabled pet tracking system that pairs a Flutter app with an IoT device for live location updates, pet status, and configurable safe zones.",
+      "An IoT system for tracking pets and setting safe zones.",
     technologies: ["Flutter", "Dart", "GPS", "Arduino", "MQTT", "Firebase", "Google Maps"],
     image: "/mainPage/Pet_Details_Screen.png",
     mark: "KZ",
@@ -57,7 +57,7 @@ export const selectedProjects: SelectedProject[] = [
     period: ["Mar 2026", "Apr 2026"],
     role: "Developer",
     description:
-      "A full-stack rescue coordination platform for reporting stray dogs, browsing cases, and tracking rescue status, built around containerized microservices.",
+      "A platform for reporting stray dogs and coordinating rescues.",
     technologies: ["Spring Boot", "Next.js", "Spring Cloud Gateway", "JWT", "MySQL", "Docker", "NGINX"],
     image: "/images/rescuepaws-architecture-adjusted-1920x1440.png",
     mark: "RP",
